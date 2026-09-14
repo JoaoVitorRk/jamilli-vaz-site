@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+media/aquarela-florais.webp
+media/cerimonia-jardim.webp
+media/igreja-vitral.webp
+media/cordas-jardim.webp
+media/microfone-vintage.webp
+media/*.png
+!media/logo-header.png
+!media/logo-full.png
+!media/favicon.png
