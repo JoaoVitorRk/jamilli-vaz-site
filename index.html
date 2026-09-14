@@ -6,7 +6,7 @@
      ============================================================ -->
 <title>Jamilli Vaz — Cantora de Casamentos em Guarapuava</title>
 <link rel="icon" type="image/png" href="media/favicon.png">
-<meta name="description" content="Música ao vivo para casamentos em Guarapuava e região. Cerimônia, recepção e festa com voz, violão, violino e quarteto. Consulte sua data.">
+<meta name="description" content="Música ao vivo para a cerimônia de casamento em Guarapuava e região: voz, piano, violino e cordas na igreja — e, se quiserem, na recepção. Consulte sua data.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
@@ -333,6 +333,13 @@
   .momento h3 { font-size: 2rem; }
   .momento p { font-size: 0.98rem; color: var(--ink-soft); padding-top: 14px; border-top: 1px solid rgba(198, 165, 103, 0.5); }
   @media (max-width: 860px) { .momentos { grid-template-columns: 1fr; } .momento:nth-child(2) { margin-top: 0; } }
+  .extra { margin-top: clamp(60px, 8vw, 100px); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(28px, 5vw, 70px); align-items: center; padding: clamp(28px, 4vw, 48px); background: var(--champagne); }
+  .extra-foto { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 999px 999px 0 0; max-width: 300px; }
+  .extra-foto img { width: 100%; height: 100%; object-fit: cover; }
+  .extra-copy { display: grid; gap: 14px; max-width: 56ch; }
+  .extra-copy h3 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  .extra-copy p:last-child { color: var(--ink-soft); }
+  @media (max-width: 860px) { .extra { grid-template-columns: 1fr; } .extra-foto { max-width: 220px; } }
   .formacoes { margin-top: clamp(60px, 8vw, 100px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(30px, 5vw, 70px); align-items: center; }
   .formacoes figure { aspect-ratio: 4 / 3; overflow: hidden; }
   .formacoes figure img { width: 100%; height: 100%; object-fit: cover; }
@@ -439,7 +446,7 @@
     <ul>
       <li><a href="#sobre">A cantora</a></li>
       <li><a href="#filmes">Filmes</a></li>
-      <li><a href="#dia">O dia</a></li>
+      <li><a href="#dia">A cerimônia</a></li>
       <li><a href="#repertorio">Repertório</a></li>
       <li><a href="#depoimentos">Depoimentos</a></li>
       <li><a class="nav-cta" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener">Consultar data</a></li>
@@ -451,7 +458,7 @@
   <p class="eyebrow">Jamilli Vaz — música para casamentos</p>
   <a href="#sobre">A cantora</a>
   <a href="#filmes">Filmes</a>
-  <a href="#dia">O dia</a>
+  <a href="#dia">A cerimônia</a>
   <a href="#repertorio">Repertório</a>
   <a href="#depoimentos">Depoimentos</a>
   <a href="#contato">Consultar data</a>
@@ -470,7 +477,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Cantora de casamentos — Guarapuava · PR e região</p>
         <h1><span class="w">A trilha</span><span class="w">sonora do</span><span class="w">seu <em>sim</em></span></h1>
-        <p class="hero-sub">Música que acolhe, emociona e transforma momentos em memórias. Da entrada da noiva à primeira dança — com voz ao vivo, em dueto, trio ou quarteto.</p>
+        <p class="hero-sub">Música que acolhe, emociona e transforma momentos em memórias. Voz ao vivo na sua cerimônia — da entrada dos padrinhos à saída dos noivos — em duo, trio ou conjunto com cordas.</p>
         <div class="hero-actions">
           <a class="btn btn-solid" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener"><span>Consultar minha data</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
           <a class="play-round" href="#filmes" aria-label="Ver os filmes">
@@ -513,8 +520,8 @@
       <div class="sobre-copy">
         <p class="eyebrow reveal">A cantora</p>
         <h2 class="reveal d1">Canto o momento em que as palavras <em>param</em></h2>
-        <p class="lead reveal d2">A entrada, as alianças, a primeira dança — cada um pede uma voz que esteja ali de verdade.</p>
-        <p class="reveal d2">Natural de Prudentópolis, moro em Guarapuava. Canto casamentos há seis anos e sou professora de canto e técnica vocal. Cada cerimônia pede uma formação — voz e violão para um jardim ao entardecer, trio com violino para a igreja, conjunto com cordas para a festa — e eu ajudo o casal a escolher cada música, sem restrição de estilo. Minha missão é simples: colocar emoção em cada música e deixar o momento ainda mais especial.</p>
+        <p class="lead reveal d2">A entrada, as alianças, a bênção, a saída — cada momento da cerimônia pede uma voz que esteja ali de verdade.</p>
+        <p class="reveal d2">Natural de Prudentópolis, moro em Guarapuava. Canto casamentos há seis anos e sou professora de canto e técnica vocal. Minha especialidade é a cerimônia: cada igreja e cada rito pedem uma formação — voz e violão ou piano para uma celebração intimista, trio com violino, ou conjunto com cordas para o clássico e solene. Eu ajudo o casal a escolher cada música, respeitando as orientações da paróquia e sem restrição de estilo. Minha missão é simples: colocar emoção em cada música e deixar o momento ainda mais especial.</p>
         <p class="assinatura reveal d3" aria-hidden="true">Jamilli Vaz</p>
         <div class="facts reveal d3">
           <div><b>6 anos</b><small>cantando casamentos</small></div>
@@ -535,7 +542,7 @@
         <h2 class="reveal d1">Cada casamento, uma <em>história</em></h2>
       </div>
       <div class="reveal d2">
-        <p>Toque para assistir com som. Gravações reais — cerimônias, ensaios e recepções em Guarapuava e região.</p>
+        <p>Toque para assistir com som. Gravações reais — cerimônias e ensaios em Guarapuava e região.</p>
         <div class="strip-nav" style="margin-top: 22px">
           <button class="strip-btn" type="button" data-dir="-1" aria-label="Filme anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M15 9H3M8 4L3 9l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button class="strip-btn" type="button" data-dir="1" aria-label="Próximo filme"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -596,36 +603,44 @@
   <div class="to-light" aria-hidden="true"></div>
 
   <!-- ======================= O DIA ======================= -->
-  <section id="dia" class="dia light" aria-label="Como a música acompanha o dia">
+  <section id="dia" class="dia light" aria-label="A cerimônia, momento a momento">
     <div class="wrap">
-      <p class="eyebrow reveal">Do começo ao fim</p>
-      <h2 class="reveal d1">Como a música acompanha <em>o dia</em></h2>
+      <p class="eyebrow reveal">Na igreja</p>
+      <h2 class="reveal d1">A cerimônia, <em>momento a momento</em></h2>
       <div class="momentos">
         <article class="momento reveal">
           <span class="num" aria-hidden="true">01</span>
           <figure><img src="media/fotos/igreja-canto.jpg" alt="Jamilli cantando ao microfone vintage em cerimônia na igreja" width="1350" height="1800" loading="lazy"></figure>
-          <h3>Cerimônia</h3>
-          <p>Entrada dos pais e padrinhos, do noivo e da noiva, alianças, comunhão e saída — cada momento com a música certa, respeitando as orientações da igreja.</p>
+          <h3>As entradas</h3>
+          <p>Pais, padrinhos, noivo, daminhas e florista — o começo da celebração, com uma música afetuosa para cada pessoa que chega ao altar pelo casal.</p>
         </article>
         <article class="momento reveal d1">
           <span class="num" aria-hidden="true">02</span>
-          <figure><img src="media/fotos/recepcao.jpg" alt="Jamilli cantando ao microfone vintage em recepção ao ar livre" width="720" height="960" loading="lazy"></figure>
-          <h3>Recepção</h3>
-          <p>Enquanto os convidados chegam e brindam, a música cria o clima — presente, sem disputar atenção. Dá para somar duas horas de música ao vivo à cerimônia.</p>
+          <figure><img src="media/fotos/igreja-lateral.jpg" alt="Jamilli cantando na igreja durante a entrada da noiva" width="1350" height="1800" loading="lazy"></figure>
+          <h3>A noiva</h3>
+          <p>O momento mais esperado. Marcha Nupcial com Ave Maria, Aleluia — ou a música que conta a história de vocês, cantada com a solenidade que a entrada pede.</p>
         </article>
         <article class="momento reveal d2">
           <span class="num" aria-hidden="true">03</span>
-          <figure><img src="media/fotos/palco.jpg" alt="Jamilli cantando em palco com luzes azuis" width="1440" height="1440" loading="lazy"></figure>
-          <h3>Festa</h3>
-          <p>Da primeira dança em diante, o repertório sobe junto com a pista — do romântico ao sertanejo, sem restrição de estilo.</p>
+          <figure><img src="media/fotos/igreja-teclado.jpg" alt="Jamilli e o pianista cantando durante a cerimônia religiosa" width="1800" height="1200" loading="lazy"></figure>
+          <h3>Alianças, bênção e saída</h3>
+          <p>A troca das alianças, a bênção da noiva, a comunhão e a saída dos noivos — do recolhimento à alegria, cada momento com a música certa, dentro das orientações da paróquia.</p>
         </article>
+      </div>
+      <div class="extra reveal">
+        <figure class="extra-foto"><img src="media/fotos/recepcao.jpg" alt="Jamilli cantando ao microfone vintage em recepção ao ar livre" width="720" height="960" loading="lazy"></figure>
+        <div class="extra-copy">
+          <p class="eyebrow">Opcional</p>
+          <h3>E depois da igreja?</h3>
+          <p>Se quiserem, a música segue com vocês: mais duas horas de música ao vivo na recepção ou no jantar, em formação adaptada ao clima — enquanto os convidados chegam, brindam e celebram.</p>
+        </div>
       </div>
       <div class="formacoes">
         <figure class="reveal"><img src="media/fotos/violino.jpg" alt="Detalhe das mãos da violinista durante a cerimônia" width="1350" height="1800" loading="lazy"></figure>
         <div class="formacoes-list reveal d1">
-          <div><b>Duo</b><p>Voz e violão ou piano. Intimista, leve e romântico — jardins, cerimônias ao ar livre e recepções pequenas.</p></div>
+          <div><b>Duo</b><p>Voz e violão ou piano. Intimista, leve e romântico — capelas, celebrações menores e cerimônias ao ar livre.</p></div>
           <div><b>Trio</b><p>Voz, piano e violino. Marcante e emocionante — o clássico das cerimônias na igreja.</p></div>
-          <div><b>Conjunto</b><p>Voz, piano e trio de cordas: violino, violoncelo e viola de arco. Clássico e sofisticado — para cerimônia e festa no mesmo dia.</p></div>
+          <div><b>Conjunto</b><p>Voz, piano e trio de cordas: violino, violoncelo e viola de arco. Clássico e sofisticado — para as grandes igrejas e cerimônias solenes.</p></div>
           <div><b>Sob medida</b><p>As formações são flexíveis: dá para trocar instrumentos ou somar trompete, acordeon, ukulele e sax. A sonorização da cerimônia está inclusa em todas.</p></div>
         </div>
       </div>
@@ -638,11 +653,11 @@
     <div class="wrap">
       <p class="eyebrow reveal">Repertório</p>
       <h2 class="reveal d1">Algumas das mais <em>pedidas</em></h2>
-      <p class="rep-intro reveal d2">O repertório é montado com cada casal, sem restrição de estilo — nacionais, internacionais, religiosas. Esta é só uma amostra, organizada por momento.</p>
+      <p class="rep-intro reveal d2">O repertório é montado com cada casal e com as orientações da igreja — nacionais, internacionais, religiosas, sem restrição de estilo. Esta é só uma amostra, organizada por momento da cerimônia.</p>
       <div class="rep-cols">
         <div class="rep-col reveal"><h3>Entrada da noiva</h3><ul><li>Marcha Nupcial + Ave Maria</li><li>Aleluia <span>Gabriela Rocha</span></li><li>Gratidão <span>Oração e Vida</span></li><li>Eis-me Aqui <span>Colo de Deus</span></li><li>Oceanos <span>Ana Nóbrega</span></li></ul></div>
         <div class="rep-col reveal d1"><h3>Alianças, bênção &amp; saída</h3><ul><li>Essa Aliança <span>Entretons</span></li><li>Cheiro de Rosas <span>Adoração e Vida</span></li><li>Chuva de Graças <span>Comunidade Recado</span></li><li>A Bênção <span>Gabriel Guedes</span></li><li>Nossa Senhora <span>Roberto Carlos</span></li></ul></div>
-        <div class="rep-col reveal d2"><h3>Recepção &amp; festa</h3><ul><li>La Vie en Rose <span>Édith Piaf</span></li><li>Die With a Smile <span>Bruno Mars &amp; Lady Gaga</span></li><li>Minha Felicidade <span>Roberta Campos</span></li><li>Ainda Bem <span>Marisa Monte</span></li><li>Love Story <span>Indila</span></li><li>Ordinary <span>Alex Warren</span></li></ul></div>
+        <div class="rep-col reveal d2"><h3>Recepção &amp; jantar (opcional)</h3><ul><li>La Vie en Rose <span>Édith Piaf</span></li><li>Die With a Smile <span>Bruno Mars &amp; Lady Gaga</span></li><li>Minha Felicidade <span>Roberta Campos</span></li><li>Ainda Bem <span>Marisa Monte</span></li><li>Love Story <span>Indila</span></li><li>Ordinary <span>Alex Warren</span></li></ul></div>
       </div>
       <p class="rep-note reveal">A música de vocês não está aqui? <a href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Queria%20saber%20se%20uma%20m%C3%BAsica%20est%C3%A1%20no%20seu%20repert%C3%B3rio." target="_blank" rel="noopener">Me conta qual é</a> — o repertório cresce a cada casal. E para cerimônias católicas, preparei um guia com mais de 40 músicas aceitas pela Igreja, organizadas por momento: é só pedir no WhatsApp.</p>
     </div>
@@ -681,7 +696,7 @@
       </div>
       <div class="faq-list reveal d1">
         <details><summary>Com quanto tempo de antecedência devo reservar?</summary><p>Os casais costumam fechar a data com 1 ano a 1 ano e meio de antecedência. Cada data tem um só casamento — quanto antes você consultar, maior a chance de a sua estar livre.</p></details>
-        <details><summary>Você canta na cerimônia e também na festa?</summary><p>Sim. Os pacotes cobrem a cerimônia, com sonorização inclusa, e podem somar mais duas horas de música ao vivo na recepção ou no jantar — cada momento com o clima certo.</p></details>
+        <details><summary>Você canta só na cerimônia ou também na recepção?</summary><p>Meu foco é a cerimônia — na igreja ou onde ela acontecer — com a sonorização inclusa. Se quiserem, dá para somar mais duas horas de música ao vivo na recepção ou no jantar, em formação adaptada ao clima.</p></details>
         <details><summary>Quais formações posso escolher?</summary><p>Duo (voz e violão ou piano), trio (voz, piano e violino) ou conjunto (voz, piano e trio de cordas). As formações são flexíveis: dá para trocar instrumentos ou somar trompete, acordeon, ukulele e sax. Na conversa, eu indico a que melhor combina com o espaço e o estilo da cerimônia.</p></details>
         <details><summary>Vocês ajudam a escolher as músicas?</summary><p>Sim — essa é a parte que eu mais gosto. Montamos juntos a trilha de cada momento, a partir da história de vocês. Para cerimônias católicas, tenho um guia com mais de 40 músicas aceitas pela Igreja, organizadas por momento da celebração.</p></details>
         <details><summary>E se a nossa música não estiver no repertório?</summary><p>Me envia a música pelo WhatsApp. Canto nacionais e internacionais, sem restrição de estilo — e sempre que possível preparo uma versão especialmente para a cerimônia de vocês.</p></details>
@@ -696,7 +711,7 @@
     <div class="cta-copy">
       <p class="eyebrow reveal">Consultar disponibilidade</p>
       <h2 class="reveal d1">Cada data tem um só <em>casamento</em>.</h2>
-      <p class="reveal d2">Se o seu já tem lugar e hora, vamos conversar sobre a música. Me chama no WhatsApp com a data — eu respondo com disponibilidade, formações e valores.</p>
+      <p class="reveal d2">Se a sua cerimônia já tem igreja e hora, vamos conversar sobre a música. Me chama no WhatsApp com a data — eu respondo com disponibilidade, formações e valores.</p>
       <div class="reveal d3"><a class="btn btn-solid" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener"><span>Consultar minha data no WhatsApp</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
       <p class="cta-small reveal d3">Guarapuava · PR — e região</p>
     </div>
