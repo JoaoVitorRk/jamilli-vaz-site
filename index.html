@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
 <style>
   :root {
     --noite: #141210;
@@ -37,7 +37,7 @@
     --dourado-claro: #E4CE9E;
     --esmeralda: #2F4A3E;
     --ink-soft: #6E665D;
-    --serif: "Cormorant Garamond", "Times New Roman", serif;
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
     --sans: "Jost", "Segoe UI", system-ui, sans-serif;
     --script: "Pinyon Script", cursive;
     --gutter: clamp(20px, 5vw, 80px);
@@ -78,7 +78,7 @@
     font-family: var(--sans); font-weight: 400; font-size: 0.7rem;
     letter-spacing: 0.32em; text-transform: uppercase; color: var(--dourado);
   }
-  h1, h2, h3 { font-family: var(--serif); font-weight: 300; text-wrap: balance; line-height: 1.02; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 300; text-wrap: balance; line-height: 1.08; letter-spacing: -0.01em; }
   h2 { font-size: clamp(2.6rem, 6vw, 5.2rem); }
   h2 em, h1 em, .em { font-style: italic; font-weight: 400; color: var(--dourado-claro); }
   .light h2 em, .light h1 em, .light .em { color: var(--esmeralda); }
@@ -382,6 +382,10 @@
   @media (max-width: 480px) {
     .btn { font-size: 1.1rem; gap: 12px; padding-left: 22px; }
     .btn .arrow { width: 40px; height: 40px; }
+    .play-round { width: 80px; height: 80px; }
+    .play-round .ring text { font-size: 12px; letter-spacing: 0.24em; }
+    .play-round .core { width: 36px; height: 36px; }
+    .play-round .core svg { width: 11px; height: 12px; }
     .hero h1 { font-size: clamp(3rem, 15vw, 4.4rem); }
   }
   .formacoes { margin-top: clamp(60px, 8vw, 100px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(30px, 5vw, 70px); align-items: center; }
@@ -696,7 +700,7 @@
       <div class="formacoes">
         <figure class="reveal"><img src="media/fotos/violino.jpg" alt="Detalhe das mãos da violinista durante a cerimônia" width="1350" height="1800" loading="lazy"></figure>
         <div class="formacoes-list reveal d1">
-          <header class="formacoes-head"><p class="eyebrow">Formações</p><h3>Do duo ao conjunto com <em>cordas</em></h3></header>
+          <hgroup class="formacoes-head"><p class="eyebrow">Formações</p><h3>Do duo ao conjunto com <em>cordas</em></h3></hgroup>
           <div><b>Duo</b><p>Voz e violão ou piano. Intimista, leve e romântico — o que eu indico para capelas e cerimônias menores, quando cada palavra da letra precisa ser ouvida.</p></div>
           <div><b>Trio</b><p>Voz, piano e violino. Marcante e emocionante — o violino faz a entrada da noiva crescer.</p></div>
           <div><b>Conjunto</b><p>Voz, piano e trio de cordas: violino, violoncelo e viola de arco. Clássico e sofisticado — para as igrejas grandes e as cerimônias mais solenes.</p></div>
