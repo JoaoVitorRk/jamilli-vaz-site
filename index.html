@@ -8,8 +8,8 @@
      ============================================================ -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Jamilli Vaz — Cantora de Casamentos em Guarapuava</title>
-<meta name="description" content="Música ao vivo para a cerimônia de casamento em Guarapuava e região: voz, piano, violino e cordas na igreja — e, se quiserem, na recepção. Consulte sua data.">
+<title>Jamilli Vaz — Cantora de Cerimônia de Casamento em Guarapuava</title>
+<meta name="description" content="Voz ao vivo na cerimônia de casamento, na igreja — Guarapuava e região. Duo, trio ou conjunto com cordas, com repertório dentro das normas da paróquia. Consulte sua data.">
 <link rel="canonical" href="https://jamilli.rkperformance.com.br/">
 <link rel="icon" type="image/png" href="media/favicon.png">
 <link rel="apple-touch-icon" href="media/favicon.png">
@@ -17,8 +17,8 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Jamilli Vaz">
-<meta property="og:title" content="Jamilli Vaz — Cantora de Casamentos em Guarapuava">
-<meta property="og:description" content="Música ao vivo para a cerimônia de casamento em Guarapuava e região: voz, piano, violino e cordas na igreja.">
+<meta property="og:title" content="Jamilli Vaz — Cantora de Cerimônia de Casamento em Guarapuava">
+<meta property="og:description" content="Você entra. Eu canto. Voz ao vivo na cerimônia de casamento, na igreja — Guarapuava e região.">
 <meta property="og:url" content="https://jamilli.rkperformance.com.br/">
 <meta property="og:image" content="https://jamilli.rkperformance.com.br/media/fotos/editorial-wide.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -368,6 +368,22 @@
     .depois-inner { grid-template-columns: 1fr; padding-top: 0; }
     .depois-foto { order: -1; justify-self: center; width: min(78%, 300px); margin: -70px 0 0; }
   }
+  .formacoes-head { padding: 0 0 22px; display: grid; gap: 10px; }
+  .formacoes-head h3 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.05; }
+  .formacoes-head h3 em { font-style: italic; font-weight: 400; color: var(--esmeralda); }
+  .guia { position: relative; margin-top: clamp(50px, 7vw, 80px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px 50px; align-items: center; padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 50px); border: 1px solid rgba(198, 165, 103, 0.6); background: linear-gradient(120deg, rgba(246, 241, 233, 0.75), rgba(233, 218, 193, 0.55)); }
+  .guia::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(198, 165, 103, 0.28); pointer-events: none; }
+  .guia-copy { display: grid; gap: 10px; max-width: 58ch; }
+  .guia-copy h3 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.05; }
+  .guia-copy h3 em { font-style: italic; font-weight: 400; color: var(--esmeralda); }
+  .guia-copy p:last-child { color: var(--ink-soft); }
+  .guia .btn { position: relative; z-index: 1; }
+  @media (max-width: 860px) { .guia { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .btn { font-size: 1.1rem; gap: 12px; padding-left: 22px; }
+    .btn .arrow { width: 40px; height: 40px; }
+    .hero h1 { font-size: clamp(3rem, 15vw, 4.4rem); }
+  }
   .formacoes { margin-top: clamp(60px, 8vw, 100px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(30px, 5vw, 70px); align-items: center; }
   .formacoes figure { aspect-ratio: 4 / 3; overflow: hidden; }
   .formacoes figure img { width: 100%; height: 100%; object-fit: cover; }
@@ -475,19 +491,19 @@
   <nav aria-label="Seções do site">
     <ul>
       <li><a href="#sobre">A cantora</a></li>
-      <li><a href="#filmes">Filmes</a></li>
+      <li><a href="#filmes">Vídeos</a></li>
       <li><a href="#dia">A cerimônia</a></li>
       <li><a href="#repertorio">Repertório</a></li>
       <li><a href="#depoimentos">Depoimentos</a></li>
-      <li><a class="nav-cta" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener">Consultar data</a></li>
+      <li><a class="nav-cta" href="https://wa.me/5542920001539?text=Oi%2C%20Jamilli%21%20Vi%20seu%20site%20e%20quero%20consultar%20a%20minha%20data.%20Meu%20casamento%20%C3%A9%20dia%20__%2F__%2F____%2C%20na%20igreja%20______%2C%20em%20______.%20A%20data%20est%C3%A1%20livre%3F" target="_blank" rel="noopener">Consultar data</a></li>
     </ul>
   </nav>
   <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuFull">Menu</button>
 </header>
 <div class="menu-full" id="menuFull">
-  <p class="eyebrow">Jamilli Vaz — música para casamentos</p>
+  <p class="eyebrow">Jamilli Vaz — cantora de cerimônias</p>
   <a href="#sobre">A cantora</a>
-  <a href="#filmes">Filmes</a>
+  <a href="#filmes">Vídeos</a>
   <a href="#dia">A cerimônia</a>
   <a href="#repertorio">Repertório</a>
   <a href="#depoimentos">Depoimentos</a>
@@ -505,13 +521,13 @@
     </div>
     <div class="hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow">Cantora de casamentos — Guarapuava · PR e região</p>
-        <h1><span class="w">A trilha</span><span class="w">sonora do</span><span class="w">seu <em>sim</em></span></h1>
-        <p class="hero-sub">Música que acolhe, emociona e transforma momentos em memórias. Voz ao vivo na sua cerimônia — da entrada dos padrinhos à saída dos noivos — em duo, trio ou conjunto com cordas.</p>
+        <p class="eyebrow">Cantora de cerimônias na igreja — Guarapuava e região</p>
+        <h1><span class="w">Você entra.</span><span class="w">Eu <em>canto</em>.</span></h1>
+        <p class="hero-sub">Você não precisa entender de música nem das normas da Igreja. Eu escolho cada música com vocês, dentro do que a paróquia permite, e levo a sonorização — em duo, trio ou conjunto com cordas.</p>
         <div class="hero-actions">
-          <a class="btn btn-solid" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener"><span>Consultar minha data</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-          <a class="play-round" href="#filmes" aria-label="Ver os filmes">
-            <svg class="ring" viewBox="0 0 116 116" aria-hidden="true"><defs><path id="ringPath" d="M58,58 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#ringPath">ver os filmes · ver os filmes ·</textPath></text></svg>
+          <a class="btn btn-solid" href="https://wa.me/5542920001539?text=Oi%2C%20Jamilli%21%20Vi%20seu%20site%20e%20quero%20consultar%20a%20minha%20data.%20Meu%20casamento%20%C3%A9%20dia%20__%2F__%2F____%2C%20na%20igreja%20______%2C%20em%20______.%20A%20data%20est%C3%A1%20livre%3F" target="_blank" rel="noopener"><span>Consultar minha data</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          <a class="play-round" href="#filmes" aria-label="Ver os vídeos">
+            <svg class="ring" viewBox="0 0 116 116" aria-hidden="true"><defs><path id="ringPath" d="M58,58 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#ringPath">ouça com som · ouça com som ·</textPath></text></svg>
             <span class="core" aria-hidden="true"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0L14 8L0 16V0Z"/></svg></span>
           </a>
         </div>
@@ -534,8 +550,8 @@
   <!-- ======================= LETREIRO ======================= -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <span>La Vie en Rose — Édith Piaf</span><span>Ave Maria</span><span>Die With a Smile — Bruno Mars &amp; Lady Gaga</span><span>Oceanos — Ana Nóbrega</span><span>Minha Felicidade — Roberta Campos</span><span>Marcha Nupcial + Jesus Meu Esposo</span><span>Cheiro de Rosas</span><span>Love Story — Indila</span><span>A Bênção — Gabriel Guedes</span><span>Pra Sonhar — Marcelo Jeneci</span><span>Chuva de Graças</span><span>Ainda Bem — Marisa Monte</span><span>Aleluia — Gabriela Rocha</span><span>Ordinary — Alex Warren</span><span>Eu e Minha Casa — Julliany Souza</span>
-      <span>La Vie en Rose — Édith Piaf</span><span>Ave Maria</span><span>Die With a Smile — Bruno Mars &amp; Lady Gaga</span><span>Oceanos — Ana Nóbrega</span><span>Minha Felicidade — Roberta Campos</span><span>Marcha Nupcial + Jesus Meu Esposo</span><span>Cheiro de Rosas</span><span>Love Story — Indila</span><span>A Bênção — Gabriel Guedes</span><span>Pra Sonhar — Marcelo Jeneci</span><span>Chuva de Graças</span><span>Ainda Bem — Marisa Monte</span><span>Aleluia — Gabriela Rocha</span><span>Ordinary — Alex Warren</span><span>Eu e Minha Casa — Julliany Souza</span>
+      <span>Marcha Nupcial + Jesus Meu Esposo</span><span>Ave Maria</span><span>Cheiro de Rosas</span><span>A Bênção — Gabriel Guedes</span><span>Chuva de Graças</span><span>Aleluia — Gabriela Rocha</span><span>Oceanos — Ana Nóbrega</span><span>Minha Felicidade — Roberta Campos</span><span>Eu e Minha Casa — Julliany Souza</span><span>Pra Sonhar — Marcelo Jeneci</span><span>La Vie en Rose — Édith Piaf</span><span>Die With a Smile — Bruno Mars &amp; Lady Gaga</span><span>Love Story — Indila</span><span>Ainda Bem — Marisa Monte</span><span>Ordinary — Alex Warren</span>
+      <span>Marcha Nupcial + Jesus Meu Esposo</span><span>Ave Maria</span><span>Cheiro de Rosas</span><span>A Bênção — Gabriel Guedes</span><span>Chuva de Graças</span><span>Aleluia — Gabriela Rocha</span><span>Oceanos — Ana Nóbrega</span><span>Minha Felicidade — Roberta Campos</span><span>Eu e Minha Casa — Julliany Souza</span><span>Pra Sonhar — Marcelo Jeneci</span><span>La Vie en Rose — Édith Piaf</span><span>Die With a Smile — Bruno Mars &amp; Lady Gaga</span><span>Love Story — Indila</span><span>Ainda Bem — Marisa Monte</span><span>Ordinary — Alex Warren</span>
     </div>
   </div>
 
@@ -545,18 +561,20 @@
       <figure class="collage reveal">
         <div class="main" data-parallax="-0.06"><img src="media/fotos/editorial-mic.jpg" alt="Jamilli Vaz com microfone vintage, em ensaio editorial entre flores brancas" width="1350" height="1800" loading="lazy"></div>
         <div class="second" data-parallax="0.08"><img src="media/fotos/igreja-quarteto.jpg" alt="Jamilli cantando em cerimônia religiosa com violinista e tecladista" width="1800" height="1200" loading="lazy"></div>
-        <figcaption>Cerimônia com quarteto — igreja histórica, Guarapuava</figcaption>
+        <figcaption>Cerimônia com conjunto de cordas</figcaption>
       </figure>
       <div class="sobre-copy">
-        <p class="eyebrow reveal">A cantora</p>
+        <p class="eyebrow reveal">Olá, noivos!</p>
         <h2 class="reveal d1">Canto o momento em que as palavras <em>param</em></h2>
-        <p class="lead reveal d2">A entrada, as alianças, a bênção, a saída — cada momento da cerimônia pede uma voz que esteja ali de verdade.</p>
-        <p class="reveal d2">Natural de Prudentópolis, moro em Guarapuava. Canto casamentos há seis anos e sou professora de canto e técnica vocal. Minha especialidade é a cerimônia: cada igreja e cada rito pedem uma formação — voz e violão ou piano para uma celebração intimista, trio com violino, ou conjunto com cordas para o clássico e solene. Eu ajudo o casal a escolher cada música, respeitando as orientações da paróquia e sem restrição de estilo. Minha missão é simples: colocar emoção em cada música e deixar o momento ainda mais especial.</p>
+        <p class="lead reveal d2">Escolher as músicas da igreja não precisa ser mais uma preocupação. Essa parte eu faço com vocês.</p>
+        <p class="reveal d2">Sou a Jamilli. Nasci em Prudentópolis, moro em Guarapuava e canto casamentos há seis anos — também sou professora de canto e técnica vocal. Já cantei em Prudentópolis, Irati e Curitiba.</p>
+        <p class="reveal d2">Minha especialidade é a cerimônia na igreja. Sei como é difícil escolher músicas que respeitem as normas da Igreja e ainda emocionem — por isso a gente monta a lista junto, momento a momento, e eu aviso o que vale confirmar com o padre.</p>
+        <p class="reveal d2">O que eu preciso de vocês é só a história do casal. O resto é comigo: colocar emoção em cada música.</p>
         <p class="assinatura reveal d3" aria-hidden="true">Jamilli Vaz</p>
         <div class="facts reveal d3">
           <div><b>6 anos</b><small>cantando casamentos</small></div>
-          <div><b>Duo · trio · conjunto</b><small>formações flexíveis</small></div>
-          <div><b>5.0</b><small>casamentos.com.br</small></div>
+          <div><b>Duo · trio · conjunto</b><small>sonorização da cerimônia inclusa</small></div>
+          <div><b>+40 músicas</b><small>no guia da cerimônia católica</small></div>
         </div>
       </div>
     </div>
@@ -568,11 +586,11 @@
   <section id="filmes" class="filmes" aria-label="Filmes de casamentos">
     <div class="wrap filmes-head">
       <div>
-        <p class="eyebrow reveal">Filmes</p>
-        <h2 class="reveal d1">Cada casamento, uma <em>história</em></h2>
+        <p class="eyebrow reveal">Assista com som</p>
+        <h2 class="reveal d1">Como soa dentro da <em>igreja</em></h2>
       </div>
       <div class="reveal d2">
-        <p>Toque para assistir com som. Gravações reais — cerimônias e ensaios em Guarapuava e região.</p>
+        <p>Gravações reais, sem estúdio, de casamentos em Guarapuava e região. Toque num vídeo e ouça com som — é assim que fica ao vivo.</p>
         <div class="strip-nav" style="margin-top: 22px">
           <button class="strip-btn" type="button" data-dir="-1" aria-label="Filme anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M15 9H3M8 4L3 9l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button class="strip-btn" type="button" data-dir="1" aria-label="Próximo filme"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -608,25 +626,25 @@
         <img src="media/fotos/cover-oceanos.jpg" alt="" width="1080" height="1920" loading="lazy">
         <button class="card-play" type="button" aria-label="Assistir: Oceanos"><svg width="18" height="22" viewBox="0 0 18 22" fill="none" aria-hidden="true"><path d="M0 0L18 11L0 22V0Z" fill="#E4CE9E"/></svg></button>
         <button class="card-stop" type="button">Fechar</button>
-        <div class="card-info"><h3>Oceanos</h3><p>Ana Nóbrega · cerimônia religiosa</p></div>
+        <div class="card-info"><h3>Oceanos</h3><p>Ana Nóbrega</p></div>
       </article>
       <article class="card reveal d3" data-video="media/videos/pra-sonhar.mp4" data-title="Pra Sonhar — Marcelo Jeneci">
         <img src="media/fotos/cover-sonhar.jpg" alt="" width="1080" height="1920" loading="lazy">
         <button class="card-play" type="button" aria-label="Assistir: Pra Sonhar"><svg width="18" height="22" viewBox="0 0 18 22" fill="none" aria-hidden="true"><path d="M0 0L18 11L0 22V0Z" fill="#E4CE9E"/></svg></button>
         <button class="card-stop" type="button">Fechar</button>
-        <div class="card-info"><h3>Pra Sonhar</h3><p>Marcelo Jeneci · cerimônia</p></div>
+        <div class="card-info"><h3>Pra Sonhar</h3><p>Marcelo Jeneci</p></div>
       </article>
       <article class="card reveal d3" data-video="media/videos/la-vie-en-rose.mp4" data-title="La Vie en Rose — Édith Piaf">
         <img src="media/fotos/editorial-flor.jpg" alt="" width="1350" height="1800" loading="lazy">
         <button class="card-play" type="button" aria-label="Assistir: La Vie en Rose"><svg width="18" height="22" viewBox="0 0 18 22" fill="none" aria-hidden="true"><path d="M0 0L18 11L0 22V0Z" fill="#E4CE9E"/></svg></button>
         <button class="card-stop" type="button">Fechar</button>
-        <div class="card-info"><h3>La Vie en Rose</h3><p>Édith Piaf · ensaio no Besha Garden</p></div>
+        <div class="card-info"><h3>La Vie en Rose</h3><p>Édith Piaf · ensaio · Besha Garden</p></div>
       </article>
       <article class="card reveal d3" data-video="media/videos/die-with-a-smile.mp4" data-title="Die With a Smile — Bruno Mars & Lady Gaga">
         <img src="media/fotos/cover-die.jpg" alt="" width="1080" height="1920" loading="lazy">
         <button class="card-play" type="button" aria-label="Assistir: Die With a Smile"><svg width="18" height="22" viewBox="0 0 18 22" fill="none" aria-hidden="true"><path d="M0 0L18 11L0 22V0Z" fill="#E4CE9E"/></svg></button>
         <button class="card-stop" type="button">Fechar</button>
-        <div class="card-info"><h3>Die With a Smile</h3><p>Bruno Mars &amp; Lady Gaga · recepção, com violoncelo</p></div>
+        <div class="card-info"><h3>Die With a Smile</h3><p>Bruno Mars &amp; Lady Gaga · com cordas</p></div>
       </article>
     </div>
     <div class="strip-foot">
@@ -654,34 +672,35 @@
   <section id="dia" class="dia light" aria-label="A cerimônia, momento a momento">
     <div class="wrap">
       <p class="eyebrow reveal">Na igreja</p>
-      <h2 class="reveal d1">A cerimônia, <em>momento a momento</em></h2>
+      <h2 class="reveal d1">A cerimônia, na ordem em que <em>acontece</em></h2>
       <div class="momentos">
         <article class="momento reveal">
           <span class="num" aria-hidden="true">01</span>
           <figure><img src="media/fotos/igreja-canto.jpg" alt="Jamilli cantando ao microfone vintage em cerimônia na igreja" width="1350" height="1800" loading="lazy"></figure>
           <h3>As entradas</h3>
-          <p>Pais, padrinhos, noivo, daminhas e florista — o começo da celebração, com uma música afetuosa para cada pessoa que chega ao altar pelo casal.</p>
+          <p>Pais, padrinhos, daminhas e o noivo. Enquanto cada um caminha até o altar, a música acolhe quem chega. Você ainda está lá fora — e a igreja já está em clima.</p>
         </article>
         <article class="momento reveal d1">
           <span class="num" aria-hidden="true">02</span>
           <figure><img src="media/fotos/igreja-lateral.jpg" alt="Jamilli de perfil cantando ao microfone vintage, com a luz da igreja ao fundo" width="1350" height="1800" loading="lazy"></figure>
           <h3>A noiva</h3>
-          <p>O momento mais esperado. Marcha Nupcial com Ave Maria, Aleluia — ou a música que conta a história de vocês, cantada com a solenidade que a entrada pede.</p>
+          <p>A porta se abre, todo mundo se levanta e começa a Marcha Nupcial — com Ave Maria, com Jesus Meu Esposo ou com a música que conta a história de vocês. Se você chorar no meio do caminho, tudo bem: a música segue firme até o altar.</p>
         </article>
         <article class="momento reveal d2">
           <span class="num" aria-hidden="true">03</span>
           <figure><img src="media/fotos/igreja-altar.jpg" alt="Jamilli cantando ao microfone vintage entre os quadros do altar, com violinista ao lado" width="1350" height="1800" loading="lazy"></figure>
           <h3>Alianças, bênção e saída</h3>
-          <p>A troca das alianças, a bênção da noiva, a comunhão e a saída dos noivos — do recolhimento à alegria, cada momento com a música certa, dentro das orientações da paróquia.</p>
+          <p>Salmo e Aclamação na versão litúrgica do dia. Depois, as alianças, a bênção da noiva com Cheiro de Rosas, a comunhão, as assinaturas e a saída com A Bênção — quando a igreja inteira respira. Essa parte você só precisa viver.</p>
         </article>
       </div>
       <div class="formacoes">
         <figure class="reveal"><img src="media/fotos/violino.jpg" alt="Detalhe das mãos da violinista durante a cerimônia" width="1350" height="1800" loading="lazy"></figure>
         <div class="formacoes-list reveal d1">
-          <div><b>Duo</b><p>Voz e violão ou piano. Intimista, leve e romântico — capelas, celebrações menores e cerimônias ao ar livre.</p></div>
-          <div><b>Trio</b><p>Voz, piano e violino. Marcante e emocionante — o clássico das cerimônias na igreja.</p></div>
-          <div><b>Conjunto</b><p>Voz, piano e trio de cordas: violino, violoncelo e viola de arco. Clássico e sofisticado — para as grandes igrejas e cerimônias solenes.</p></div>
-          <div><b>Sob medida</b><p>As formações são flexíveis: dá para trocar instrumentos ou somar trompete, acordeon, ukulele e sax. A sonorização da cerimônia está inclusa em todas.</p></div>
+          <header class="formacoes-head"><p class="eyebrow">Formações</p><h3>Do duo ao conjunto com <em>cordas</em></h3></header>
+          <div><b>Duo</b><p>Voz e violão ou piano. Intimista, leve e romântico — o que eu indico para capelas e cerimônias menores, quando cada palavra da letra precisa ser ouvida.</p></div>
+          <div><b>Trio</b><p>Voz, piano e violino. Marcante e emocionante — o violino faz a entrada da noiva crescer.</p></div>
+          <div><b>Conjunto</b><p>Voz, piano e trio de cordas: violino, violoncelo e viola de arco. Clássico e sofisticado — para as igrejas grandes e as cerimônias mais solenes.</p></div>
+          <div><b>Sob medida</b><p>Dá para trocar instrumentos ou somar trompete (para a clarinada), acordeon, ukulele e sax. Em todas, a voz e a sonorização da cerimônia estão inclusas.</p></div>
         </div>
       </div>
     </div>
@@ -691,7 +710,7 @@
         <div class="depois-copy reveal">
           <p class="eyebrow">Opcional</p>
           <h3>E depois da <em>igreja</em>?</h3>
-          <p>Se quiserem, a música segue com vocês: mais duas horas de música ao vivo na recepção ou no jantar, em formação adaptada ao clima — enquanto os convidados chegam, brindam e celebram.</p>
+          <p>Se quiserem, eu sigo com vocês: mais duas horas de música ao vivo na recepção ou no jantar. É ali que entram La Vie en Rose, Die With a Smile, Ainda Bem — o que não cabe na igreja, cabe no jantar. Mas a cerimônia vem primeiro, sempre.</p>
           <ul class="depois-tags"><li>Recepção</li><li>Jantar</li><li>+2h de música ao vivo</li></ul>
         </div>
         <figure class="depois-foto reveal d1" data-parallax="-0.05"><img src="media/fotos/editorial-sorriso.jpg" alt="Jamilli sorrindo com flores brancas no cabelo, em ensaio editorial" width="1350" height="1800" loading="lazy"></figure>
@@ -704,15 +723,23 @@
   <section id="repertorio" class="repertorio light" aria-label="Repertório">
     <span class="ghost" aria-hidden="true">repertório</span>
     <div class="wrap">
-      <p class="eyebrow reveal">Repertório</p>
-      <h2 class="reveal d1">Algumas das mais <em>pedidas</em></h2>
-      <p class="rep-intro reveal d2">O repertório é montado com cada casal e com as orientações da igreja — nacionais, internacionais, religiosas, sem restrição de estilo. Esta é só uma amostra, organizada por momento da cerimônia.</p>
+      <p class="eyebrow reveal">A igreja vai aceitar?</p>
+      <h2 class="reveal d1">Dentro das normas, sem perder a <em>emoção</em></h2>
+      <p class="rep-intro reveal d2">Na igreja, o repertório segue o que a sua paróquia orienta — Salmo e Aclamação na versão litúrgica do dia, o resto a gente confirma com o padre. Na recepção, sem restrição de estilo. Uma amostra, na ordem da cerimônia:</p>
       <div class="rep-cols">
-        <div class="rep-col reveal"><h3>Entrada da noiva</h3><ul><li>Marcha Nupcial + Ave Maria</li><li>Aleluia <span>Gabriela Rocha</span></li><li>Gratidão <span>Oração e Vida</span></li><li>Eis-me Aqui <span>Colo de Deus</span></li><li>Oceanos <span>Ana Nóbrega</span></li></ul></div>
-        <div class="rep-col reveal d1"><h3>Alianças, bênção &amp; saída</h3><ul><li>Essa Aliança <span>Entretons</span></li><li>Cheiro de Rosas <span>Adoração e Vida</span></li><li>Chuva de Graças <span>Comunidade Recado</span></li><li>A Bênção <span>Gabriel Guedes</span></li><li>Nossa Senhora <span>Roberto Carlos</span></li></ul></div>
-        <div class="rep-col reveal d2"><h3>Recepção &amp; jantar (opcional)</h3><ul><li>La Vie en Rose <span>Édith Piaf</span></li><li>Die With a Smile <span>Bruno Mars &amp; Lady Gaga</span></li><li>Minha Felicidade <span>Roberta Campos</span></li><li>Ainda Bem <span>Marisa Monte</span></li><li>Love Story <span>Indila</span></li><li>Ordinary <span>Alex Warren</span></li></ul></div>
+        <div class="rep-col reveal"><h3>Entradas e noiva</h3><ul><li>Marcha Nupcial + Ave Maria</li><li>Marcha Nupcial + Jesus Meu Esposo</li><li>Aleluia <span>Gabriela Rocha</span></li><li>Gratidão <span>Oração e Vida</span></li><li>Eis-me Aqui <span>Colo de Deus</span></li></ul></div>
+        <div class="rep-col reveal d1"><h3>Alianças, bênção e saída</h3><ul><li>Essa Aliança <span>Entretons</span></li><li>Cheiro de Rosas <span>Ministério Adoração e Vida</span></li><li>Nossa Senhora <span>Roberto Carlos</span></li><li>A Bênção <span>Gabriel Guedes</span></li><li>Chuva de Graças <span>Comunidade Recado</span></li></ul></div>
+        <div class="rep-col reveal d2"><h3>Recepção ou jantar · opcional</h3><ul><li>La Vie en Rose <span>Édith Piaf</span></li><li>Die With a Smile <span>Bruno Mars &amp; Lady Gaga</span></li><li>Ainda Bem <span>Marisa Monte</span></li></ul></div>
       </div>
-      <p class="rep-note reveal">A música de vocês não está aqui? <a href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Queria%20saber%20se%20uma%20m%C3%BAsica%20est%C3%A1%20no%20seu%20repert%C3%B3rio." target="_blank" rel="noopener">Me conta qual é</a> — o repertório cresce a cada casal. E para cerimônias católicas, preparei um guia com mais de 40 músicas aceitas pela Igreja, organizadas por momento: é só pedir no WhatsApp.</p>
+      <p class="rep-note reveal">A música de vocês não está aqui? <a href="https://wa.me/5542920001539?text=Oi%2C%20Jamilli%21%20Queria%20saber%20se%20uma%20m%C3%BAsica%20est%C3%A1%20no%20seu%20repert%C3%B3rio%3A%20______" target="_blank" rel="noopener">Me conta qual é</a> — o repertório cresce a cada casal.</p>
+      <aside class="guia reveal">
+        <div class="guia-copy">
+          <p class="eyebrow">Para cerimônias católicas</p>
+          <h3>Guia Musical da <em>Cerimônia</em></h3>
+          <p>Mais de 40 músicas que já foram aceitas em cerimônias católicas, organizadas por momento — das entradas à saída — e com playlist no Spotify. Preparei para facilitar a escolha de vocês.</p>
+        </div>
+        <a class="btn" href="https://wa.me/5542920001539?text=Oi%2C%20Jamilli%21%20Minha%20cerim%C3%B4nia%20%C3%A9%20cat%C3%B3lica%20%E2%80%94%20pode%20me%20mandar%20o%20Guia%20Musical%20da%20Cerim%C3%B4nia%3F" target="_blank" rel="noopener"><span>Pedir o guia no WhatsApp</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </aside>
     </div>
   </section>
 
@@ -722,8 +749,8 @@
   <section id="depoimentos" class="depo" aria-label="Depoimentos dos noivos">
     <div class="depo-bg" aria-hidden="true"><img src="media/hero-poster.webp" alt="" loading="lazy"></div>
     <div class="wrap">
-      <p class="eyebrow reveal">Depoimentos dos noivos</p>
-      <h2 class="reveal d1">Quem já ouviu no próprio <em>casamento</em></h2>
+      <p class="eyebrow reveal">Palavra das noivas</p>
+      <h2 class="reveal d1">O que ficou depois do <em>sim</em></h2>
       <div class="depo-list">
         <figure class="depo-item reveal"><blockquote>O meu casamento ficou mais lindo e emocionante com a voz dela. Quem contratar não vai se arrepender.</blockquote><figcaption>Fran <span>— noiva · junho de 2025</span></figcaption></figure>
         <figure class="depo-item reveal"><blockquote>Me senti em um sonho.</blockquote><figcaption>Elisandra &amp; Matheus <span>— noivos</span></figcaption></figure>
@@ -733,7 +760,6 @@
       <div class="proof reveal">
         <div><b>5.0</b><small>casamentos.com.br</small></div>
         <div><b>100%</b><small>dos casais recomendam</small></div>
-        <div><b>6 anos</b><small>cantando casamentos</small></div>
       </div>
     </div>
   </section>
@@ -748,13 +774,15 @@
         <h2 class="reveal d1">O que as noivas <em>sempre</em> perguntam</h2>
       </div>
       <div class="faq-list reveal d1">
-        <details><summary>Com quanto tempo de antecedência devo reservar?</summary><p>Os casais costumam fechar a data com 1 ano a 1 ano e meio de antecedência. Cada data tem um só casamento — quanto antes você consultar, maior a chance de a sua estar livre.</p></details>
-        <details><summary>Você canta só na cerimônia ou também na recepção?</summary><p>Meu foco é a cerimônia — na igreja ou onde ela acontecer — com a sonorização inclusa. Se quiserem, dá para somar mais duas horas de música ao vivo na recepção ou no jantar, em formação adaptada ao clima.</p></details>
-        <details><summary>Quais formações posso escolher?</summary><p>Duo (voz e violão ou piano), trio (voz, piano e violino) ou conjunto (voz, piano e trio de cordas). As formações são flexíveis: dá para trocar instrumentos ou somar trompete, acordeon, ukulele e sax. Na conversa, eu indico a que melhor combina com o espaço e o estilo da cerimônia.</p></details>
-        <details><summary>Vocês ajudam a escolher as músicas?</summary><p>Sim — essa é a parte que eu mais gosto. Montamos juntos a trilha de cada momento, a partir da história de vocês. Para cerimônias católicas, tenho um guia com mais de 40 músicas aceitas pela Igreja, organizadas por momento da celebração.</p></details>
-        <details><summary>E se a nossa música não estiver no repertório?</summary><p>Me envia a música pelo WhatsApp. Canto nacionais e internacionais, sem restrição de estilo — e sempre que possível preparo uma versão especialmente para a cerimônia de vocês.</p></details>
-        <details><summary>Como funciona a reserva da data e o pagamento?</summary><p>A data fica garantida com o contrato assinado e 10% do valor; o restante é acertado até cinco dias antes do casamento. Aceito Pix, dinheiro e parcelamento em até 12 vezes (com taxa).</p></details>
-        <details><summary>Vocês atendem fora de Guarapuava?</summary><p>Sim — atendo Guarapuava e região, e já cantei casamentos em Prudentópolis, Irati e Curitiba. Me manda a cidade e a data pelo WhatsApp.</p></details>
+        <details><summary>Com quanto tempo de antecedência preciso reservar?</summary><p>O quanto antes. Os casais costumam fechar comigo com um ano a um ano e meio de antecedência. Se a sua data ainda está longe, melhor: dá tempo de escolher as músicas com calma.</p></details>
+        <details><summary>O padre precisa aprovar as músicas?</summary><p>Vale sempre confirmar — as orientações mudam de uma paróquia para outra. Eu já chego com sugestões que costumam ser bem aceitas e aviso o que vale conferir com o celebrante antes de fechar a lista. Salmo e Aclamação eu canto na versão litúrgica do dia.</p></details>
+        <details><summary>Posso ter uma música que não é religiosa na igreja?</summary><p>Depende da paróquia: algumas aceitam, outras pedem só repertório religioso. Me conta qual é a música e em qual igreja vai ser, e a gente vê onde ela cabe. Se não couber na cerimônia, ela pode entrar na recepção, onde não há restrição de estilo.</p></details>
+        <details><summary>Quem cuida do som na igreja?</summary><p>Eu. A sonorização da cerimônia vai comigo e está inclusa em todas as formações — vocês não precisam contratar som à parte. É uma coisa a menos na lista.</p></details>
+        <details><summary>Qual formação combina com a minha igreja?</summary><p>Depende do tamanho da igreja e do clima que vocês imaginam. O duo é intimista, ideal para capelas; o trio, com violino, dá mais força à entrada da noiva; o conjunto com cordas é o mais clássico e solene. Me conta onde vai ser a cerimônia e eu indico.</p></details>
+        <details><summary>Quantas músicas tem uma cerimônia?</summary><p>Vocês não precisam chegar com nada pronto. Na cerimônia católica, a música acompanha até onze momentos: as entradas dos pais, dos padrinhos, das daminhas e do noivo, a entrada da noiva, salmo e aclamação, alianças, bênçãos, comunhão, assinaturas e saída. A gente passa por eles um a um.</p></details>
+        <details><summary>Dá para incluir a recepção ou o jantar?</summary><p>Dá, sim. É um adicional: mais duas horas de música ao vivo depois da igreja, na recepção ou no jantar — aí sem restrição de estilo, em formação adaptada ao espaço.</p></details>
+        <details><summary>Como funciona a reserva e o pagamento?</summary><p>A data fica garantida com o contrato assinado e 10% do valor. O restante vocês acertam até cinco dias antes do casamento, por Pix, dinheiro ou parcelado em até 12 vezes (com taxa). Os valores eu passo no WhatsApp, junto com a disponibilidade.</p></details>
+        <details><summary>A cerimônia é fora de Guarapuava. Você atende?</summary><p>Atendo, sim — Guarapuava e região. Já cantei casamentos em Prudentópolis, Irati e Curitiba. Me manda a cidade e a igreja junto com a data.</p></details>
       </div>
     </div>
   </section>
@@ -763,10 +791,10 @@
   <section id="contato" class="cta" aria-label="Contato">
     <div class="cta-copy">
       <p class="eyebrow reveal">Consultar disponibilidade</p>
-      <h2 class="reveal d1">Cada data tem um só <em>casamento</em>.</h2>
-      <p class="reveal d2">Se a sua cerimônia já tem igreja e hora, vamos conversar sobre a música. Me chama no WhatsApp com a data — eu respondo com disponibilidade, formações e valores.</p>
-      <div class="reveal d3"><a class="btn btn-solid" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener"><span>Consultar minha data no WhatsApp</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
-      <p class="cta-small reveal d3">Guarapuava · PR — e região</p>
+      <h2 class="reveal d1">Me conta a data. Da <em>música</em>, cuido eu.</h2>
+      <p class="reveal d2">Mesmo que a igreja ainda não esteja confirmada, me chama no WhatsApp com a data e a cidade — eu mesma respondo, com disponibilidade, formações e valores.</p>
+      <div class="reveal d3"><a class="btn btn-solid" href="https://wa.me/5542920001539?text=Oi%2C%20Jamilli%21%20Vi%20seu%20site%20e%20quero%20consultar%20a%20minha%20data.%20Meu%20casamento%20%C3%A9%20dia%20__%2F__%2F____%2C%20na%20igreja%20______%2C%20em%20______.%20A%20data%20est%C3%A1%20livre%3F" target="_blank" rel="noopener"><span>Consultar minha data no WhatsApp</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <p class="cta-small reveal d3">Que a sua caminhada até o altar seja cheia de amor, paz e a certeza da bênção de Deus sobre essa união.</p>
     </div>
     <div class="cta-img" aria-hidden="true"><img src="media/fotos/amarelo-spot.jpg" alt="" width="1440" height="1800" loading="lazy"></div>
   </section>
@@ -783,7 +811,7 @@
   </div>
 </footer>
 
-<a class="wa-float" href="https://wa.me/5542920001539?text=Ol%C3%A1%2C%20Jamilli!%20Vi%20seu%20site%20e%20quero%20consultar%20uma%20data%20de%20casamento." target="_blank" rel="noopener" aria-label="Falar com a Jamilli no WhatsApp">
+<a class="wa-float" href="https://wa.me/5542920001539?text=Oi%2C%20Jamilli%21%20Vi%20seu%20site%20e%20quero%20consultar%20a%20minha%20data.%20Meu%20casamento%20%C3%A9%20dia%20__%2F__%2F____%2C%20na%20igreja%20______%2C%20em%20______.%20A%20data%20est%C3%A1%20livre%3F" target="_blank" rel="noopener" aria-label="Falar com a Jamilli no WhatsApp">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.9 9.9 0 0 0-8.5 15.1L2 22l5-1.4A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3.1 4c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.2.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.5-.3-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.5 7.5 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5v-.5L9.6 8.2c-.2-.4-.4-.4-.7-.4Z"/></svg>
 </a>
 
