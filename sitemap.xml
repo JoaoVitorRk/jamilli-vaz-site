@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://jamillivaz.com.br/</loc>
+    <lastmod>2026-09-16</lastmod>
+    <image:image>
+      <image:loc>https://jamillivaz.com.br/media/fotos/editorial-wide.jpg</image:loc>
+      <image:title>Jamilli Vaz — cantora de casamento em Guarapuava</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://jamillivaz.com.br/media/fotos/editorial-mic.jpg</image:loc>
+      <image:title>Jamilli Vaz com microfone vintage em ensaio editorial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://jamillivaz.com.br/media/fotos/igreja-quarteto.jpg</image:loc>
+      <image:title>Jamilli Vaz cantando em cerimônia de casamento com conjunto de cordas</image:title>
+    </image:image>
+  </url>
+</urlset>
