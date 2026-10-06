@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /proposta/
 
 Sitemap: https://jamillivaz.com.br/sitemap.xml

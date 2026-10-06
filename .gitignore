@@ -9,3 +9,4 @@ media/*.png
 !media/logo-header.png
 !media/logo-full.png
 !media/favicon.png
+.wrangler/
