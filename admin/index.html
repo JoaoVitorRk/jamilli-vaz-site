@@ -67,7 +67,7 @@
   /* ---------- login ---------- */
   .login { min-height: 100svh; display: grid; place-items: center; padding: 30px 22px; }
   .login form { width: min(100%, 360px); display: grid; gap: 16px; text-align: center; }
-  .login img { width: 230px; margin: 0 auto; }
+  .login img { width: 170px; margin: 0 auto 4px; }
   .login h1 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 2.3rem; line-height: 1.1; margin-bottom: 6px; }
   .senha-caixa { position: relative; }
   .senha-caixa input { padding-right: 98px; }
@@ -75,27 +75,32 @@
 
   /* ---------- topo ---------- */
   .topo { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px; padding: calc(12px + env(safe-area-inset-top)) 0 14px; background: linear-gradient(var(--noite) 80%, rgba(26, 44, 36, 0)); }
-  .topo img { width: 132px; }
+  .topo img { width: 148px; }
   .topo .espaco { flex: 1; }
   h2.titulo { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(2.1rem, 9.5vw, 2.9rem); line-height: 1.08; margin: 6px 0 18px; overflow-wrap: break-word; }
   h2.titulo::after { content: ""; display: block; width: 58px; height: 1px; margin-top: 12px; background: var(--dourado); }
   .sub-titulo { color: var(--suave); margin: -10px 0 18px; }
 
   /* ---------- lista: resumo, filtros e cards ---------- */
-  .resumo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr); gap: 8px; margin-top: 16px; }
-  .resumo button { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; align-content: center; text-align: left; min-width: 0; min-height: 80px; padding: 12px 12px 11px; border-radius: 16px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); cursor: pointer; transition: border-color 200ms; }
-  .resumo .total { background: linear-gradient(180deg, #3A5A4A 0%, #2F4A3E 46%, #27402F 100%); border-color: rgba(228, 206, 158, 0.42); }
-  .resumo b { display: flex; align-items: flex-end; min-width: 0; height: 1.95rem; font-family: var(--serif); font-weight: 400; font-size: 1.8rem; line-height: 1.05; font-variant-numeric: lining-nums; white-space: nowrap; }
-  .resumo .total b { color: var(--dourado-claro); }
-  .resumo span { font-size: 0.82rem; color: var(--suave); white-space: nowrap; }
-  .resumo button[aria-pressed="true"] { border-color: var(--dourado); }
-  .filtros { display: grid; grid-template-columns: 1.1fr 1.05fr 1.2fr 0.85fr; gap: 4px; padding: 4px; margin-top: 10px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
+  /* ---------- abas ---------- */
+  .abas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin: 4px 0 18px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
+  .abas button { min-height: 46px; border: 0; border-radius: 12px; background: none; font-size: 0.95rem; font-weight: 500; color: var(--suave); cursor: pointer; }
+  .abas button[aria-selected="true"] { background: var(--dourado); color: var(--noite); font-weight: 600; }
+
+  /* ---------- números (agenda e clientes) ---------- */
+  .numeros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+  .numeros > div { display: grid; gap: 4px; align-content: center; min-width: 0; min-height: 86px; padding: 12px 12px 11px; border-radius: 16px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); }
+  .numeros b { display: block; min-width: 0; font-family: var(--serif); font-weight: 400; font-size: 1.8rem; line-height: 1.05; font-variant-numeric: lining-nums; white-space: nowrap; overflow: hidden; }
+  .numeros span { font-size: 0.78rem; line-height: 1.25; color: var(--suave); }
+  .numeros .total { background: linear-gradient(180deg, #3A5A4A 0%, #2F4A3E 46%, #27402F 100%); border-color: rgba(228, 206, 158, 0.42); }
+  .numeros .total b { color: var(--dourado-claro); }
+  .numeros .livre b { color: var(--verde-claro); }
+  .filtros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-top: 10px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
   .filtros button { min-height: 44px; padding: 0 2px; border: 0; border-radius: 12px; background: none; font-size: 0.86rem; font-weight: 500; color: var(--suave); cursor: pointer; white-space: nowrap; }
   .filtros button[aria-pressed="true"] { background: var(--ivory); color: var(--noite); font-weight: 600; }
   @media (max-width: 359px) {
-    .resumo { grid-template-columns: 1fr 1fr; }
-    .resumo .total { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-height: 62px; }
-    .resumo .total b { height: auto; flex: 1 1 auto; }
+    .numeros { grid-template-columns: 1fr 1fr; }
+    .numeros > div:last-child { grid-column: 1 / -1; }
     .filtros button { font-size: 0.8rem; }
   }
 
@@ -123,6 +128,75 @@
   .rodape-lista { text-align: center; margin-top: 22px; }
   .carregando { text-align: center; color: var(--suave); padding: 40px 0; }
 
+  /* ---------- agenda ---------- */
+  .mes-nav { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+  .mes-nav b { flex: 1; min-width: 0; text-align: center; font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.55rem; line-height: 1.1; }
+  .mes-nav .seta { min-width: 46px; padding: 0; font-size: 1.5rem; line-height: 1; }
+  .mes-hoje { text-align: center; }
+  .cal { margin-top: 14px; padding: 12px 10px 10px; border-radius: 18px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); }
+  .cal-sem { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.7rem; letter-spacing: 0.14em; color: var(--suave); margin-bottom: 6px; }
+  .cal-sem span:last-child { color: var(--dourado-claro); }
+  .cal-grade { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .dia { -webkit-appearance: none; appearance: none; display: grid; justify-items: center; align-content: center; gap: 3px; min-height: 46px; padding: 4px 0; border: 1px solid transparent; border-radius: 12px; background: none; color: var(--ivory); font-size: 0.95rem; line-height: 1; cursor: default; }
+  .dia.vazio { visibility: hidden; }
+  .dia.sab { background: rgba(228, 206, 158, 0.07); }
+  .dia.passado { color: rgba(246, 241, 233, 0.4); }
+  .dia.hoje { border-color: var(--dourado-claro); }
+  .dia.fechado { background: rgba(196, 227, 207, 0.18); }
+  .dia.fechado.passado { background: rgba(196, 227, 207, 0.08); }
+  button.dia { cursor: pointer; }
+  button.dia[aria-pressed="true"] { background: var(--ivory); color: var(--noite); border-color: var(--ivory); }
+  .dia .pontos { display: flex; gap: 3px; height: 6px; }
+  .dia .pontos i { width: 6px; height: 6px; border-radius: 50%; }
+  .dia .pontos i.f { background: var(--verde-claro); }
+  .dia .pontos i.a { border: 1.5px solid var(--dourado-claro); }
+  button.dia[aria-pressed="true"] .pontos i.f { background: var(--esmeralda); }
+  button.dia[aria-pressed="true"] .pontos i.a { border-color: var(--esmeralda); }
+  .legenda { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 10px 4px 0; font-size: 0.8rem; color: var(--suave); }
+  .legenda i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .legenda i.f { background: var(--verde-claro); }
+  .legenda i.a { border: 1.5px solid var(--dourado-claro); }
+  .legenda i.s { background: rgba(228, 206, 158, 0.35); border-radius: 2px; }
+  .vendas { margin-top: 14px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--linha); background: rgba(198, 165, 103, 0.08); font-size: 0.93rem; line-height: 1.5; color: var(--suave); }
+  .vendas b { color: var(--dourado-claro); font-weight: 600; }
+  .secao { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 22px 2px 10px; font-size: 0.76rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dourado-claro); }
+  .secao small { font-size: 0.86rem; letter-spacing: 0; text-transform: none; color: var(--suave); }
+  .secao .texto-link { min-height: 0; padding: 0; font-size: 0.86rem; letter-spacing: 0; text-transform: none; }
+  .mes-lista { display: grid; gap: 8px; }
+  .nada { color: var(--suave); font-size: 0.93rem; padding: 4px 2px; }
+  .evt { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); text-align: left; cursor: pointer; }
+  .evt.aberta { border-style: dashed; background: none; box-shadow: none; }
+  .evt .d { display: grid; justify-items: center; line-height: 1; }
+  .evt .d b { font-family: var(--serif); font-weight: 400; font-size: 1.55rem; }
+  .evt .d small { margin-top: 4px; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); }
+  .evt .t { min-width: 0; display: grid; gap: 2px; }
+  .evt .t b { font-weight: 600; font-size: 1.02rem; line-height: 1.25; overflow-wrap: anywhere; }
+  .evt .t span { font-size: 0.85rem; line-height: 1.35; color: var(--suave); overflow-wrap: anywhere; }
+  .evt .v { font-weight: 600; font-size: 0.95rem; color: var(--dourado-claro); white-space: nowrap; }
+  .evt.aberta .v { font-weight: 400; font-size: 0.82rem; color: var(--suave); }
+  .meses { display: flex; gap: 8px; overflow-x: auto; margin: 0 -18px; padding: 2px 18px 10px; scroll-padding-inline: 18px; scroll-snap-type: x proximity; scrollbar-width: none; }
+  @media (min-width: 600px) { .meses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; margin: 0; padding: 2px 0 10px; } .mes-chip { min-width: 0; } }
+  .meses::-webkit-scrollbar { display: none; }
+  .mes-chip { flex: 0 0 auto; scroll-snap-align: start; min-width: 124px; display: grid; gap: 3px; padding: 10px 12px 11px; border-radius: 14px; border: 1px solid var(--linha); background: var(--card); text-align: left; cursor: pointer; }
+  .mes-chip b { font-family: var(--serif); font-weight: 400; font-size: 1.1rem; line-height: 1.2; }
+  .mes-chip span { font-size: 0.78rem; line-height: 1.3; color: var(--suave); white-space: nowrap; }
+  .mes-chip .livre { color: var(--verde-claro); }
+  .mes-chip.cheio .livre { color: var(--dourado-claro); }
+  .mes-chip .ab { color: var(--dourado-claro); }
+  .mes-chip[aria-pressed="true"] { border-color: var(--dourado); background: linear-gradient(180deg, #3A5A4A 0%, #2F4A3E 46%, #27402F 100%); }
+
+  /* ---------- clientes ---------- */
+  .pcard .quando { font-size: 0.95rem; color: var(--ivory); }
+  .pcard .quando b { font-weight: 500; color: var(--dourado-claro); }
+  details.passados { margin-top: 22px; }
+  details.passados > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 10px; min-height: 44px; font-size: 0.76rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dourado-claro); }
+  details.passados > summary::-webkit-details-marker { display: none; }
+  details.passados > summary small { font-size: 0.86rem; letter-spacing: 0; text-transform: none; color: var(--suave); }
+  details.passados > summary::after { content: "+"; margin-left: auto; font-size: 1.4rem; line-height: 1; color: var(--dourado); }
+  details.passados[open] > summary::after { content: "–"; }
+  details.passados .cards { margin-top: 6px; opacity: 0.85; }
+
+  .aviso-data { display: block; padding: 10px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.4; color: var(--dourado-claro); background: rgba(198, 165, 103, 0.12); border: 1px solid rgba(228, 206, 158, 0.4); }
   /* ---------- editor ---------- */
   .situacao { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; margin-bottom: 12px; }
   .situacao .txt { flex: 1; min-width: 0; display: grid; gap: 2px; }
@@ -242,8 +316,8 @@
 <!-- LOGIN -->
 <section class="login" id="vLogin" hidden>
   <form id="fLogin">
-    <img src="../media/logo-full.png" alt="Jamilli Vaz — Música para casamentos" width="1000" height="330">
-    <h1>Suas propostas</h1>
+    <img src="../media/logo-full.png" alt="Jamilli Vaz" width="1200" height="1141">
+    <h1>Seu painel</h1>
     <div class="senha-caixa">
       <input type="password" id="senha" autocomplete="current-password" placeholder="Senha do painel" required aria-label="Senha do painel">
       <button type="button" id="btOlho" aria-pressed="false">Mostrar</button>
@@ -253,31 +327,67 @@
   </form>
 </section>
 
-<!-- LISTA -->
+<!-- PAINEL: agenda · propostas · clientes -->
 <section class="tela" id="vLista" hidden>
   <div class="topo">
-    <img src="../media/logo-header.png" alt="Jamilli Vaz" width="960" height="250">
+    <img src="../media/logo-header.png" alt="Jamilli Vaz" width="1427" height="416">
     <span class="espaco"></span>
     <button class="b b-pq" type="button" id="btSair">Sair</button>
   </div>
-  <h2 class="titulo">Suas propostas</h2>
-  <button class="b b-ouro b-cheio" type="button" id="btNova">+ Nova proposta</button>
 
-  <div class="resumo" id="resumo" role="group" aria-label="Resumo">
-    <button type="button" data-filtro="abertas" aria-pressed="true"><b id="rAbertas">–</b><span>Em aberto</span></button>
-    <button type="button" data-filtro="fechadas" aria-pressed="false"><b id="rFechadas">–</b><span>Fechadas</span></button>
-    <button type="button" data-filtro="fechadas" aria-pressed="false" class="total" id="rTotalCaixa"><b id="rTotal">–</b><span>Total fechado</span></button>
+  <nav class="abas" id="abas" role="tablist" aria-label="Partes do painel">
+    <button type="button" role="tab" data-aba="agenda" aria-selected="true">Agenda</button>
+    <button type="button" role="tab" data-aba="propostas" aria-selected="false">Propostas</button>
+    <button type="button" role="tab" data-aba="clientes" aria-selected="false">Clientes</button>
+  </nav>
+
+  <!-- AGENDA: o mês dela -->
+  <div id="abaAgenda" role="tabpanel">
+    <h2 class="titulo">Sua agenda</h2>
+    <button class="b b-ouro b-cheio" type="button" id="btNovaAgenda">+ Nova proposta</button>
+    <div class="mes-nav">
+      <button class="b b-pq seta" type="button" id="mesAnt" aria-label="Mês anterior">‹</button>
+      <b id="mesTitulo" aria-live="polite"></b>
+      <button class="b b-pq seta" type="button" id="mesProx" aria-label="Próximo mês">›</button>
+    </div>
+    <div class="mes-hoje"><button class="texto-link" type="button" id="mesHoje" hidden>Voltar para este mês</button></div>
+    <div class="numeros" role="group" aria-label="Como está o mês">
+      <div><b id="mCasamentos">–</b><span id="mCasamentosRot">Casamentos fechados</span></div>
+      <div class="livre"><b id="mLivres">–</b><span>Sábados livres</span></div>
+      <div><b id="mAguardando">–</b><span>Aguardando resposta</span></div>
+    </div>
+    <div class="cal" id="cal" role="group" aria-label="Calendário do mês"></div>
+    <p class="legenda"><span><i class="f"></i>Casamento fechado</span><span><i class="a"></i>Proposta em aberto</span><span><i class="s"></i>Sábado</span></p>
+    <p class="vendas" id="mesVendas"></p>
+    <div class="secao" id="mesListaTit">Neste mês</div>
+    <div class="mes-lista" id="mesLista"></div>
+    <div class="secao">Próximos meses <small>toque num mês para ver</small></div>
+    <div class="meses" id="meses"></div>
   </div>
 
-  <div class="filtros" id="filtros" role="group" aria-label="Quais propostas mostrar">
-    <button type="button" data-filtro="abertas" aria-pressed="true">Em aberto</button>
-    <button type="button" data-filtro="fechadas" aria-pressed="false">Fechadas</button>
-    <button type="button" data-filtro="perdidas" aria-pressed="false">Não fechou</button>
-    <button type="button" data-filtro="todas" aria-pressed="false">Todas</button>
+  <!-- PROPOSTAS: a negociação -->
+  <div id="abaPropostas" role="tabpanel" hidden>
+    <h2 class="titulo">Suas propostas</h2>
+    <button class="b b-ouro b-cheio" type="button" id="btNova">+ Nova proposta</button>
+    <div class="filtros" id="filtros" role="group" aria-label="Quais propostas mostrar">
+      <button type="button" data-filtro="abertas" aria-pressed="true">Em aberto</button>
+      <button type="button" data-filtro="perdidas" aria-pressed="false">Não fechou</button>
+      <button type="button" data-filtro="todas" aria-pressed="false">Todas</button>
+    </div>
+    <div class="cards" id="lista"><p class="carregando">Carregando…</p></div>
+    <div class="rodape-lista"><button class="texto-link" type="button" id="btModelo">Ajustar o modelo padrão</button></div>
   </div>
 
-  <div class="cards" id="lista"><p class="carregando">Carregando…</p></div>
-  <div class="rodape-lista"><button class="texto-link" type="button" id="btModelo">Ajustar o modelo padrão</button></div>
+  <!-- CLIENTES: os casais que fecharam -->
+  <div id="abaClientes" role="tabpanel" hidden>
+    <h2 class="titulo">Seus clientes</h2>
+    <div class="numeros" id="resumo" role="group" aria-label="Resumo dos fechamentos">
+      <div><b id="rFechadas">–</b><span>Casamentos fechados</span></div>
+      <div><b id="rMes">–</b><span id="rMesRot">Fechou este mês</span></div>
+      <div class="total"><b id="rTotal">–</b><span>Total fechado</span></div>
+    </div>
+    <div id="clientes"></div>
+  </div>
 </section>
 
 <!-- EDITOR -->
@@ -305,7 +415,7 @@
       <h3><span class="n">1</span> Para quem é?</h3>
       <label class="campo"><span>Nome do casal</span><input type="text" id="fCliente" maxlength="120" placeholder="Ana &amp; João" autocapitalize="words" enterkeyhint="done"></label>
       <div class="duas quebra">
-        <label class="campo"><span>Data do evento</span><input type="date" id="fData"></label>
+        <label class="campo"><span>Data do evento</span><input type="date" id="fData"><small class="aviso-data" id="fDataAviso" role="status" hidden></small></label>
         <label class="campo"><span>Local</span><input type="text" id="fLocal" maxlength="200" placeholder="Igreja ou cidade" enterkeyhint="done"></label>
       </div>
     </div>
@@ -385,6 +495,7 @@
     <div class="parte" id="fxParteFechou">
       <h3 id="fxTit">Fechou?</h3>
       <p class="quem" id="fxQuem"></p>
+      <p class="aviso-data" id="fxConflito" role="status" hidden></p>
       <div class="campo"><span id="fxRotOpcao">Qual opção fechou?</span><div class="escolhas grade" id="fxOpcoes" role="group" aria-labelledby="fxRotOpcao"></div></div>
       <div class="campo"><span id="fxRotPacote">Pacote</span><div class="escolhas" id="fxPacotes" role="group" aria-labelledby="fxRotPacote">
         <button type="button" data-v="cerimonia" aria-pressed="false">Cerimônia</button>
@@ -432,7 +543,8 @@
   var MOTIVOS = ['Fechou com outro fornecedor', 'Achou o valor alto', 'Mudou os planos', 'Não respondeu mais'];
   var $ = function (id) { return document.getElementById(id); };
 
-  var propostas = [], resumo = null, filtro = 'abertas', pedido = 0, ultimaCarga = 0, carregada = false;   // lista
+  var propostas = [], filtro = 'abertas', pedido = 0, ultimaCarga = 0, carregada = false;   // lista
+  var aba = 'agenda', mesVisto = null, diaSel = '';                                       // abas e agenda
   var editando = null, modelo = null, sujo = false, sugestao = '';                       // editor
   var fechando = null, fx = { opcao: '', pacote: '', auto: '' };                         // folha "Fechou?"
 
@@ -442,8 +554,8 @@
   function logado() { return !!(sessao && sessao.token && sessao.exp > Date.now() / 1000); }
   function sair(msg) {
     sessao = null; try { localStorage.removeItem(CHAVE); } catch (e) {}
-    sujo = false; propostas = []; resumo = null; carregada = false; modelo = null; editando = null;
-    $('rAbertas').textContent = $('rFechadas').textContent = $('rTotal').textContent = '–';
+    sujo = false; propostas = []; carregada = false; modelo = null; editando = null; aba = 'agenda'; mesVisto = null; diaSel = '';
+    ['rFechadas', 'rMes', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando'].forEach(function (id) { $(id).textContent = '–'; });
     fecharFolhas(); semToast(); toastDepois = '';
     mostrar('vLogin');
     $('loginErro').textContent = msg || ''; $('loginErro').hidden = !msg;
@@ -540,7 +652,7 @@
     api('POST', '/login', { senha: $('senha').value }).then(function (j) {
       sessao = j; try { localStorage.setItem(CHAVE, JSON.stringify(j)); } catch (e) {}
       $('senha').value = ''; $('senha').type = 'password'; $('btOlho').textContent = 'Mostrar'; $('btOlho').setAttribute('aria-pressed', 'false');
-      filtro = 'abertas'; abrirLista();
+      filtro = 'abertas'; aba = 'agenda'; mesVisto = null; diaSel = ''; abrirLista();
     }).catch(function (e) { $('loginErro').textContent = e.message; $('loginErro').hidden = false; }).then(solta);
   });
   $('btOlho').addEventListener('click', function () {
@@ -550,27 +662,37 @@
   });
   $('btSair').addEventListener('click', function () { sair(); });
 
-  // ---------- lista ----------
+  // ---------- abas: agenda · propostas · clientes ----------
+  var ABAS = ['agenda', 'propostas', 'clientes'];
+  function definirAba(a, semRolar) {
+    aba = ABAS.indexOf(a) >= 0 ? a : 'agenda';
+    document.querySelectorAll('#abas [data-aba]').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-aba') === aba)); });
+    $('abaAgenda').hidden = aba !== 'agenda'; $('abaPropostas').hidden = aba !== 'propostas'; $('abaClientes').hidden = aba !== 'clientes';
+    if (!semRolar) window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('#abas [data-aba]').forEach(function (b) { b.addEventListener('click', function () { definirAba(b.getAttribute('data-aba')); }); });
+
+  // ---------- carregar ----------
   var VAZIO = {
     nada: ['Nenhuma proposta ainda', 'Toque em “+ Nova proposta”: são 3 perguntas e o link sai pronto.'],
-    abertas: ['Nenhuma proposta em aberto', 'As que você já marcou estão em “Fechadas” e “Não fechou”.'],
-    fechadas: ['Nenhuma proposta fechada ainda', 'Quando um casal fechar, toque em “Fechou?” na proposta.'],
-    perdidas: ['Nada por aqui', 'As propostas marcadas como “Não fechou” aparecem aqui.']
+    abertas: ['Nenhuma proposta em aberto', 'Os casais que fecharam estão em “Clientes”; os que não fecharam, em “Não fechou”.'],
+    perdidas: ['Nada por aqui', 'As propostas marcadas como “Não fechou” aparecem aqui.'],
+    todas: ['Nenhuma proposta ainda', 'Toque em “+ Nova proposta”: são 3 perguntas e o link sai pronto.']
   };
   function abrirLista() {
     mostrar('vLista');
-    pintarFiltro();
-    // mostra na hora o que já está na memória (com o filtro e os números certos) e confere com a API em seguida
-    if (carregada) { resumo = resumoLocal(); desenharResumo(); desenharLista(); }
+    definirAba(aba, true); pintarFiltro();
+    // mostra na hora o que já está na memória e confere com a API em seguida
+    if (carregada) desenharTudo();
     else { limparNo($('lista')); $('lista').appendChild(el('p', 'carregando', 'Carregando…')); }
     return carregarLista();
   }
   function carregarLista() {
     var meu = ++pedido;
-    return Promise.all([api('GET', '/admin/propostas'), buscarResumo()]).then(function (r) {
+    return api('GET', '/admin/propostas').then(function (r) {
       if (meu !== pedido) return;
-      propostas = Array.isArray(r[0]) ? r[0] : []; resumo = r[1] || resumoLocal(); ultimaCarga = Date.now(); carregada = true;
-      desenharResumo(); desenharLista();
+      propostas = Array.isArray(r) ? r : []; ultimaCarga = Date.now(); carregada = true;
+      desenharTudo();
     }).catch(function (e) {
       if (e && e.message === '401') return;
       if (meu !== pedido || carregada) return falhou(e);
@@ -579,18 +701,37 @@
       limparNo($('lista')); $('lista').appendChild(v);
     });
   }
-  function buscarResumo() { return api('GET', '/admin/resumo').catch(function (e) { if (e && e.message === '401') throw e; return null; }); }
-  function atualizarResumo() { return buscarResumo().then(function (r) { resumo = r || resumoLocal(); desenharResumo(); }).catch(function () {}); }
-  function resumoLocal() {   // reserva, se o resumo da API falhar: conta pelo que está na lista
-    var r = { abertas: 0, fechadas: 0, perdidas: 0, total_fechado: 0 };
-    propostas.forEach(function (p) { var e = etapaDe(p); if (e === 'fechada') { r.fechadas++; r.total_fechado += valorFechado(p); } else if (e === 'perdida') r.perdidas++; else r.abertas++; });
-    return r;
+  function desenharTudo() { desenharResumo(); desenharLista(); desenharClientes(); desenharAgenda(); }
+
+  // ---------- datas ----------
+  var DIAS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  function hojeISO() { return isoLocal(new Date()); }
+  function dataDe(iso) { var p = String(iso || '').slice(0, 10).split('-'); return p.length === 3 ? new Date(+p[0], +p[1] - 1, +p[2]) : null; }
+  function diaSemana(iso) { var d = dataDe(iso); return d ? DIAS[d.getDay()] : ''; }
+  function faltam(iso) {
+    var d = dataDe(iso); if (!d) return '';
+    var n = Math.round((d - dataDe(hojeISO())) / 864e5);
+    if (n === 0) return 'é hoje'; if (n === 1) return 'é amanhã'; if (n > 1) return 'faltam ' + n + ' dias';
+    if (n === -1) return 'foi ontem'; return 'há ' + (-n) + ' dias';
   }
+  function mesDe(iso) { return String(iso || '').slice(0, 7); }
+  function dois(n) { return (n < 10 ? '0' : '') + n; }
+  function chaveMes(y, m) { return y + '-' + dois(m + 1); }
+  function nomeMes(y, m, curto) {
+    var s = new Date(y, m, 1).toLocaleDateString('pt-BR', curto ? { month: 'short' } : { month: 'long', year: 'numeric' }).replace(/\./g, '');
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+  function ordemData(a, b) { return (a.dados.data || '').localeCompare(b.dados.data || ''); }
+  function somaFechado(lista) { return lista.reduce(function (a, p) { return a + valorFechado(p); }, 0); }
+
+  // ---------- clientes: os casais que fecharam ----------
   function desenharResumo() {
-    var r = resumo || {}, total = dinheiro(Number(r.total_fechado) || 0);
-    $('rAbertas').textContent = Number(r.abertas) || 0;
-    $('rFechadas').textContent = Number(r.fechadas) || 0;
-    $('rTotal').textContent = total;
+    var mes = hojeISO().slice(0, 7), fechadas = propostas.filter(function (p) { return etapaDe(p) === 'fechada'; });
+    var doMes = fechadas.filter(function (p) { return mesDe(p.fechado_em) === mes; });
+    $('rFechadas').textContent = fechadas.length;
+    $('rMes').textContent = doMes.length;
+    $('rMesRot').textContent = 'Fechou este mês' + (doMes.length ? ' · ' + dinheiro(somaFechado(doMes)) : '');
+    $('rTotal').textContent = dinheiro(somaFechado(fechadas));
     ajustarTotal();
   }
   function ajustarTotal() {   // um total grande encolhe até caber no quadro
@@ -600,25 +741,203 @@
   }
   window.addEventListener('resize', ajustarTotal);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTotal);
+  function secao(titulo, nota) { var s = el('div', 'secao', titulo); if (nota) s.appendChild(el('small', null, String(nota))); return s; }
+  function desenharClientes() {
+    var box = $('clientes'), hoje = hojeISO(); limparNo(box);
+    var fechadas = propostas.filter(function (p) { return etapaDe(p) === 'fechada'; });
+    if (!fechadas.length) {
+      var v = el('div', 'vazio'); v.appendChild(el('b', null, 'Nenhum casamento fechado ainda'));
+      v.appendChild(el('span', null, 'Quando um casal fechar, toque em “Fechou?” na proposta. Ele aparece aqui e na agenda.'));
+      box.appendChild(v); return;
+    }
+    var prox = fechadas.filter(function (p) { return p.dados.data && p.dados.data >= hoje; }).sort(ordemData);
+    var sem = fechadas.filter(function (p) { return !p.dados.data; });
+    var pass = fechadas.filter(function (p) { return p.dados.data && p.dados.data < hoje; }).sort(ordemData).reverse();
+    function grupo(lista) { var g = el('div', 'cards'); lista.forEach(function (p) { g.appendChild(cartaoCliente(p)); }); return g; }
+    box.appendChild(secao('Próximos casamentos', prox.length ? prox.length + (prox.length === 1 ? ' data' : ' datas') : 'nenhuma data pela frente'));
+    if (prox.length) box.appendChild(grupo(prox));
+    if (sem.length) { box.appendChild(secao('Sem data definida', sem.length)); box.appendChild(grupo(sem)); }
+    if (pass.length) {
+      var det = el('details', 'passados'), sum = el('summary');
+      sum.appendChild(el('span', null, 'Já aconteceram')); sum.appendChild(el('small', null, pass.length + (pass.length === 1 ? ' casamento' : ' casamentos')));
+      det.appendChild(sum); det.appendChild(grupo(pass)); box.appendChild(det);
+    }
+  }
+  function cartaoCliente(p) {
+    var d = p.dados || {}, c = el('article', 'pcard cliente');
+    var abrir = botao('abrir'); abrir.title = 'Abrir a proposta'; abrir.onclick = function () { abrirEditor(p); };
+    abrir.appendChild(el('span', 'nome', d.cliente || 'Sem nome'));
+    if (d.data) { var q = el('span', 'quando'); q.appendChild(el('b', null, diaSemana(d.data) + ' · ' + dataCurta(d.data))); q.appendChild(document.createTextNode(' · ' + faltam(d.data))); abrir.appendChild(q); }
+    else abrir.appendChild(el('span', 'sub', 'Sem data'));
+    if (d.local) abrir.appendChild(el('span', 'sub', d.local));
+    abrir.appendChild(el('span', 'valor', dinheiro(valorFechado(p))));
+    var rot = rotulosFechamento(p); if (rot.length) abrir.appendChild(el('span', 'selo fechada', rot.join(' · ')));
+    c.appendChild(abrir);
+    var ac = el('div', 'acoes');
+    var bCp = botao('b b-pq b-ouro', 'Copiar link'); bCp.onclick = function () { copiarLink(p); };
+    var bVer = el('a', 'b b-pq', 'Ver proposta'); bVer.href = linkDe(p); bVer.target = '_blank'; bVer.rel = 'noopener';
+    ac.appendChild(bCp); ac.appendChild(bVer); c.appendChild(ac);
+    return c;
+  }
+
+  // ---------- agenda: o mês dela ----------
+  function mesAtual() { var h = new Date(); return { y: h.getFullYear(), m: h.getMonth() }; }
+  function irParaMes(y, m) { var d = new Date(y, m, 1); mesVisto = { y: d.getFullYear(), m: d.getMonth() }; diaSel = ''; desenharAgenda(); }
+  $('mesAnt').addEventListener('click', function () { irParaMes(mesVisto.y, mesVisto.m - 1); });
+  $('mesProx').addEventListener('click', function () { irParaMes(mesVisto.y, mesVisto.m + 1); });
+  $('mesHoje').addEventListener('click', function () { var a = mesAtual(); irParaMes(a.y, a.m); });
+  // índice data → propostas com data (fechadas e em aberto; "não fechou" não ocupa a agenda)
+  function porData() {
+    var idx = {};
+    propostas.forEach(function (p) { var d = p.dados && p.dados.data; if (d && etapaDe(p) !== 'perdida') (idx[d] = idx[d] || []).push(p); });
+    return idx;
+  }
+  // números de um mês: casamentos fechados, propostas aguardando e sábados ainda livres (de hoje em diante)
+  function resumoMes(y, m, idx, hoje) {
+    var chave = chaveMes(y, m), r = { fechados: 0, valor: 0, abertas: 0, sabLivres: 0, passado: chave < hoje.slice(0, 7) };
+    for (var dia = 1, ultimo = new Date(y, m + 1, 0).getDate(); dia <= ultimo; dia++) {
+      var iso = chave + '-' + dois(dia), lista = idx[iso] || [], ocupadoDia = false;
+      lista.forEach(function (p) { if (etapaDe(p) === 'fechada') { r.fechados++; r.valor += valorFechado(p); ocupadoDia = true; } else r.abertas++; });
+      if (!ocupadoDia && iso >= hoje && new Date(y, m, dia).getDay() === 6) r.sabLivres++;
+    }
+    return r;
+  }
+  function desenharAgenda() {
+    if (!mesVisto) mesVisto = mesAtual();
+    var hoje = hojeISO(), idx = porData(), y = mesVisto.y, m = mesVisto.m, chave = chaveMes(y, m), r = resumoMes(y, m, idx, hoje), atual = mesAtual();
+    $('mesTitulo').textContent = nomeMes(y, m);
+    $('mesHoje').hidden = y === atual.y && m === atual.m;
+    $('mCasamentos').textContent = r.fechados;
+    $('mCasamentosRot').textContent = r.fechados ? 'Casamentos · ' + dinheiro(r.valor) : 'Casamentos fechados';
+    $('mLivres').textContent = r.passado ? '–' : r.sabLivres;
+    $('mAguardando').textContent = r.abertas;
+
+    // calendário
+    var cal = $('cal'); limparNo(cal);
+    var cab = el('div', 'cal-sem'); ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].forEach(function (x) { cab.appendChild(el('span', null, x)); }); cal.appendChild(cab);
+    var grade = el('div', 'cal-grade');
+    for (var i = 0, primeiro = new Date(y, m, 1).getDay(); i < primeiro; i++) grade.appendChild(el('span', 'dia vazio'));
+    for (var dia = 1, ultimo = new Date(y, m + 1, 0).getDate(); dia <= ultimo; dia++) {
+      (function (dia) {
+        var iso = chave + '-' + dois(dia), lista = idx[iso] || [];
+        var fech = lista.some(function (p) { return etapaDe(p) === 'fechada'; }), ab = lista.some(function (p) { return etapaDe(p) !== 'fechada'; });
+        var cls = 'dia' + (iso < hoje ? ' passado' : '') + (iso === hoje ? ' hoje' : '') + (new Date(y, m, dia).getDay() === 6 ? ' sab' : '') + (fech ? ' fechado' : '') + (ab ? ' aberto' : '');
+        var c = lista.length ? botao(cls) : el('span', cls);
+        c.appendChild(el('span', 'n', String(dia)));
+        var pts = el('span', 'pontos'); if (fech) pts.appendChild(el('i', 'f')); if (ab) pts.appendChild(el('i', 'a')); c.appendChild(pts);
+        if (lista.length) {
+          c.setAttribute('aria-pressed', String(diaSel === iso));
+          c.setAttribute('aria-label', 'Dia ' + dia + ': ' + lista.map(function (p) { return p.dados.cliente || 'sem nome'; }).join(', '));
+          c.onclick = function () { diaSel = diaSel === iso ? '' : iso; desenharAgenda(); };
+        }
+        grade.appendChild(c);
+      })(dia);
+    }
+    cal.appendChild(grade);
+
+    // vendas do mês: pelo dia em que ela marcou "Fechou?" ou "Não fechou", e pelas propostas criadas
+    var fechouNoMes = propostas.filter(function (p) { return etapaDe(p) === 'fechada' && mesDe(p.fechado_em) === chave; });
+    var naoFechou = propostas.filter(function (p) { return etapaDe(p) === 'perdida' && mesDe(p.fechado_em) === chave; }).length;
+    var enviadas = propostas.filter(function (p) { return mesDe(p.criado_em) === chave; }).length;
+    var vendas = $('mesVendas'); limparNo(vendas);
+    var forte = function (x) { vendas.appendChild(el('b', null, x)); }, texto = function (x) { vendas.appendChild(document.createTextNode(x)); };
+    texto(nomeMes(y, m) + ': ');
+    forte(String(enviadas)); texto(enviadas === 1 ? ' proposta enviada' : ' propostas enviadas');
+    texto(' · ');
+    if (fechouNoMes.length) { forte(String(fechouNoMes.length)); texto(fechouNoMes.length === 1 ? ' fechada (' : ' fechadas ('); forte(dinheiro(somaFechado(fechouNoMes))); texto(')'); }
+    else texto(r.passado ? 'nenhuma fechada' : 'nenhuma fechada ainda');
+    if (naoFechou) { texto(' · '); forte(String(naoFechou)); texto(' não ' + (naoFechou === 1 ? 'fechou' : 'fecharam')); }
+    texto('.');
+
+    // o que tem no mês (ou só no dia tocado)
+    var tit = $('mesListaTit'); limparNo(tit);
+    tit.appendChild(document.createTextNode(diaSel ? 'Dia ' + dataDe(diaSel).getDate() + ' · ' + diaSemana(diaSel) : 'Neste mês'));
+    if (diaSel) { var todo = botao('texto-link', 'ver o mês todo'); todo.onclick = function () { diaSel = ''; desenharAgenda(); }; tit.appendChild(todo); }
+    var lista = $('mesLista'); limparNo(lista);
+    var datas = Object.keys(idx).filter(function (d) { return d.slice(0, 7) === chave && (!diaSel || d === diaSel); }).sort();
+    if (!datas.length) lista.appendChild(el('p', 'nada', r.passado ? 'Nenhum casamento neste mês.' : 'Nenhum casamento nem proposta com data neste mês.'));
+    datas.forEach(function (d) {
+      idx[d].slice().sort(function (a, b) { return (etapaDe(a) === 'fechada' ? 0 : 1) - (etapaDe(b) === 'fechada' ? 0 : 1); }).forEach(function (p) { lista.appendChild(linhaEvento(p)); });
+    });
+
+    // próximos 12 meses: cheio ou com vaga, de relance
+    var ms = $('meses'); limparNo(ms);
+    for (var k = 0; k < 12; k++) {
+      (function (k) {
+        var dt = new Date(atual.y, atual.m + k, 1), yy = dt.getFullYear(), mm = dt.getMonth(), rr = resumoMes(yy, mm, idx, hoje);
+        var chip = botao('mes-chip' + (rr.fechados && !rr.sabLivres ? ' cheio' : ''));
+        chip.setAttribute('aria-pressed', String(yy === y && mm === m));
+        chip.appendChild(el('b', null, nomeMes(yy, mm, true) + ((k === 0 || mm === 0) ? ' ' + yy : '')));
+        chip.appendChild(el('span', null, rr.fechados + (rr.fechados === 1 ? ' casamento' : ' casamentos')));
+        chip.appendChild(el('span', 'livre', rr.sabLivres ? rr.sabLivres + (rr.sabLivres === 1 ? ' sábado livre' : ' sábados livres') : 'sem sábado livre'));
+        if (rr.abertas) chip.appendChild(el('span', 'ab', rr.abertas + ' aguardando'));
+        chip.onclick = function () { irParaMes(yy, mm); };
+        ms.appendChild(chip);
+      })(k);
+    }
+  }
+  function linhaEvento(p) {
+    var d = p.dados || {}, et = etapaDe(p), row = botao('evt ' + et);
+    row.onclick = function () { abrirEditor(p); };
+    var dd = el('span', 'd'); dd.appendChild(el('b', null, String(dataDe(d.data).getDate()))); dd.appendChild(el('small', null, diaSemana(d.data))); row.appendChild(dd);
+    var tx = el('span', 't'); tx.appendChild(el('b', null, d.cliente || 'Sem nome'));
+    tx.appendChild(el('span', null, et === 'fechada' ? ['Fechado'].concat(rotulosFechamento(p)).join(' · ') : 'Aguardando resposta' + (p.views ? ' · aberta ' + p.views + (p.views === 1 ? ' vez' : ' vezes') : ' · ainda não abriu')));
+    if (d.local) tx.appendChild(el('span', null, d.local));
+    row.appendChild(tx);
+    row.appendChild(el('span', 'v', et === 'fechada' ? dinheiro(valorFechado(p)) : (faixa(d) || '')));
+    return row;
+  }
+
+  // o que já existe numa data, fora a própria proposta: casamentos fechados e propostas aguardando
+  function naData(iso, menosId) {
+    var r = { fechadas: [], abertas: [] };
+    if (!iso) return r;
+    propostas.forEach(function (p) {
+      if (p.id === menosId || !p.dados || p.dados.data !== iso) return;
+      var e = etapaDe(p);
+      if (e === 'fechada') r.fechadas.push(p.dados.cliente || 'sem nome'); else if (e === 'aberta') r.abertas.push(p.dados.cliente || 'sem nome');
+    });
+    return r;
+  }
+  function textoData(r) {
+    var partes = [];
+    if (r.fechadas.length) partes.push('Neste dia você já tem casamento fechado: ' + r.fechadas.join(', ') + '.');
+    if (r.abertas.length) partes.push((r.fechadas.length ? 'E ' : 'Neste dia ') + (r.abertas.length === 1 ? 'há 1 proposta aguardando resposta' : 'há ' + r.abertas.length + ' propostas aguardando resposta') + ' (' + r.abertas.join(', ') + ').');
+    return partes.join(' ');
+  }
+  function avisarData() {
+    var txt = textoData(naData($('fData').value, editando && editando.id));
+    $('fDataAviso').textContent = txt; $('fDataAviso').hidden = !txt;
+  }
+  $('fData').addEventListener('change', avisarData);
+  $('fData').addEventListener('input', avisarData);
+
+  // ---------- propostas: filtros e cartões ----------
   function pintarFiltro() {
-    document.querySelectorAll('#vLista [data-filtro]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-filtro') === filtro)); });
+    document.querySelectorAll('#filtros [data-filtro]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-filtro') === filtro)); });
   }
   function definirFiltro(f) { filtro = f; pintarFiltro(); desenharLista(); }
-  // ao voltar do editor, a proposta em que ela mexeu tem que estar à vista
-  function filtroPara(p) { if (p && p.id && !noFiltro(p)) filtro = { aberta: 'abertas', fechada: 'fechadas', perdida: 'perdidas' }[etapaDe(p)]; }
-  document.querySelectorAll('#vLista [data-filtro]').forEach(function (b) {
+  // ao voltar do editor, a proposta em que ela mexeu tem que estar à vista: fechada vive em "Clientes"; nova ou mexida, em "Propostas"
+  function filtroPara(p) {
+    if (!(p && p.id)) return;
+    var e = etapaDe(p);
+    if (e === 'fechada') { aba = 'clientes'; return; }
+    if (p._nova || aba !== 'agenda') { aba = 'propostas'; if (!noFiltro(p)) filtro = e === 'perdida' ? 'perdidas' : 'abertas'; }
+    delete p._nova;
+  }
+  document.querySelectorAll('#filtros [data-filtro]').forEach(function (b) {
     b.addEventListener('click', function () { definirFiltro(b.getAttribute('data-filtro')); });
   });
   function noFiltro(p) {
     var e = etapaDe(p);
-    return filtro === 'todas' || (filtro === 'abertas' && e === 'aberta') || (filtro === 'fechadas' && e === 'fechada') || (filtro === 'perdidas' && e === 'perdida');
+    return filtro === 'todas' || (filtro === 'abertas' && e === 'aberta') || (filtro === 'perdidas' && e === 'perdida');
   }
   function desenharLista() {
     var box = $('lista'), visiveis = propostas.filter(noFiltro);
     limparNo(box);
     if (!visiveis.length) {
-      var t = VAZIO[propostas.length ? filtro : 'nada'] || VAZIO.nada, v = el('div', 'vazio');
-      v.appendChild(el('b', null, t[0])); v.appendChild(el('span', null, t[1]));
+      var tv = VAZIO[propostas.length ? filtro : 'nada'] || VAZIO.nada, v = el('div', 'vazio');
+      v.appendChild(el('b', null, tv[0])); v.appendChild(el('span', null, tv[1]));
       box.appendChild(v); return;
     }
     visiveis.forEach(function (p) { box.appendChild(cartao(p)); });
@@ -785,6 +1104,7 @@
     var ops = d.opcoes || {}, s = d.secoes || {};
     $('fCliente').value = d.cliente || ''; $('fCliente').classList.remove('falta');
     $('fData').value = d.data || ''; $('fLocal').value = d.local || ''; $('fMensagem').value = d.mensagem || '';
+    avisarData();
     OPCOES.forEach(function (o) {
       var x = ops[o.k] || {}, c = C[o.k];
       c.on.checked = !!x.on; c.bloco.classList.toggle('off', !x.on);
@@ -901,6 +1221,7 @@
     }).catch(falhou).then(solta);
   }
   $('btNova').addEventListener('click', novaProposta);
+  $('btNovaAgenda').addEventListener('click', novaProposta);
 
   function abrirEditor(p) {
     editando = p; sujo = false;
@@ -944,7 +1265,7 @@
       : api('PUT', '/admin/propostas/' + editando.id, { dados: lerForm(), status: 'publicada' });
     req.then(function (np) {
       solta();
-      editando = np; sujo = false; atualizarNaLista(np);
+      editando = np; sujo = false; if (eraNova) np._nova = true; atualizarNaLista(np);
       $('edTitulo').textContent = (np.dados && np.dados.cliente) || 'Proposta'; bt.textContent = 'Salvar alterações';
       modo('proposta');
       if (eraNova) abrirPronta(np); else toast('Alterações salvas — o link continua o mesmo');
@@ -1034,6 +1355,9 @@
     var temRecepcao = d.mostrar_recepcao !== false && ligadas.some(function (o) { return temValor(d.opcoes[o.k].cerimonia_recepcao); });
     var quem = [d.cliente || 'Sem nome', d.data && dataCurta(d.data)].filter(Boolean).join(' · ');
     $('fxQuem').textContent = quem; $('nfQuem').textContent = quem;
+    var ja = naData(d.data, p.id).fechadas;
+    $('fxConflito').textContent = ja.length ? 'Atenção: neste dia você já tem casamento fechado (' + ja.join(', ') + '). Confira o horário antes de confirmar.' : '';
+    $('fxConflito').hidden = !ja.length;
     limparNo(box);
     ligadas.map(function (o) { return o.k; }).concat(['outro']).forEach(function (k) {
       var b = botao(null, nomeOpcao(d, k)); b.setAttribute('data-v', k); b.setAttribute('aria-pressed', 'false');
@@ -1065,8 +1389,8 @@
       solta();
       atualizarNaLista(np); fecharFolhas();
       if (!$('vEditor').hidden && editando && editando.id === np.id) { editando = np; pintarSituacao(); }
-      else if (!$('vLista').hidden) { if (np.etapa === 'fechada') filtro = 'fechadas'; pintarFiltro(); desenharLista(); }
-      resumo = resumoLocal(); desenharResumo(); atualizarResumo();
+      else if (!$('vLista').hidden && np.etapa === 'fechada') definirAba('clientes');   // o casal que fechou vira cliente
+      desenharTudo();
       toast(msg);
     }, function (e) {
       solta();
