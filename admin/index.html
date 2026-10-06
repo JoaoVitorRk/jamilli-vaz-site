@@ -220,8 +220,9 @@
 
   .aviso-data { display: block; padding: 10px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.4; color: var(--dourado-claro); background: rgba(198, 165, 103, 0.12); border: 1px solid rgba(228, 206, 158, 0.4); }
   /* ---------- editor ---------- */
-  .situacao { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; margin-bottom: 12px; }
-  .situacao .txt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+  .situacao { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; margin-bottom: 12px; }
+  .situacao .txt { flex: 1 1 180px; min-width: 0; display: grid; gap: 2px; }
+  .situacao .bts { display: flex; gap: 8px; }
   .situacao b { font-weight: 600; font-size: 1.06rem; }
   .situacao .txt span { font-size: 0.9rem; color: var(--suave); overflow-wrap: anywhere; }
   .situacao.fechada { background: rgba(196, 227, 207, 0.12); border: 1px solid rgba(196, 227, 207, 0.4); }
@@ -333,6 +334,10 @@
   .escolhas button { flex: 1 1 auto; min-width: 64px; min-height: 52px; padding: 8px 12px; border-radius: 14px; border: 1px solid rgba(198, 165, 103, 0.32); background: var(--campo); font-size: 1rem; font-weight: 500; line-height: 1.25; cursor: pointer; overflow-wrap: anywhere; }
   .escolhas button[aria-pressed="true"] { background: var(--dourado); border-color: var(--dourado); color: var(--noite); font-weight: 600; }
   .valor-fechado input { font-size: 1.2rem; font-weight: 600; }
+  .fx-adics { display: grid; gap: 8px; }
+  .fx-adics:empty { display: none; }
+  .folha .fx-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(198, 165, 103, 0.12); border: 1px solid var(--linha); color: var(--ivory); }
+  .folha .fx-total b { font-size: 1.2rem; font-weight: 600; color: var(--dourado-claro); white-space: nowrap; }
   .motivos { display: flex; flex-wrap: wrap; gap: 8px; }
   .motivos button { min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(198, 165, 103, 0.32); background: none; font-size: 0.92rem; color: var(--ivory); cursor: pointer; }
   .folha .pe { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: -4px; }
@@ -448,7 +453,7 @@
 
   <div class="situacao" id="edSituacao" hidden>
     <div class="txt"><b id="sitTitulo"></b><span id="sitDetalhe"></span><span id="sitQuando"></span></div>
-    <button class="b b-pq" type="button" id="btReabrir">Reabrir</button>
+    <div class="bts"><button class="b b-pq" type="button" id="btEditarFech" hidden>Editar</button><button class="b b-pq" type="button" id="btReabrir">Reabrir</button></div>
   </div>
 
   <div class="envio" id="edEnvio" hidden>
@@ -554,6 +559,12 @@
         <label class="campo valor-fechado"><span>Valor fechado</span><div class="dinheiro" id="fxValorCaixa"><span>R$</span><input type="text" id="fxValor" inputmode="decimal" placeholder="0" enterkeyhint="done"></div></label>
         <label class="campo"><span>Data do fechamento</span><input type="date" id="fxData"></label>
       </div>
+      <div class="campo"><span>Adicionais <small>(opcional)</small></span>
+        <div class="motivos" id="fxAdicSug" hidden></div>
+        <div class="fx-adics" id="fxAdicionais"></div>
+        <button class="b tracejado" type="button" id="fxAddAdic">+ Adicionar adicional</button>
+      </div>
+      <p class="fx-total" id="fxTotal" role="status" hidden></p>
       <label class="campo" id="fxObsCampo" hidden><span>O que ficou combinado? <small>(opcional)</small></span><input type="text" id="fxObs" maxlength="500" enterkeyhint="done"></label>
       <div class="aviso" id="fxErro" role="alert" hidden></div>
       <button class="b b-ouro b-cheio" type="button" id="fxSalvar">Salvar</button>
@@ -687,7 +698,11 @@
     return (o && o.nome) || (r ? r.rot : '');
   }
   function valorFechado(p) { return temValor(p.valor_fechado) ? p.valor_fechado : (p.fechamento && temValor(p.fechamento.valor) ? p.fechamento.valor : 0); }
-  function rotulosFechamento(p) { var f = p.fechamento || {}; return [nomeOpcao(p.dados, f.opcao), PACOTES[f.pacote]].filter(Boolean); }
+  function rotulosFechamento(p, comValor) {
+    var f = p.fechamento || {}, ad = Array.isArray(f.adicionais) ? f.adicionais : [];
+    var extras = ad.map(function (a) { return a.nome + (comValor && temValor(a.valor) ? ' (' + dinheiro(a.valor) + ')' : ''); });
+    return [nomeOpcao(p.dados, f.opcao), PACOTES[f.pacote]].filter(Boolean).concat(extras.length ? ['+ ' + extras.join(', ')] : []);
+  }
   // o que cada opção mostra e em que ordem. Proposta antiga (sem isso por opção): as chaves globais valem para todas;
   // ordem "cara" = a de maior valor à mostra primeiro; sem ordem = simples → completa (igual à API)
   function verCerimonia(d, x) { return typeof x.ver_cerimonia === 'boolean' ? x.ver_cerimonia : (d.mostrar_cerimonia !== false || d.mostrar_recepcao === false); }
@@ -1408,12 +1423,13 @@
     $('edEnvio').hidden = !existe;
     $('edFechou').hidden = !(existe && et === 'aberta');
     $('edSituacao').hidden = !(existe && et !== 'aberta');
+    $('btEditarFech').hidden = et !== 'fechada';
     if (!existe) return;
     $('edVer').href = linkDe(p);
     if (et === 'fechada') {
       $('edSituacao').className = 'situacao fechada';
       $('sitTitulo').textContent = 'Fechada · ' + dinheiro(valorFechado(p));
-      $('sitDetalhe').textContent = rotulosFechamento(p).join(' · ') + (f.obs ? ' — ' + f.obs : '');
+      $('sitDetalhe').textContent = rotulosFechamento(p, true).join(' · ') + (f.obs ? ' — ' + f.obs : '');
     } else if (et === 'perdida') {
       $('edSituacao').className = 'situacao perdida';
       $('sitTitulo').textContent = 'Não fechou';
@@ -1583,14 +1599,63 @@
     var d = fechando.dados || {}, o = d.opcoes && d.opcoes[fx.opcao], v = o && fx.pacote ? o[fx.pacote] : null, inp = $('fxValor');
     if (temValor(v)) { inp.value = fx.auto = numero(v); $('fxValorCaixa').classList.remove('falta'); }
     else if (inp.value === fx.auto) { inp.value = ''; fx.auto = ''; }
+    pintarExtras();
   }
   function escolher(qual, v) {
     fx[qual] = v; $('fxErro').hidden = true;
     pintarEscolhas(); preencherValorFechado();
   }
+  // adicionais do fechamento (ex.: trompetes): o que é + valor; entram no total fechado
+  function linhaExtra(a) {
+    a = a || {};
+    var r = el('div', 'adic-linha');
+    var nome = el('input', 'x-nome'); nome.type = 'text'; nome.maxLength = 120; nome.placeholder = 'O que é'; nome.value = a.nome || '';
+    nome.setAttribute('aria-label', 'Nome do adicional'); nome.setAttribute('enterkeyhint', 'done');
+    var cx = caixaDinheiro('Valor do adicional'); cx.input.classList.add('x-valor');
+    cx.input.value = a.valor != null ? numero(a.valor) : '';
+    var rm = botao('b remover perigo', '×'); rm.setAttribute('aria-label', 'Tirar este adicional'); rm.title = 'Tirar';
+    rm.onclick = function () { r.parentNode.removeChild(r); pintarExtras(); };
+    nome.addEventListener('input', function () { nome.classList.remove('falta'); $('fxErro').hidden = true; pintarExtras(); });
+    cx.input.addEventListener('input', function () { $('fxErro').hidden = true; pintarExtras(); });
+    r.appendChild(nome); r.appendChild(cx.caixa); r.appendChild(rm);
+    return r;
+  }
+  function lerExtras() {
+    return Array.prototype.map.call($('fxAdicionais').children, function (r) {
+      return { nome: r.querySelector('.x-nome').value.trim(), valor: parseValor(r.querySelector('.x-valor').value), _linha: r };
+    }).filter(function (x) { return x.nome || x.valor != null; });
+  }
+  function somaExtras(lista) { return lista.reduce(function (s, x) { return s + (temValor(x.valor) ? x.valor : 0); }, 0); }
+  function pintarExtras() {
+    // atalhos: os adicionais da proposta que ainda não entraram
+    var ja = lerExtras().map(function (x) { return x.nome.toLowerCase(); }), algum = false;
+    Array.prototype.forEach.call($('fxAdicSug').children, function (b) { b.hidden = ja.indexOf(b.getAttribute('data-nome').toLowerCase()) >= 0; algum = algum || !b.hidden; });
+    $('fxAdicSug').hidden = !algum;
+    var soma = somaExtras(lerExtras()), base = parseValor($('fxValor').value) || 0;
+    limparNo($('fxTotal')); $('fxTotal').hidden = !soma;
+    if (soma) { $('fxTotal').appendChild(el('span', null, 'Total com adicionais')); $('fxTotal').appendChild(el('b', null, dinheiro(Math.round((base + soma) * 100) / 100))); }
+  }
+  function novoExtra(a, focoNoValor) {
+    if ($('fxAdicionais').children.length >= 10) return toast('São no máximo 10 adicionais');
+    var r = linhaExtra(a); $('fxAdicionais').appendChild(r); pintarExtras();
+    r.querySelector(focoNoValor ? '.x-valor' : '.x-nome').focus();
+  }
+  $('fxAddAdic').addEventListener('click', function () { novoExtra(); });
+  $('fxValor').addEventListener('input', pintarExtras);
+
   function abrirFechou(p) {
     fechando = p;
     var d = p.dados || {}, box = $('fxOpcoes');
+    var f0 = etapaDe(p) === 'fechada' ? (p.fechamento || {}) : null;   // já fechada: editar o fechamento
+    fx.editar = !!f0;
+    $('fxTit').textContent = f0 ? 'Editar fechamento' : 'Fechou?';
+    $('fxNao').hidden = !!f0;
+    limparNo($('fxAdicionais')); limparNo($('fxAdicSug'));
+    (Array.isArray(d.adicionais) ? d.adicionais : []).filter(function (a) { return a && a.nome; }).forEach(function (a) {
+      var b = botao(null, '+ ' + a.nome); b.setAttribute('data-nome', a.nome);
+      b.onclick = function () { novoExtra({ nome: a.nome, valor: a.valor }, true); };
+      $('fxAdicSug').appendChild(b);
+    });
     var ligadas = ordemDe(d).filter(function (k) { return d.opcoes && d.opcoes[k] && d.opcoes[k].on; });   // na ordem da proposta
     // os pacotes com valor à mostra em cada opção
     var mostrou = function (k) {
@@ -1622,13 +1687,20 @@
     $('fxValor').value = ''; $('fxValorCaixa').classList.remove('falta'); $('fxData').value = hojeMais(0); $('fxObs').value = '';
     $('nfMotivo').value = ''; $('fxErro').hidden = true; $('nfErro').hidden = true;
     $('fxParteFechou').hidden = false; $('fxParteNao').hidden = true;
-    pintarEscolhas(); preencherValorFechado();
+    if (f0) {
+      fx.opcao = f0.opcao || 'outro'; fx.pacote = f0.pacote && f0.pacote !== 'outro' ? f0.pacote : '';
+      $('fxValor').value = temValor(f0.valor) ? numero(f0.valor) : '';
+      $('fxData').value = f0.data || p.fechado_em || hojeMais(0); $('fxObs').value = f0.obs || '';
+      (Array.isArray(f0.adicionais) ? f0.adicionais : []).forEach(function (a) { $('fxAdicionais').appendChild(linhaExtra(a)); });
+      pintarEscolhas(); pintarExtras();
+    } else { pintarEscolhas(); preencherValorFechado(); }
     abrirFolha('folhaFechou');
   }
   $('fxPacotes').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { escolher('pacote', b.getAttribute('data-v')); }); });
   $('fxValor').addEventListener('blur', function () { var x = parseValor(this.value); this.value = x != null ? numero(x) : ''; });
   $('fxValor').addEventListener('input', function () { $('fxValorCaixa').classList.remove('falta'); $('fxErro').hidden = true; });
   $('edFechou').addEventListener('click', function () { if (editando && editando.id) abrirFechou(editando); });
+  $('btEditarFech').addEventListener('click', function () { if (editando && editando.id) abrirFechou(editando); });
   MOTIVOS.forEach(function (m) { var b = botao(null, m); b.onclick = function () { $('nfMotivo').value = m; }; $('nfMotivos').appendChild(b); });
   $('fxNao').addEventListener('click', function () { $('fxParteFechou').hidden = true; $('fxParteNao').hidden = false; });
   $('nfVoltar').addEventListener('click', function () { $('fxParteNao').hidden = true; $('fxParteFechou').hidden = false; });
@@ -1655,8 +1727,12 @@
     if (!fx.opcao) return erroNaFolha('fxErro', 'Escolha a opção que fechou.');
     if (!fx.pacote && fx.opcao !== 'outro') return erroNaFolha('fxErro', 'Escolha o pacote.');
     if (!temValor(valor)) { $('fxValorCaixa').classList.add('falta'); $('fxValor').focus(); return erroNaFolha('fxErro', 'Coloque o valor fechado.'); }
-    mudarEtapa(fechando, { etapa: 'fechada', fechamento: { opcao: fx.opcao, pacote: fx.pacote || 'outro', valor: valor, data: $('fxData').value || hojeMais(0), obs: fx.opcao === 'outro' ? $('fxObs').value.trim() : '' } },
-      this, 'Fechada! ' + dinheiro(valor) + ' entrou no total', 'fxErro');
+    var extras = lerExtras(), semNome = extras.filter(function (x) { return !x.nome; })[0];
+    if (semNome) { var n = semNome._linha.querySelector('.x-nome'); n.classList.add('falta'); n.focus(); return erroNaFolha('fxErro', 'Coloque o nome do adicional.'); }
+    var total = Math.round((valor + somaExtras(extras)) * 100) / 100;
+    mudarEtapa(fechando, { etapa: 'fechada', fechamento: { opcao: fx.opcao, pacote: fx.pacote || 'outro', valor: valor, data: $('fxData').value || hojeMais(0), obs: fx.opcao === 'outro' ? $('fxObs').value.trim() : '',
+      adicionais: extras.map(function (x) { return { nome: x.nome, valor: x.valor }; }) } },
+      this, fx.editar ? 'Fechamento atualizado' : 'Fechada! ' + dinheiro(total) + ' entrou no total', 'fxErro');
   });
   $('nfSalvar').addEventListener('click', function () {
     mudarEtapa(fechando, { etapa: 'perdida', motivo: $('nfMotivo').value.trim() }, this, 'Marcada como “Não fechou”', 'nfErro');
