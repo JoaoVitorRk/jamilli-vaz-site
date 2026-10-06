@@ -360,7 +360,6 @@
   .preco .rs { margin-top: 0.62em; font-family: var(--sans); font-weight: 400; font-size: 0.78rem; letter-spacing: 0.12em; line-height: 1; }
   .preco .nota { max-width: 25ch; font-family: var(--serif); font-style: italic; font-size: 0.94rem; line-height: 1.35; color: var(--ink-soft); text-wrap: balance; }
   .preco .sem { font-family: var(--serif); font-style: italic; font-size: 1.2rem; line-height: 1.4; }
-  .preco.reserva { display: none; visibility: hidden; }
   .op-cta { margin-top: 20px; }
   .op-cta span { white-space: nowrap; }
   .opcao.sugestao { background: linear-gradient(180deg, #3A5A4A 0%, var(--esmeralda) 46%, #27402F 100%); color: var(--ivory); border-color: var(--esmeralda); box-shadow: 0 34px 70px -22px rgba(26, 41, 33, 0.7); }
@@ -372,10 +371,11 @@
   .opcao.sugestao .op-cta::before { background: var(--ivory); }
   .opcao.sugestao .op-cta .arrow { background: var(--noite); color: var(--dourado-claro); }
   .selo { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); z-index: 1; white-space: nowrap; padding: 9px 16px; border-radius: 999px; background: var(--dourado); color: var(--noite); font-weight: 500; font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; line-height: 1.4; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2); }
-  /* sem sugestão, um crescendo discreto da simples para a completa (para as três não lerem como cards iguais) */
-  .opcoes.sem-sugestao .opcao:nth-child(2) { background: linear-gradient(180deg, #FBF6EC 0%, rgba(251, 246, 236, 0) 72%); }
-  .opcoes.sem-sugestao .opcao:nth-child(3) { background: linear-gradient(180deg, var(--champagne) 0%, rgba(233, 218, 193, 0) 72%); border-color: var(--dourado); }
-  .opcoes.sem-sugestao .opcao:nth-child(3) .op-fio { width: 72px; }
+  /* sem sugestão, um crescendo discreto da simples para a completa (para as três não lerem como cards iguais).
+     Vai pela opção, não pela posição: a ordem é escolhida no painel e a completa pode vir primeiro. */
+  .opcoes.sem-sugestao .opcao[data-k="media"] { background: linear-gradient(180deg, #FBF6EC 0%, rgba(251, 246, 236, 0) 72%); }
+  .opcoes.sem-sugestao .opcao[data-k="completa"] { background: linear-gradient(180deg, var(--champagne) 0%, rgba(233, 218, 193, 0) 72%); border-color: var(--dourado); }
+  .opcoes.sem-sugestao .opcao[data-k="completa"] .op-fio { width: 72px; }
   /* uma embaixo da outra em todas as telas: na reunião ela apresenta uma opção por vez (pedido dela, 06/10/2026) */
   .opcoes { gap: 0; }
   .opcao { scroll-margin-block: 24px; }
@@ -845,22 +845,27 @@
     });
     if (!resumo.children.length) resumo.hidden = true;
 
-    // as opções ligadas, na ordem simples → média → completa
+    // as opções ligadas, na ordem que ela montou no painel; cada uma mostra o valor do jeito escolhido
+    // (junto: só cerimônia + recepção · separado: os dois · só cerimônia). Proposta antiga, sem isso por opção:
+    // as chaves globais de antes valem para todas; ordem "cara" = a de maior valor à mostra primeiro; sem ordem = simples → completa.
     var ops = d.opcoes || {};
-    var ligadas = ORDEM.filter(function (k) { return ops[k] && ops[k].on; });
-    if (d.ordem !== 'simples') {
-      // a mais cara primeiro (regra da mentoria dela): pelo maior valor que aparece na página; empate, a mais completa antes
-      var maior = function (k) {
-        var o = ops[k], vs = [];
-        if (d.mostrar_cerimonia !== false || d.mostrar_recepcao === false) { if (valorOk(o.cerimonia)) vs.push(o.cerimonia); }
-        if (d.mostrar_recepcao !== false && valorOk(o.cerimonia_recepcao)) vs.push(o.cerimonia_recepcao);
+    function verCer(o) { return typeof o.ver_cerimonia === 'boolean' ? o.ver_cerimonia : (d.mostrar_cerimonia !== false || d.mostrar_recepcao === false); }
+    function verRec(o) { return typeof o.ver_recepcao === 'boolean' ? o.ver_recepcao : d.mostrar_recepcao !== false; }
+    var ordem = ORDEM.slice();
+    if (Array.isArray(d.ordem)) {
+      ordem = d.ordem.filter(function (k, i) { return ORDEM.indexOf(k) >= 0 && d.ordem.indexOf(k) === i; });
+      ORDEM.forEach(function (k) { if (ordem.indexOf(k) < 0) ordem.push(k); });
+    } else if (d.ordem === 'cara') {
+      var maiorValor = function (k) {
+        var o = ops[k] || {}, vs = [];
+        if (verCer(o) && valorOk(o.cerimonia)) vs.push(num(o.cerimonia));
+        if (verRec(o) && valorOk(o.cerimonia_recepcao)) vs.push(num(o.cerimonia_recepcao));
         return vs.length ? Math.max.apply(null, vs) : -1;
       };
-      ligadas.sort(function (a, b) { return (maior(b) - maior(a)) || (ORDEM.indexOf(b) - ORDEM.indexOf(a)); });
+      ordem.sort(function (a, b) { return (maiorValor(b) - maiorValor(a)) || (ORDEM.indexOf(b) - ORDEM.indexOf(a)); });
     }
+    var ligadas = ordem.filter(function (k) { return ops[k] && ops[k].on; });
     var n = ligadas.length;
-    var comRecepcao = d.mostrar_recepcao !== false;
-    var comCerimonia = d.mostrar_cerimonia !== false || !comRecepcao;   // escondida só quando o pacote com recepção aparece
     var sugestao = ligadas.indexOf(d.sugestao) >= 0 ? d.sugestao : '';
     var alvo = $('pOpcoes');
     alvo.setAttribute('data-n', n);
@@ -874,7 +879,6 @@
     if (!n) { $('pOpcoesTitulo').hidden = true; alvo.hidden = true; }
 
     var NOTA_RECEPCAO = '+2h de música ao vivo para a recepção ou jantar';
-    var algumaRecepcao = comRecepcao && ligadas.some(function (k) { return valorOk(ops[k].cerimonia_recepcao); });
     function preco(rotulo, v, nota) {
       var box = el('div', 'preco');
       box.appendChild(el('span', 'rot', rotulo));
@@ -891,6 +895,7 @@
       var nome = txt(o.nome) || 'Opção ' + (i + 1);
       var nomeWa = txt(o.nome) || String(i + 1);   // na mensagem: "com a opção Trio." ou "com a opção 2."
       var card = el('article', 'opcao' + (k === sugestao ? ' sugestao' : ''));
+      card.setAttribute('data-k', k);
       if (k === sugestao) card.appendChild(el('span', 'selo', 'Minha sugestão para vocês'));
       if (n > 1) card.appendChild(el('p', 'op-ord', 'Opção ' + (i + 1)));
       card.appendChild(el('h4', 'op-nome' + (nome.length > 20 ? ' longo' : nome.length > 14 ? ' medio' : ''), nome));
@@ -903,17 +908,9 @@
         card.appendChild(ul);
       }
       var precos = el('div', 'op-precos');
-      if (comCerimonia && valorOk(o.cerimonia)) precos.appendChild(preco('Cerimônia', o.cerimonia));
-      if (comRecepcao && valorOk(o.cerimonia_recepcao)) precos.appendChild(preco('Cerimônia + recepção', o.cerimonia_recepcao, NOTA_RECEPCAO));
-      else if (algumaRecepcao && n > 1) {
-        // espaçador invisível para alinhar os preços entre os cards no computador: o mesmo esqueleto, sem valor nenhum (preço só vem da API)
-        var reserva = el('div', 'preco reserva'); reserva.setAttribute('aria-hidden', 'true');
-        reserva.appendChild(el('span', 'rot', 'Cerimônia + recepção'));
-        var vazio = el('p', 'valor'); vazio.appendChild(el('span', 'num', '\u00a0')); reserva.appendChild(vazio);
-        reserva.appendChild(el('p', 'nota', NOTA_RECEPCAO));
-        precos.appendChild(reserva);
-      }
-      if (!precos.querySelector('.preco:not(.reserva)')) { var sem = el('div', 'preco'); sem.appendChild(el('p', 'sem', 'Valor sob consulta')); precos.insertBefore(sem, precos.firstChild); }
+      if (verCer(o) && valorOk(o.cerimonia)) precos.appendChild(preco('Cerimônia', o.cerimonia));
+      if (verRec(o) && valorOk(o.cerimonia_recepcao)) precos.appendChild(preco('Cerimônia + recepção', o.cerimonia_recepcao, NOTA_RECEPCAO));
+      if (!precos.children.length) { var sem = el('div', 'preco'); sem.appendChild(el('p', 'sem', 'Valor sob consulta')); precos.appendChild(sem); }
       card.appendChild(precos);
       var cta = el('a', 'btn btn-mini op-cta');
       cta.href = waLink('Oi, Jamilli! Vi a proposta (' + ref + ') e quero reservar com a opção ' + nomeWa + '.');
