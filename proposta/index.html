@@ -376,14 +376,19 @@
   .opcoes.sem-sugestao .opcao:nth-child(2) { background: linear-gradient(180deg, #FBF6EC 0%, rgba(251, 246, 236, 0) 72%); }
   .opcoes.sem-sugestao .opcao:nth-child(3) { background: linear-gradient(180deg, var(--champagne) 0%, rgba(233, 218, 193, 0) 72%); border-color: var(--dourado); }
   .opcoes.sem-sugestao .opcao:nth-child(3) .op-fio { width: 72px; }
-  /* lado a lado só a partir de 1000px: entre 940 e 999 o botão "Quero esta opção" quebrava em duas linhas nos três cards */
+  /* uma embaixo da outra em todas as telas: na reunião ela apresenta uma opção por vez (pedido dela, 06/10/2026) */
+  .opcoes { gap: 0; }
+  .opcao { scroll-margin-block: 24px; }
+  .op-prox { display: grid; justify-items: center; gap: 12px; padding: 18px 0 34px; background: none; border: 0; color: var(--ouro-tinta); font: inherit; font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; line-height: 1.6; cursor: pointer; }
+  .op-prox::before { content: ""; width: 1px; height: 46px; background: linear-gradient(transparent, var(--dourado)); }
+  .op-prox i { font-style: normal; font-size: 1.1rem; letter-spacing: 0; line-height: 1; color: var(--dourado); transition: transform 300ms var(--ease); }
+  .op-prox:hover i { transform: translateY(4px); }
+  .op-prox:focus-visible { outline-offset: 6px; }
   @media (min-width: 1000px) {
-    .opcoes { gap: clamp(16px, 2vw, 28px); align-items: stretch; justify-items: stretch; justify-content: center; }
-    .opcoes[data-n="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .opcoes[data-n="2"] { grid-template-columns: repeat(2, minmax(0, 390px)); }
-    .opcoes[data-n="1"] { grid-template-columns: minmax(0, 430px); }
-    .opcoes[data-n="3"] .opcao.sugestao, .opcoes[data-n="2"] .opcao.sugestao { margin-block: -20px; padding-top: 96px; padding-bottom: 50px; }
-    .preco.reserva { display: grid; }
+    .opcao { max-width: 480px; }
+    /* respiro que deixa uma opção por tela num notebook ou monitor */
+    .op-prox { padding: clamp(28px, 7vh, 70px) 0 clamp(36px, 9vh, 90px); }
+    .op-prox::before { height: clamp(60px, 16vh, 170px); }
   }
 
   .detalhes { display: grid; gap: clamp(36px, 4vw, 54px) clamp(40px, 6vw, 84px); margin-top: clamp(54px, 6.4vw, 84px); align-items: start; }
@@ -904,6 +909,15 @@
       cta.appendChild(seta());
       card.appendChild(cta);
       alvo.appendChild(card);
+      if (i < n - 1) {
+        var prox = el('button', 'op-prox'); prox.type = 'button';
+        prox.appendChild(el('span', null, 'Ver a próxima opção')); prox.appendChild(el('i', null, '↓'));
+        prox.addEventListener('click', function () {
+          var alvoCard = alvo.querySelectorAll('.opcao')[i + 1];
+          if (alvoCard) alvoCard.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: alvoCard.offsetHeight < innerHeight - 40 ? 'center' : 'start' });
+        });
+        alvo.appendChild(prox);
+      }
     });
 
     // em todas as opções
