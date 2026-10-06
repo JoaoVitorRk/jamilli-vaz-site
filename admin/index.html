@@ -185,7 +185,27 @@
   .mes-chip .ab { color: var(--dourado-claro); }
   .mes-chip[aria-pressed="true"] { border-color: var(--dourado); background: linear-gradient(180deg, #3A5A4A 0%, #2F4A3E 46%, #27402F 100%); }
 
+  .dia.cheio { background: rgba(196, 227, 207, 0.36); }
+  .dia.cheio.passado { background: rgba(196, 227, 207, 0.12); }
+  .legenda i.c { background: rgba(196, 227, 207, 0.55); border-radius: 2px; }
+
   /* ---------- clientes ---------- */
+  .filtros.dois { grid-template-columns: 1fr 1fr; margin-top: 4px; }
+  .periodos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .periodos button { min-height: 40px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--linha); background: none; color: var(--suave); font-size: 0.88rem; font-weight: 500; cursor: pointer; }
+  .periodos button[aria-pressed="true"] { background: var(--ivory); border-color: var(--ivory); color: var(--noite); font-weight: 600; }
+  .datas-livres { margin-top: 10px; }
+  .periodo-txt { margin-top: 10px; font-size: 0.86rem; line-height: 1.45; color: var(--suave); }
+  .periodo-txt b { color: var(--ivory); font-weight: 500; }
+  .mes-a-mes { display: grid; padding: 4px 14px; border-radius: 16px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); }
+  .linha-mes { display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; min-height: 48px; padding: 8px 0; background: none; border: 0; border-bottom: 1px solid rgba(228, 206, 158, 0.14); color: inherit; text-align: left; cursor: pointer; }
+  .linha-mes:last-child { border-bottom: 0; }
+  .linha-mes .m { font-family: var(--serif); font-size: 1.05rem; line-height: 1.2; }
+  .linha-mes .trilho { height: 8px; border-radius: 999px; background: rgba(246, 241, 233, 0.08); overflow: hidden; }
+  .linha-mes .trilho i { display: block; height: 100%; min-width: 4px; border-radius: inherit; background: linear-gradient(90deg, var(--dourado), var(--dourado-claro)); }
+  .linha-mes .v { display: grid; justify-items: end; font-size: 0.92rem; font-weight: 600; color: var(--dourado-claro); white-space: nowrap; line-height: 1.25; }
+  .linha-mes .v small { font-size: 0.76rem; font-weight: 400; color: var(--suave); }
+  .pcard .fechou-em { font-size: 0.86rem; color: var(--suave); }
   .pcard .quando { font-size: 0.95rem; color: var(--ivory); }
   .pcard .quando b { font-weight: 500; color: var(--dourado-claro); }
   details.passados { margin-top: 22px; }
@@ -353,11 +373,11 @@
     <div class="mes-hoje"><button class="texto-link" type="button" id="mesHoje" hidden>Voltar para este mês</button></div>
     <div class="numeros" role="group" aria-label="Como está o mês">
       <div><b id="mCasamentos">–</b><span id="mCasamentosRot">Casamentos fechados</span></div>
-      <div class="livre"><b id="mLivres">–</b><span>Sábados livres</span></div>
+      <div class="livre"><b id="mLivres">–</b><span id="mLivresRot">Sábados com vaga</span></div>
       <div><b id="mAguardando">–</b><span>Aguardando resposta</span></div>
     </div>
     <div class="cal" id="cal" role="group" aria-label="Calendário do mês"></div>
-    <p class="legenda"><span><i class="f"></i>Casamento fechado</span><span><i class="a"></i>Proposta em aberto</span><span><i class="s"></i>Sábado</span></p>
+    <p class="legenda"><span><i class="f"></i>Casamento fechado</span><span><i class="a"></i>Proposta em aberto</span><span><i class="c"></i>Dia cheio (2)</span><span><i class="s"></i>Sábado</span></p>
     <p class="vendas" id="mesVendas"></p>
     <div class="secao" id="mesListaTit">Neste mês</div>
     <div class="mes-lista" id="mesLista"></div>
@@ -381,11 +401,22 @@
   <!-- CLIENTES: os casais que fecharam -->
   <div id="abaClientes" role="tabpanel" hidden>
     <h2 class="titulo">Seus clientes</h2>
-    <div class="numeros" id="resumo" role="group" aria-label="Resumo dos fechamentos">
-      <div><b id="rFechadas">–</b><span>Casamentos fechados</span></div>
-      <div><b id="rMes">–</b><span id="rMesRot">Fechou este mês</span></div>
-      <div class="total"><b id="rTotal">–</b><span>Total fechado</span></div>
+    <div class="filtros dois" id="cliBase" role="group" aria-label="Contar pela data">
+      <button type="button" data-base="evento" aria-pressed="true">Data do casamento</button>
+      <button type="button" data-base="fechou" aria-pressed="false">Data em que fechou</button>
     </div>
+    <div class="periodos" id="cliPeriodo" role="group" aria-label="Período"></div>
+    <div class="duas datas-livres" id="cliDatas" hidden>
+      <label class="campo"><span>De</span><input type="date" id="cliDe"></label>
+      <label class="campo"><span>Até</span><input type="date" id="cliAte"></label>
+    </div>
+    <div class="numeros" id="resumo" role="group" aria-label="Faturamento do período">
+      <div><b id="rFechadas">–</b><span id="rFechadasRot">Casamentos</span></div>
+      <div><b id="rMedio">–</b><span>Ticket médio</span></div>
+      <div class="total"><b id="rTotal">–</b><span>Faturamento</span></div>
+    </div>
+    <p class="periodo-txt" id="cliPeriodoTxt"></p>
+    <div id="cliMeses"></div>
     <div id="clientes"></div>
   </div>
 </section>
@@ -545,6 +576,8 @@
 
   var propostas = [], filtro = 'abertas', pedido = 0, ultimaCarga = 0, carregada = false;   // lista
   var aba = 'agenda', mesVisto = null, diaSel = '';                                       // abas e agenda
+  var POR_DIA = 2;                                                                        // ela consegue fazer até 2 casamentos no mesmo dia
+  var cli = { base: 'evento', periodo: 'tudo', de: '', ate: '' };                          // filtros da aba Clientes
   var editando = null, modelo = null, sujo = false, sugestao = '';                       // editor
   var fechando = null, fx = { opcao: '', pacote: '', auto: '' };                         // folha "Fechou?"
 
@@ -554,8 +587,8 @@
   function logado() { return !!(sessao && sessao.token && sessao.exp > Date.now() / 1000); }
   function sair(msg) {
     sessao = null; try { localStorage.removeItem(CHAVE); } catch (e) {}
-    sujo = false; propostas = []; carregada = false; modelo = null; editando = null; aba = 'agenda'; mesVisto = null; diaSel = '';
-    ['rFechadas', 'rMes', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando'].forEach(function (id) { $(id).textContent = '–'; });
+    sujo = false; propostas = []; carregada = false; modelo = null; editando = null; aba = 'agenda'; mesVisto = null; diaSel = ''; cli = { base: 'evento', periodo: 'tudo', de: '', ate: '' };
+    ['rFechadas', 'rMedio', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando'].forEach(function (id) { $(id).textContent = '–'; });
     fecharFolhas(); semToast(); toastDepois = '';
     mostrar('vLogin');
     $('loginErro').textContent = msg || ''; $('loginErro').hidden = !msg;
@@ -724,41 +757,133 @@
   function ordemData(a, b) { return (a.dados.data || '').localeCompare(b.dados.data || ''); }
   function somaFechado(lista) { return lista.reduce(function (a, p) { return a + valorFechado(p); }, 0); }
 
-  // ---------- clientes: os casais que fecharam ----------
+  // ---------- clientes: os casais que fecharam, com filtros de data para o faturamento ----------
+  var PERIODOS = {
+    evento: [['tudo', 'Tudo'], ['mes', 'Este mês'], ['prox', 'Próximo mês'], ['ano', 'Este ano'], ['anoprox', 'Ano que vem'], ['datas', 'Escolher datas']],
+    fechou: [['tudo', 'Tudo'], ['mes', 'Este mês'], ['mespass', 'Mês passado'], ['ano', 'Este ano'], ['anopass', 'Ano passado'], ['datas', 'Escolher datas']]
+  };
+  function fimDoMes(y, m) { return isoLocal(new Date(y, m + 1, 0)); }
+  function intervalo() {   // [de, até] em AAAA-MM-DD; vazio = sem limite
+    var h = new Date(), y = h.getFullYear(), m = h.getMonth();
+    switch (cli.periodo) {
+      case 'mes': return [chaveMes(y, m) + '-01', fimDoMes(y, m)];
+      case 'prox': var p = new Date(y, m + 1, 1); return [chaveMes(p.getFullYear(), p.getMonth()) + '-01', fimDoMes(p.getFullYear(), p.getMonth())];
+      case 'mespass': var a = new Date(y, m - 1, 1); return [chaveMes(a.getFullYear(), a.getMonth()) + '-01', fimDoMes(a.getFullYear(), a.getMonth())];
+      case 'ano': return [y + '-01-01', y + '-12-31'];
+      case 'anoprox': return [(y + 1) + '-01-01', (y + 1) + '-12-31'];
+      case 'anopass': return [(y - 1) + '-01-01', (y - 1) + '-12-31'];
+      case 'datas': return [cli.de || '', cli.ate || ''];
+      default: return ['', ''];
+    }
+  }
+  function dataBase(p) { return cli.base === 'fechou' ? String(p.fechado_em || '').slice(0, 10) : (p.dados && p.dados.data) || ''; }
+  function fechadasDoFiltro() {
+    var iv = intervalo(), todas = cli.periodo === 'tudo' || (cli.periodo === 'datas' && !iv[0] && !iv[1]);
+    return propostas.filter(function (p) {
+      if (etapaDe(p) !== 'fechada') return false;
+      if (todas) return true;
+      var d = dataBase(p);
+      return !!d && (!iv[0] || d >= iv[0]) && (!iv[1] || d <= iv[1]);
+    });
+  }
+  function pintarFiltrosClientes() {
+    document.querySelectorAll('#cliBase [data-base]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-base') === cli.base)); });
+    var box = $('cliPeriodo'), lista = PERIODOS[cli.base];
+    if (!lista.some(function (x) { return x[0] === cli.periodo; })) cli.periodo = 'tudo';
+    limparNo(box);
+    lista.forEach(function (x) {
+      var b = botao(null, x[1]); b.setAttribute('aria-pressed', String(x[0] === cli.periodo));
+      b.onclick = function () { cli.periodo = x[0]; desenharClientes(); };
+      box.appendChild(b);
+    });
+    $('cliDatas').hidden = cli.periodo !== 'datas';
+    $('cliDe').value = cli.de; $('cliAte').value = cli.ate;
+  }
+  document.querySelectorAll('#cliBase [data-base]').forEach(function (b) {
+    b.addEventListener('click', function () { cli.base = b.getAttribute('data-base'); desenharClientes(); });
+  });
+  $('cliDe').addEventListener('change', function () { cli.de = this.value; desenharClientes(); });
+  $('cliAte').addEventListener('change', function () { cli.ate = this.value; desenharClientes(); });
+
   function desenharResumo() {
-    var mes = hojeISO().slice(0, 7), fechadas = propostas.filter(function (p) { return etapaDe(p) === 'fechada'; });
-    var doMes = fechadas.filter(function (p) { return mesDe(p.fechado_em) === mes; });
-    $('rFechadas').textContent = fechadas.length;
-    $('rMes').textContent = doMes.length;
-    $('rMesRot').textContent = 'Fechou este mês' + (doMes.length ? ' · ' + dinheiro(somaFechado(doMes)) : '');
-    $('rTotal').textContent = dinheiro(somaFechado(fechadas));
+    var lista = fechadasDoFiltro(), total = somaFechado(lista);
+    $('rFechadas').textContent = lista.length;
+    $('rFechadasRot').textContent = lista.length === 1 ? 'Casamento' : 'Casamentos';
+    $('rMedio').textContent = lista.length ? dinheiro(Math.round(total / lista.length)) : '–';
+    $('rTotal').textContent = dinheiro(total);
     ajustarTotal();
+    var iv = intervalo(), txt = $('cliPeriodoTxt'), base = cli.base === 'fechou' ? 'pela data em que fechou' : 'pela data do casamento';
+    limparNo(txt);
+    if (cli.periodo === 'tudo' || (!iv[0] && !iv[1])) txt.appendChild(document.createTextNode('Todos os casamentos fechados.'));
+    else {
+      txt.appendChild(document.createTextNode(iv[0] && iv[1] ? 'De ' : (iv[0] ? 'A partir de ' : 'Até ')));
+      if (iv[0]) txt.appendChild(el('b', null, dataCurta(iv[0])));
+      if (iv[0] && iv[1]) txt.appendChild(document.createTextNode(' a '));
+      if (iv[1]) txt.appendChild(el('b', null, dataCurta(iv[1])));
+      txt.appendChild(document.createTextNode(', ' + base + '.'));
+    }
   }
   function ajustarTotal() {   // um total grande encolhe até caber no quadro
-    var b = $('rTotal'), t = 1.8;
-    b.style.fontSize = '';
-    while (t > 1.05 && b.scrollWidth > b.clientWidth) { t -= 0.1; b.style.fontSize = t.toFixed(2) + 'rem'; }
+    ['rTotal', 'rMedio'].forEach(function (id) {
+      var b = $(id), t = 1.8;
+      b.style.fontSize = '';
+      while (t > 1.05 && b.scrollWidth > b.clientWidth) { t -= 0.1; b.style.fontSize = t.toFixed(2) + 'rem'; }
+    });
   }
   window.addEventListener('resize', ajustarTotal);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTotal);
   function secao(titulo, nota) { var s = el('div', 'secao', titulo); if (nota) s.appendChild(el('small', null, String(nota))); return s; }
+
+  // faturamento mês a mês do período (tocar num mês filtra só ele)
+  function desenharMeses(lista) {
+    var box = $('cliMeses'); limparNo(box);
+    var por = {};
+    lista.forEach(function (p) { var k = dataBase(p).slice(0, 7); if (!k) return; por[k] = por[k] || { n: 0, v: 0 }; por[k].n++; por[k].v += valorFechado(p); });
+    var meses = Object.keys(por).sort();
+    if (meses.length < 2) return;
+    var max = Math.max.apply(null, meses.map(function (k) { return por[k].v; })) || 1;
+    box.appendChild(secao('Mês a mês', cli.base === 'fechou' ? 'pelo dia em que fechou' : 'pela data do casamento'));
+    var g = el('div', 'mes-a-mes');
+    meses.forEach(function (k) {
+      var y = +k.slice(0, 4), m = +k.slice(5, 7) - 1, row = botao('linha-mes');
+      row.setAttribute('aria-label', nomeMes(y, m) + ': ' + por[k].n + ' casamentos, ' + dinheiro(por[k].v));
+      row.appendChild(el('span', 'm', nomeMes(y, m, true) + ' ' + String(y).slice(2)));
+      var tr = el('span', 'trilho'), barra = el('i'); barra.style.width = Math.max(3, Math.round(por[k].v / max * 100)) + '%'; tr.appendChild(barra); row.appendChild(tr);
+      var v = el('span', 'v', dinheiro(por[k].v)); v.appendChild(el('small', null, por[k].n + (por[k].n === 1 ? ' casamento' : ' casamentos'))); row.appendChild(v);
+      row.onclick = function () { cli.periodo = 'datas'; cli.de = k + '-01'; cli.ate = fimDoMes(y, m); desenharClientes(); };
+      g.appendChild(row);
+    });
+    box.appendChild(g);
+  }
+
   function desenharClientes() {
+    pintarFiltrosClientes(); desenharResumo();
     var box = $('clientes'), hoje = hojeISO(); limparNo(box);
-    var fechadas = propostas.filter(function (p) { return etapaDe(p) === 'fechada'; });
-    if (!fechadas.length) {
+    var todasFechadas = propostas.filter(function (p) { return etapaDe(p) === 'fechada'; });
+    var fechadas = fechadasDoFiltro();
+    desenharMeses(fechadas);
+    if (!todasFechadas.length) {
       var v = el('div', 'vazio'); v.appendChild(el('b', null, 'Nenhum casamento fechado ainda'));
       v.appendChild(el('span', null, 'Quando um casal fechar, toque em “Fechou?” na proposta. Ele aparece aqui e na agenda.'));
       box.appendChild(v); return;
+    }
+    if (!fechadas.length) {
+      var nv = el('div', 'vazio'); nv.appendChild(el('b', null, 'Nenhum casamento neste período'));
+      nv.appendChild(el('span', null, 'Troque o período ou toque em “Tudo”.'));
+      box.appendChild(nv); return;
     }
     var prox = fechadas.filter(function (p) { return p.dados.data && p.dados.data >= hoje; }).sort(ordemData);
     var sem = fechadas.filter(function (p) { return !p.dados.data; });
     var pass = fechadas.filter(function (p) { return p.dados.data && p.dados.data < hoje; }).sort(ordemData).reverse();
     function grupo(lista) { var g = el('div', 'cards'); lista.forEach(function (p) { g.appendChild(cartaoCliente(p)); }); return g; }
-    box.appendChild(secao('Próximos casamentos', prox.length ? prox.length + (prox.length === 1 ? ' data' : ' datas') : 'nenhuma data pela frente'));
-    if (prox.length) box.appendChild(grupo(prox));
+    if (prox.length || cli.periodo === 'tudo') {
+      box.appendChild(secao('Próximos casamentos', prox.length ? prox.length + (prox.length === 1 ? ' data' : ' datas') : 'nenhuma data pela frente'));
+      if (prox.length) box.appendChild(grupo(prox));
+    }
     if (sem.length) { box.appendChild(secao('Sem data definida', sem.length)); box.appendChild(grupo(sem)); }
     if (pass.length) {
       var det = el('details', 'passados'), sum = el('summary');
+      det.open = cli.periodo !== 'tudo';   // com um período escolhido, a lista já vem aberta
       sum.appendChild(el('span', null, 'Já aconteceram')); sum.appendChild(el('small', null, pass.length + (pass.length === 1 ? ' casamento' : ' casamentos')));
       det.appendChild(sum); det.appendChild(grupo(pass)); box.appendChild(det);
     }
@@ -772,6 +897,7 @@
     if (d.local) abrir.appendChild(el('span', 'sub', d.local));
     abrir.appendChild(el('span', 'valor', dinheiro(valorFechado(p))));
     var rot = rotulosFechamento(p); if (rot.length) abrir.appendChild(el('span', 'selo fechada', rot.join(' · ')));
+    if (p.fechado_em) abrir.appendChild(el('span', 'fechou-em', 'Fechou em ' + dataCurta(p.fechado_em)));
     c.appendChild(abrir);
     var ac = el('div', 'acoes');
     var bCp = botao('b b-pq b-ouro', 'Copiar link'); bCp.onclick = function () { copiarLink(p); };
@@ -792,13 +918,14 @@
     propostas.forEach(function (p) { var d = p.dados && p.dados.data; if (d && etapaDe(p) !== 'perdida') (idx[d] = idx[d] || []).push(p); });
     return idx;
   }
-  // números de um mês: casamentos fechados, propostas aguardando e sábados ainda livres (de hoje em diante)
+  // números de um mês: casamentos fechados, propostas aguardando e sábados (de hoje em diante) com vaga e livres.
+  // Cabem até POR_DIA casamentos por dia: o sábado só fica sem vaga quando chega nesse número.
   function resumoMes(y, m, idx, hoje) {
-    var chave = chaveMes(y, m), r = { fechados: 0, valor: 0, abertas: 0, sabLivres: 0, passado: chave < hoje.slice(0, 7) };
+    var chave = chaveMes(y, m), r = { fechados: 0, valor: 0, abertas: 0, sabVaga: 0, sabLivres: 0, sabFuturos: 0, passado: chave < hoje.slice(0, 7) };
     for (var dia = 1, ultimo = new Date(y, m + 1, 0).getDate(); dia <= ultimo; dia++) {
-      var iso = chave + '-' + dois(dia), lista = idx[iso] || [], ocupadoDia = false;
-      lista.forEach(function (p) { if (etapaDe(p) === 'fechada') { r.fechados++; r.valor += valorFechado(p); ocupadoDia = true; } else r.abertas++; });
-      if (!ocupadoDia && iso >= hoje && new Date(y, m, dia).getDay() === 6) r.sabLivres++;
+      var iso = chave + '-' + dois(dia), lista = idx[iso] || [], noDia = 0;
+      lista.forEach(function (p) { if (etapaDe(p) === 'fechada') { r.fechados++; r.valor += valorFechado(p); noDia++; } else r.abertas++; });
+      if (iso >= hoje && new Date(y, m, dia).getDay() === 6) { r.sabFuturos++; if (noDia < POR_DIA) r.sabVaga++; if (!noDia) r.sabLivres++; }
     }
     return r;
   }
@@ -809,7 +936,8 @@
     $('mesHoje').hidden = y === atual.y && m === atual.m;
     $('mCasamentos').textContent = r.fechados;
     $('mCasamentosRot').textContent = r.fechados ? 'Casamentos · ' + dinheiro(r.valor) : 'Casamentos fechados';
-    $('mLivres').textContent = r.passado ? '–' : r.sabLivres;
+    $('mLivres').textContent = r.passado ? '–' : r.sabVaga;
+    $('mLivresRot').textContent = 'Sábados com vaga' + (!r.passado && r.sabLivres !== r.sabVaga ? ' · ' + r.sabLivres + (r.sabLivres === 1 ? ' livre' : ' livres') : '');
     $('mAguardando').textContent = r.abertas;
 
     // calendário
@@ -820,11 +948,14 @@
     for (var dia = 1, ultimo = new Date(y, m + 1, 0).getDate(); dia <= ultimo; dia++) {
       (function (dia) {
         var iso = chave + '-' + dois(dia), lista = idx[iso] || [];
-        var fech = lista.some(function (p) { return etapaDe(p) === 'fechada'; }), ab = lista.some(function (p) { return etapaDe(p) !== 'fechada'; });
-        var cls = 'dia' + (iso < hoje ? ' passado' : '') + (iso === hoje ? ' hoje' : '') + (new Date(y, m, dia).getDay() === 6 ? ' sab' : '') + (fech ? ' fechado' : '') + (ab ? ' aberto' : '');
+        var nf = lista.filter(function (p) { return etapaDe(p) === 'fechada'; }).length, ab = lista.some(function (p) { return etapaDe(p) !== 'fechada'; });
+        var cls = 'dia' + (iso < hoje ? ' passado' : '') + (iso === hoje ? ' hoje' : '') + (new Date(y, m, dia).getDay() === 6 ? ' sab' : '') + (nf ? ' fechado' : '') + (nf >= POR_DIA ? ' cheio' : '') + (ab ? ' aberto' : '');
         var c = lista.length ? botao(cls) : el('span', cls);
         c.appendChild(el('span', 'n', String(dia)));
-        var pts = el('span', 'pontos'); if (fech) pts.appendChild(el('i', 'f')); if (ab) pts.appendChild(el('i', 'a')); c.appendChild(pts);
+        var pts = el('span', 'pontos');
+        for (var q = 0; q < Math.min(nf, POR_DIA); q++) pts.appendChild(el('i', 'f'));
+        if (ab && nf < POR_DIA) pts.appendChild(el('i', 'a'));
+        c.appendChild(pts);
         if (lista.length) {
           c.setAttribute('aria-pressed', String(diaSel === iso));
           c.setAttribute('aria-label', 'Dia ' + dia + ': ' + lista.map(function (p) { return p.dados.cliente || 'sem nome'; }).join(', '));
@@ -865,11 +996,11 @@
     for (var k = 0; k < 12; k++) {
       (function (k) {
         var dt = new Date(atual.y, atual.m + k, 1), yy = dt.getFullYear(), mm = dt.getMonth(), rr = resumoMes(yy, mm, idx, hoje);
-        var chip = botao('mes-chip' + (rr.fechados && !rr.sabLivres ? ' cheio' : ''));
+        var chip = botao('mes-chip' + (rr.sabFuturos && !rr.sabVaga ? ' cheio' : ''));
         chip.setAttribute('aria-pressed', String(yy === y && mm === m));
         chip.appendChild(el('b', null, nomeMes(yy, mm, true) + ((k === 0 || mm === 0) ? ' ' + yy : '')));
         chip.appendChild(el('span', null, rr.fechados + (rr.fechados === 1 ? ' casamento' : ' casamentos')));
-        chip.appendChild(el('span', 'livre', rr.sabLivres ? rr.sabLivres + (rr.sabLivres === 1 ? ' sábado livre' : ' sábados livres') : 'sem sábado livre'));
+        chip.appendChild(el('span', 'livre', rr.sabVaga ? rr.sabVaga + (rr.sabVaga === 1 ? ' sábado com vaga' : ' sábados com vaga') : 'sábados cheios'));
         if (rr.abertas) chip.appendChild(el('span', 'ab', rr.abertas + ' aguardando'));
         chip.onclick = function () { irParaMes(yy, mm); };
         ms.appendChild(chip);
@@ -900,8 +1031,9 @@
     return r;
   }
   function textoData(r) {
-    var partes = [];
-    if (r.fechadas.length) partes.push('Neste dia você já tem casamento fechado: ' + r.fechadas.join(', ') + '.');
+    var partes = [], n = r.fechadas.length;
+    if (n >= POR_DIA) partes.push('Este dia já está cheio: ' + n + ' casamentos fechados (' + r.fechadas.join(', ') + ').');
+    else if (n) partes.push('Neste dia você já tem 1 casamento fechado (' + r.fechadas[0] + '). Ainda cabe mais um, se os horários permitirem.');
     if (r.abertas.length) partes.push((r.fechadas.length ? 'E ' : 'Neste dia ') + (r.abertas.length === 1 ? 'há 1 proposta aguardando resposta' : 'há ' + r.abertas.length + ' propostas aguardando resposta') + ' (' + r.abertas.join(', ') + ').');
     return partes.join(' ');
   }
@@ -1356,7 +1488,8 @@
     var quem = [d.cliente || 'Sem nome', d.data && dataCurta(d.data)].filter(Boolean).join(' · ');
     $('fxQuem').textContent = quem; $('nfQuem').textContent = quem;
     var ja = naData(d.data, p.id).fechadas;
-    $('fxConflito').textContent = ja.length ? 'Atenção: neste dia você já tem casamento fechado (' + ja.join(', ') + '). Confira o horário antes de confirmar.' : '';
+    $('fxConflito').textContent = ja.length >= POR_DIA ? 'Atenção: este dia já tem ' + ja.length + ' casamentos fechados (' + ja.join(', ') + ').'
+      : ja.length ? 'Este será o 2º casamento do dia (já tem ' + ja[0] + '). Confira os horários e o deslocamento.' : '';
     $('fxConflito').hidden = !ja.length;
     limparNo(box);
     ligadas.map(function (o) { return o.k; }).concat(['outro']).forEach(function (k) {
