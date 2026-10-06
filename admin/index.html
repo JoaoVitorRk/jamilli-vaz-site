@@ -189,6 +189,8 @@
   .dia.cheio.passado { background: rgba(196, 227, 207, 0.12); }
   .legenda i.c { background: rgba(196, 227, 207, 0.55); border-radius: 2px; }
 
+  .evt .d small.h { margin-top: 3px; color: var(--dourado-claro); letter-spacing: 0.02em; text-transform: none; font-size: 0.72rem; }
+
   /* ---------- clientes ---------- */
   .filtros.dois { grid-template-columns: 1fr 1fr; margin-top: 4px; }
   .periodos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
@@ -239,14 +241,14 @@
   .duas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
   @media (max-width: 520px) { .duas.quebra { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
   @media (max-width: 339px) { .duas.quebra-p { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
-  input[type=text], input[type=password], input[type=date], input[type=number], textarea {
+  input[type=text], input[type=password], input[type=date], input[type=time], input[type=number], textarea {
     display: block; width: 100%; min-width: 0; min-height: 52px; padding: 12px 14px; border-radius: 12px;
     border: 1px solid rgba(228, 206, 158, 0.34); background: var(--campo); font-size: 16px; line-height: 1.4;
   }
   input::placeholder, textarea::placeholder { color: rgba(246, 241, 233, 0.36); }
   input:focus, textarea:focus { outline: none; border-color: var(--dourado-claro); }
   textarea { resize: vertical; min-height: 96px; }
-  input[type=date] { color-scheme: dark; -webkit-appearance: none; appearance: none; padding-inline: 12px 10px; }
+  input[type=date], input[type=time] { color-scheme: dark; -webkit-appearance: none; appearance: none; padding-inline: 12px 10px; }
   input.falta, textarea.falta, .dinheiro.falta { border-color: var(--erro); box-shadow: 0 0 0 1px var(--erro); }   /* textarea: nome do adicional */
 
   .dinheiro { display: flex; align-items: center; min-width: 0; border-radius: 12px; border: 1px solid rgba(198, 165, 103, 0.32); background: var(--campo); }
@@ -275,7 +277,7 @@
   .opc.off .opc-tit { opacity: 0.5; }
   .opc.off .opc-corpo { display: none; }
   .opc-corpo { display: grid; gap: 12px; }
-  .sem-rec .rec { display: none; }
+  .sem-rec .rec, .sem-cer .cer { display: none; }
   .sugerir { justify-self: start; min-height: 44px; padding: 8px 18px; border-radius: 999px; border: 1px dashed var(--linha-forte); background: none; color: var(--suave); font-size: 0.92rem; cursor: pointer; }
   .sugerir[aria-pressed="true"] { border-style: solid; border-color: var(--dourado); background: rgba(198, 165, 103, 0.18); color: var(--dourado-claro); font-weight: 500; }
   .recepcao-linha { border-top: 1px solid rgba(198, 165, 103, 0.16); padding-top: 14px; min-height: 62px; }
@@ -445,15 +447,18 @@
     <div class="passo" data-so="proposta">
       <h3><span class="n">1</span> Para quem é?</h3>
       <label class="campo"><span>Nome do casal</span><input type="text" id="fCliente" maxlength="120" placeholder="Ana &amp; João" autocapitalize="words" enterkeyhint="done"></label>
-      <div class="duas quebra">
-        <label class="campo"><span>Data do evento</span><input type="date" id="fData"><small class="aviso-data" id="fDataAviso" role="status" hidden></small></label>
-        <label class="campo"><span>Local</span><input type="text" id="fLocal" maxlength="200" placeholder="Igreja ou cidade" enterkeyhint="done"></label>
+      <div class="duas">
+        <label class="campo"><span>Data do evento</span><input type="date" id="fData"></label>
+        <label class="campo"><span>Horário</span><input type="time" id="fHora" step="300"></label>
       </div>
+      <small class="aviso-data" id="fDataAviso" role="status" hidden></small>
+      <label class="campo"><span>Local</span><input type="text" id="fLocal" maxlength="200" placeholder="Igreja ou cidade" enterkeyhint="done"></label>
     </div>
 
     <div class="passo" id="passoOpcoes">
       <h3><span class="n" data-so="proposta">2</span> Quais opções oferecer?</h3>
       <div id="fOpcoes"></div>
+      <label class="liga-linha recepcao-linha"><span>Mostrar o valor só da cerimônia <small>Desligue para apresentar direto o pacote com recepção</small></span><input type="checkbox" class="chave" role="switch" id="fCerimonia"></label>
       <label class="liga-linha recepcao-linha"><span>Mostrar o pacote com recepção <small>+2h de música na recepção ou jantar</small></span><input type="checkbox" class="chave" role="switch" id="fRecepcao"></label>
       <p class="dica">“Sugerir esta” destaca a opção na proposta com o selo “Minha sugestão para vocês”. É opcional.</p>
     </div>
@@ -490,6 +495,7 @@
 
         <div class="grupo">
           <b>Na página da proposta</b>
+          <label class="liga-linha"><span>Começar pela opção mais cara <small>Recomendado: a página mostra primeiro a opção de maior valor</small></span><input type="checkbox" class="chave" role="switch" id="fOrdem"></label>
           <label class="campo"><span>Tipo de evento</span><input type="text" id="fTipo" maxlength="80" placeholder="Casamento" enterkeyhint="done"></label>
           <label class="liga-linha"><span>Mostrar os vídeos</span><input type="checkbox" class="chave" role="switch" id="sVideos"></label>
           <label class="liga-linha"><span>Mostrar os depoimentos</span><input type="checkbox" class="chave" role="switch" id="sDepoimentos"></label>
@@ -619,6 +625,7 @@
     return isFinite(n) ? Math.round(n * 100) / 100 : null;
   }
   function temValor(v) { return typeof v === 'number' && v > 0; }
+  function horaTxt(h) { var p = String(h || '').split(':'); return p.length === 2 ? Number(p[0]) + 'h' + (p[1] === '00' ? '' : p[1]) : ''; }
   function dataCurta(iso) { if (!iso) return ''; var p = String(iso).slice(0, 10).split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : ''; }
   function isoLocal(d) { return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
   function hojeMais(dias) { var d = new Date(); d.setDate(d.getDate() + dias); return isoLocal(d); }
@@ -669,7 +676,7 @@
     OPCOES.forEach(function (o) {
       var x = d.opcoes && d.opcoes[o.k];
       if (!x || !x.on) return;
-      if (temValor(x.cerimonia)) vs.push(x.cerimonia);
+      if (d.mostrar_cerimonia !== false && temValor(x.cerimonia)) vs.push(x.cerimonia);
       if (d.mostrar_recepcao !== false && temValor(x.cerimonia_recepcao)) vs.push(x.cerimonia_recepcao);
     });
     if (!vs.length) return '';
@@ -754,7 +761,7 @@
     var s = new Date(y, m, 1).toLocaleDateString('pt-BR', curto ? { month: 'short' } : { month: 'long', year: 'numeric' }).replace(/\./g, '');
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
-  function ordemData(a, b) { return (a.dados.data || '').localeCompare(b.dados.data || ''); }
+  function ordemData(a, b) { return ((a.dados.data || '') + (a.dados.hora || '')).localeCompare((b.dados.data || '') + (b.dados.hora || '')); }
   function somaFechado(lista) { return lista.reduce(function (a, p) { return a + valorFechado(p); }, 0); }
 
   // ---------- clientes: os casais que fecharam, com filtros de data para o faturamento ----------
@@ -892,7 +899,7 @@
     var d = p.dados || {}, c = el('article', 'pcard cliente');
     var abrir = botao('abrir'); abrir.title = 'Abrir a proposta'; abrir.onclick = function () { abrirEditor(p); };
     abrir.appendChild(el('span', 'nome', d.cliente || 'Sem nome'));
-    if (d.data) { var q = el('span', 'quando'); q.appendChild(el('b', null, diaSemana(d.data) + ' · ' + dataCurta(d.data))); q.appendChild(document.createTextNode(' · ' + faltam(d.data))); abrir.appendChild(q); }
+    if (d.data) { var q = el('span', 'quando'); q.appendChild(el('b', null, diaSemana(d.data) + ' · ' + dataCurta(d.data) + (d.hora ? ' · ' + horaTxt(d.hora) : ''))); q.appendChild(document.createTextNode(' · ' + faltam(d.data))); abrir.appendChild(q); }
     else abrir.appendChild(el('span', 'sub', 'Sem data'));
     if (d.local) abrir.appendChild(el('span', 'sub', d.local));
     abrir.appendChild(el('span', 'valor', dinheiro(valorFechado(p))));
@@ -988,7 +995,7 @@
     var datas = Object.keys(idx).filter(function (d) { return d.slice(0, 7) === chave && (!diaSel || d === diaSel); }).sort();
     if (!datas.length) lista.appendChild(el('p', 'nada', r.passado ? 'Nenhum casamento neste mês.' : 'Nenhum casamento nem proposta com data neste mês.'));
     datas.forEach(function (d) {
-      idx[d].slice().sort(function (a, b) { return (etapaDe(a) === 'fechada' ? 0 : 1) - (etapaDe(b) === 'fechada' ? 0 : 1); }).forEach(function (p) { lista.appendChild(linhaEvento(p)); });
+      idx[d].slice().sort(function (a, b) { return (a.dados.hora || '99').localeCompare(b.dados.hora || '99') || (etapaDe(a) === 'fechada' ? 0 : 1) - (etapaDe(b) === 'fechada' ? 0 : 1); }).forEach(function (p) { lista.appendChild(linhaEvento(p)); });
     });
 
     // próximos 12 meses: cheio ou com vaga, de relance
@@ -1010,7 +1017,7 @@
   function linhaEvento(p) {
     var d = p.dados || {}, et = etapaDe(p), row = botao('evt ' + et);
     row.onclick = function () { abrirEditor(p); };
-    var dd = el('span', 'd'); dd.appendChild(el('b', null, String(dataDe(d.data).getDate()))); dd.appendChild(el('small', null, diaSemana(d.data))); row.appendChild(dd);
+    var dd = el('span', 'd'); dd.appendChild(el('b', null, String(dataDe(d.data).getDate()))); dd.appendChild(el('small', null, diaSemana(d.data))); if (d.hora) dd.appendChild(el('small', 'h', horaTxt(d.hora))); row.appendChild(dd);
     var tx = el('span', 't'); tx.appendChild(el('b', null, d.cliente || 'Sem nome'));
     tx.appendChild(el('span', null, et === 'fechada' ? ['Fechado'].concat(rotulosFechamento(p)).join(' · ') : 'Aguardando resposta' + (p.views ? ' · aberta ' + p.views + (p.views === 1 ? ' vez' : ' vezes') : ' · ainda não abriu')));
     if (d.local) tx.appendChild(el('span', null, d.local));
@@ -1026,7 +1033,8 @@
     propostas.forEach(function (p) {
       if (p.id === menosId || !p.dados || p.dados.data !== iso) return;
       var e = etapaDe(p);
-      if (e === 'fechada') r.fechadas.push(p.dados.cliente || 'sem nome'); else if (e === 'aberta') r.abertas.push(p.dados.cliente || 'sem nome');
+      var nome = (p.dados.cliente || 'sem nome') + (p.dados.hora ? ', às ' + horaTxt(p.dados.hora) : '');
+      if (e === 'fechada') r.fechadas.push(nome); else if (e === 'aberta') r.abertas.push(nome);
     });
     return r;
   }
@@ -1079,7 +1087,7 @@
     var abrir = botao('abrir'); abrir.title = 'Abrir a proposta';
     abrir.onclick = function () { abrirEditor(p); };
     abrir.appendChild(el('span', 'nome', d.cliente || 'Sem nome'));
-    abrir.appendChild(el('span', 'sub', [d.data && dataCurta(d.data), d.local].filter(Boolean).join(' · ') || 'Sem data'));
+    abrir.appendChild(el('span', 'sub', [d.data && dataCurta(d.data), d.hora && horaTxt(d.hora), d.local].filter(Boolean).join(' · ') || 'Sem data'));
     if (et === 'fechada') {
       abrir.appendChild(el('span', 'valor', dinheiro(valorFechado(p))));
       abrir.appendChild(el('span', 'selo fechada', ['Fechada'].concat(rotulosFechamento(p)).join(' · ')));
@@ -1166,7 +1174,9 @@
     c.cer = caixaDinheiro('Valor da cerimônia — ' + o.rot); c.rec = caixaDinheiro('Valor com recepção — ' + o.rot);
     c.cer.input.addEventListener('input', function () { if (temValor(parseValor(c.cer.input.value))) OPCOES.forEach(function (x) { corrigir(C[x.k].cer.caixa); }); });
     var lRec = campo('Com recepção', c.rec.caixa); lRec.classList.add('rec');
-    duas.appendChild(campo('Cerimônia', c.cer.caixa)); duas.appendChild(lRec);
+    var lCer = campo('Cerimônia', c.cer.caixa); lCer.classList.add('cer');
+    c.rec.input.addEventListener('input', function () { if (temValor(parseValor(c.rec.input.value))) OPCOES.forEach(function (x) { corrigir(C[x.k].rec.caixa); }); });
+    duas.appendChild(lCer); duas.appendChild(lRec);
     c.sug = botao('sugerir', 'Sugerir esta'); c.sug.setAttribute('aria-pressed', 'false');
     corpo.appendChild(duas); corpo.appendChild(c.sug);
     c.bloco.appendChild(topo); c.bloco.appendChild(corpo);
@@ -1197,7 +1207,15 @@
     });
   }
   function pintarRecepcao() { $('passoOpcoes').classList.toggle('sem-rec', !$('fRecepcao').checked); }
-  $('fRecepcao').addEventListener('change', pintarRecepcao);
+  function pintarCerimonia() { $('passoOpcoes').classList.toggle('sem-cer', !$('fCerimonia').checked); }
+  $('fRecepcao').addEventListener('change', function () {
+    if (!$('fRecepcao').checked && !$('fCerimonia').checked) { $('fCerimonia').checked = true; pintarCerimonia(); toast('Pelo menos um dos valores precisa aparecer'); }
+    pintarRecepcao();
+  });
+  $('fCerimonia').addEventListener('change', function () {
+    if (!$('fCerimonia').checked && !$('fRecepcao').checked) { $('fRecepcao').checked = true; pintarRecepcao(); toast('Pelo menos um dos valores precisa aparecer'); }
+    pintarCerimonia();
+  });
 
   // adicionais: nome + preço opcional
   function linhaAdicional(a) {
@@ -1235,7 +1253,7 @@
     d = d || {};
     var ops = d.opcoes || {}, s = d.secoes || {};
     $('fCliente').value = d.cliente || ''; $('fCliente').classList.remove('falta');
-    $('fData').value = d.data || ''; $('fLocal').value = d.local || ''; $('fMensagem').value = d.mensagem || '';
+    $('fData').value = d.data || ''; $('fHora').value = d.hora || ''; $('fLocal').value = d.local || ''; $('fMensagem').value = d.mensagem || '';
     avisarData();
     OPCOES.forEach(function (o) {
       var x = ops[o.k] || {}, c = C[o.k];
@@ -1245,6 +1263,7 @@
       c.nome.value = x.nome || ''; c.clima.value = x.clima || ''; c.itens.value = x.itens || '';
     });
     $('fRecepcao').checked = d.mostrar_recepcao !== false; pintarRecepcao();
+    $('fCerimonia').checked = d.mostrar_cerimonia !== false || !$('fRecepcao').checked; pintarCerimonia();
     definirSugestao(d.sugestao && ops[d.sugestao] && ops[d.sugestao].on ? d.sugestao : '');
     atualizarTitulos();
     $('fInclui').value = d.inclui || '';
@@ -1254,6 +1273,7 @@
     $('fCondicoes').value = d.condicoes || ''; $('fValidade').value = d.validade || ''; $('mDias').value = d.validade_dias || 30;
     $('fObs').value = d.observacoes || ''; $('fTipo').value = d.tipo || '';
     $('sVideos').checked = s.videos !== false; $('sDepoimentos').checked = s.depoimentos !== false;
+    $('fOrdem').checked = d.ordem !== 'simples';
   }
 
   // monta os dados no formato que a API e a página da proposta usam
@@ -1265,9 +1285,9 @@
         cerimonia: parseValor(c.cer.input.value), cerimonia_recepcao: parseValor(c.rec.input.value) };
     });
     var d = {
-      cliente: $('fCliente').value.trim(), tipo: $('fTipo').value.trim(), data: $('fData').value, local: $('fLocal').value.trim(),
+      cliente: $('fCliente').value.trim(), tipo: $('fTipo').value.trim(), data: $('fData').value, hora: $('fHora').value, local: $('fLocal').value.trim(),
       mensagem: $('fMensagem').value.trim(),
-      opcoes: opcoes, mostrar_recepcao: $('fRecepcao').checked, sugestao: sugestao && opcoes[sugestao].on ? sugestao : '',
+      opcoes: opcoes, mostrar_cerimonia: $('fCerimonia').checked, mostrar_recepcao: $('fRecepcao').checked, ordem: $('fOrdem').checked ? 'cara' : 'simples', sugestao: sugestao && opcoes[sugestao].on ? sugestao : '',
       inclui: $('fInclui').value.trim(),
       adicionais: lerAdicionais().map(function (x) { return { nome: x.nome, descricao: x.descricao, valor: x.valor }; }),
       condicoes: $('fCondicoes').value.trim(), validade: $('fValidade').value, observacoes: $('fObs').value.trim(),
@@ -1275,7 +1295,7 @@
     };
     if (editando && editando.modelo) {
       d.validade_dias = Math.min(365, Math.max(1, Math.round(Number($('mDias').value)) || 30));
-      delete d.cliente; delete d.data; delete d.local; delete d.mensagem; delete d.validade;
+      delete d.cliente; delete d.data; delete d.hora; delete d.local; delete d.mensagem; delete d.validade;
     }
     return d;
   }
@@ -1366,11 +1386,13 @@
     if (!$('fCliente').value.trim()) { $('fCliente').classList.add('falta'); toast('Coloque o nome do casal'); focar($('fCliente')); return false; }
     var ligadas = OPCOES.filter(function (o) { return C[o.k].on.checked; });
     if (!ligadas.length) { toast('Ligue pelo menos uma opção'); C.simples.on.focus(); $('passoOpcoes').scrollIntoView({ block: 'start' }); return false; }
-    var comValor = ligadas.filter(function (o) { return temValor(parseValor(C[o.k].cer.input.value)); });
+    var verCer = $('fCerimonia').checked, verRec = $('fRecepcao').checked;
+    var comValor = ligadas.filter(function (o) { return (verCer && temValor(parseValor(C[o.k].cer.input.value))) || (verRec && temValor(parseValor(C[o.k].rec.input.value))); });
     if (!comValor.length) {   // opção ligada sem valor pode (a página mostra "Valor sob consulta"), mas uma delas precisa ter
-      ligadas.forEach(function (o) { C[o.k].cer.caixa.classList.add('falta'); });
-      toast('Coloque o valor da cerimônia em pelo menos uma opção');
-      focar(C[ligadas[0].k].cer.input); return false;
+      var qual = verCer ? 'cer' : 'rec';
+      ligadas.forEach(function (o) { C[o.k][qual].caixa.classList.add('falta'); });
+      toast(verCer ? 'Coloque o valor da cerimônia em pelo menos uma opção' : 'Coloque o valor com recepção em pelo menos uma opção');
+      focar(C[ligadas[0].k][qual].input); return false;
     }
     return validarAdicionais();
   }
@@ -1485,7 +1507,7 @@
     var d = p.dados || {}, box = $('fxOpcoes');
     var ligadas = OPCOES.filter(function (o) { return d.opcoes && d.opcoes[o.k] && d.opcoes[o.k].on; });
     var temRecepcao = d.mostrar_recepcao !== false && ligadas.some(function (o) { return temValor(d.opcoes[o.k].cerimonia_recepcao); });
-    var quem = [d.cliente || 'Sem nome', d.data && dataCurta(d.data)].filter(Boolean).join(' · ');
+    var quem = [d.cliente || 'Sem nome', d.data && dataCurta(d.data), d.hora && horaTxt(d.hora)].filter(Boolean).join(' · ');
     $('fxQuem').textContent = quem; $('nfQuem').textContent = quem;
     var ja = naData(d.data, p.id).fechadas;
     $('fxConflito').textContent = ja.length >= POR_DIA ? 'Atenção: este dia já tem ' + ja.length + ' casamentos fechados (' + ja.join(', ') + ').'
@@ -1498,7 +1520,7 @@
       box.appendChild(b);
     });
     fx.opcao = ligadas.length === 1 ? ligadas[0].k : (ligadas.length ? '' : 'outro');
-    fx.pacote = temRecepcao ? '' : 'cerimonia';
+    fx.pacote = temRecepcao ? (d.mostrar_cerimonia === false ? 'cerimonia_recepcao' : '') : 'cerimonia';
     fx.auto = '';
     $('fxValor').value = ''; $('fxValorCaixa').classList.remove('falta'); $('fxData').value = hojeMais(0); $('fxObs').value = '';
     $('nfMotivo').value = ''; $('fxErro').hidden = true; $('nfErro').hidden = true;

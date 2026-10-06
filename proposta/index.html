@@ -783,7 +783,9 @@
   function render(p) {
     var d = p.dados;
     var cliente = txt(d.cliente);
+    var hora = /^\d{2}:\d{2}$/.test(d.hora || '') ? Number(d.hora.slice(0, 2)) + 'h' + (d.hora.slice(3) === '00' ? '' : d.hora.slice(3)) : '';
     var dataEvento = dataLonga(d.data);
+    var dataHora = dataEvento && hora ? dataEvento + ', às ' + hora : dataEvento;
     var local = meio(txt(d.local)), tipo = meio(txt(d.tipo));
     document.title = 'Proposta' + (cliente ? ' · ' + cliente : '') + ' — Jamilli Vaz';
 
@@ -812,7 +814,7 @@
     }
     h1.setAttribute('data-tam-base', maior <= 9 ? 'g' : maior <= 16 ? 'm' : 'p');
     var meta = $('pMeta');
-    [dataEvento, local, tipo].forEach(function (x) { if (x) meta.appendChild(el('span', null, x)); });
+    [dataHora, local, tipo].forEach(function (x) { if (x) meta.appendChild(el('span', null, x)); });
     if (!meta.children.length) meta.hidden = true;
 
     // carta
@@ -837,7 +839,7 @@
 
     // resumo
     var resumo = $('pResumo');
-    [['Para', cliente], ['Evento', tipo], ['Data', dataEvento], ['Local', local]].forEach(function (par) {
+    [['Para', cliente], ['Evento', tipo], ['Data', dataHora], ['Local', local]].forEach(function (par) {
       if (!par[1]) return;
       var g = el('div'); g.appendChild(el('dt', null, par[0])); g.appendChild(el('dd', null, par[1])); resumo.appendChild(g);
     });
@@ -846,8 +848,19 @@
     // as opções ligadas, na ordem simples → média → completa
     var ops = d.opcoes || {};
     var ligadas = ORDEM.filter(function (k) { return ops[k] && ops[k].on; });
+    if (d.ordem !== 'simples') {
+      // a mais cara primeiro (regra da mentoria dela): pelo maior valor que aparece na página; empate, a mais completa antes
+      var maior = function (k) {
+        var o = ops[k], vs = [];
+        if (d.mostrar_cerimonia !== false || d.mostrar_recepcao === false) { if (valorOk(o.cerimonia)) vs.push(o.cerimonia); }
+        if (d.mostrar_recepcao !== false && valorOk(o.cerimonia_recepcao)) vs.push(o.cerimonia_recepcao);
+        return vs.length ? Math.max.apply(null, vs) : -1;
+      };
+      ligadas.sort(function (a, b) { return (maior(b) - maior(a)) || (ORDEM.indexOf(b) - ORDEM.indexOf(a)); });
+    }
     var n = ligadas.length;
     var comRecepcao = d.mostrar_recepcao !== false;
+    var comCerimonia = d.mostrar_cerimonia !== false || !comRecepcao;   // escondida só quando o pacote com recepção aparece
     var sugestao = ligadas.indexOf(d.sugestao) >= 0 ? d.sugestao : '';
     var alvo = $('pOpcoes');
     alvo.setAttribute('data-n', n);
@@ -890,7 +903,7 @@
         card.appendChild(ul);
       }
       var precos = el('div', 'op-precos');
-      if (valorOk(o.cerimonia)) precos.appendChild(preco('Cerimônia', o.cerimonia));
+      if (comCerimonia && valorOk(o.cerimonia)) precos.appendChild(preco('Cerimônia', o.cerimonia));
       if (comRecepcao && valorOk(o.cerimonia_recepcao)) precos.appendChild(preco('Cerimônia + recepção', o.cerimonia_recepcao, NOTA_RECEPCAO));
       else if (algumaRecepcao && n > 1) {
         // espaçador invisível para alinhar os preços entre os cards no computador: o mesmo esqueleto, sem valor nenhum (preço só vem da API)
