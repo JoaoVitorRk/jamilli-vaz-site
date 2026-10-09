@@ -83,7 +83,7 @@
 
   /* ---------- lista: resumo, filtros e cards ---------- */
   /* ---------- abas ---------- */
-  .abas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; margin: 4px 0 18px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
+  .abas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 4px; margin: 4px 0 18px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
   .abas button { min-height: 46px; padding: 0 1px; border: 0; border-radius: 12px; background: none; font-size: 0.84rem; font-weight: 500; color: var(--suave); cursor: pointer; }
   .abas button[aria-selected="true"] { background: var(--dourado); color: var(--noite); font-weight: 600; }
 
@@ -149,6 +149,22 @@
   .comp-linha .dl.sobe { color: var(--verde-claro); }
   .comp-linha .dl.desce { color: var(--erro); }
   .secao.mes-tit { margin-top: 30px; }
+
+  /* ---------- contatos (fase 5) ---------- */
+  /* 6 abas: no celular a faixa desliza para o lado (borda direita esmaecida mostra que tem mais) */
+  @media (max-width: 600px) {
+    .abas { display: flex; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+    .abas::-webkit-scrollbar { display: none; }
+    .abas button { flex: 0 0 auto; padding: 0 15px; font-size: 0.88rem; letter-spacing: 0; }
+  }
+  .lembrete .q span.atraso { color: var(--erro); }
+  .linha-mes.larga { grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) auto; }
+  .linha-mes.larga .m { font-family: var(--sans); font-size: 0.9rem; overflow-wrap: anywhere; }
+  .motivos-rel { margin-bottom: 16px; }
+  .motivos-rel .secao { margin-top: 4px; }
+  .envio .texto-link { justify-self: center; }
+  .ct-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .filtros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-top: 10px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
   .filtros button { min-height: 44px; padding: 0 2px; border: 0; border-radius: 12px; background: none; font-size: 0.86rem; font-weight: 500; color: var(--suave); cursor: pointer; white-space: nowrap; }
   .filtros button[aria-pressed="true"] { background: var(--ivory); color: var(--noite); font-weight: 600; }
@@ -433,6 +449,7 @@
   <nav class="abas" id="abas" role="tablist" aria-label="Partes do painel">
     <button type="button" role="tab" data-aba="hoje" aria-selected="true">Hoje</button>
     <button type="button" role="tab" data-aba="agenda" aria-selected="false">Agenda</button>
+    <button type="button" role="tab" data-aba="contatos" aria-selected="false">Contatos</button>
     <button type="button" role="tab" data-aba="propostas" aria-selected="false">Propostas</button>
     <button type="button" role="tab" data-aba="clientes" aria-selected="false">Clientes</button>
     <button type="button" role="tab" data-aba="financeiro" aria-selected="false">Financeiro</button>
@@ -480,6 +497,19 @@
     <div class="mes-lista" id="mesLista"></div>
     <div class="secao">Próximos meses <small>toque num mês para ver</small></div>
     <div class="meses" id="meses"></div>
+  </div>
+
+  <!-- CONTATOS: quem pediu preço (fase 5) -->
+  <div id="abaContatos" role="tabpanel" hidden>
+    <h2 class="titulo">Seus contatos</h2>
+    <p class="sub-titulo">Quem pediu preço, de onde veio e quando chamar de volta.</p>
+    <button class="b b-ouro b-cheio" type="button" id="btNovoContato">+ Novo contato</button>
+    <div class="numeros" role="group" aria-label="Contatos de relance">
+      <div><b id="ctChamar">–</b><span>Para chamar hoje</span></div>
+      <div><b id="ctSemProposta">–</b><span>Sem proposta</span></div>
+      <div class="total"><b id="ctFecharam">–</b><span>Fecharam</span></div>
+    </div>
+    <div id="contatos"></div>
   </div>
 
   <!-- PROPOSTAS: a negociação -->
@@ -544,9 +574,11 @@
   </div>
 
   <div class="envio" id="edEnvio" hidden>
-    <button class="b b-ouro" type="button" data-acao="copiar">Copiar link</button>
+    <a class="b b-ouro largo" id="edWhats" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+    <button class="b" type="button" data-acao="copiar">Copiar link</button>
     <a class="b" id="edVer" href="#" target="_blank" rel="noopener">Ver proposta</a>
     <button class="b b-verde largo" type="button" id="edFechou">Fechou?</button>
+    <button class="texto-link largo" type="button" id="edContato"></button>
   </div>
 
   <form id="fEd" autocomplete="off" novalidate>
@@ -622,9 +654,10 @@
 <div class="folha-fundo" id="folhaPronta" hidden>
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="prontaTit" tabindex="-1">
     <h3 id="prontaTit">Proposta pronta</h3>
-    <p>Copie o link e mande para o casal na conversa do WhatsApp:</p>
+    <p>Mande para o casal: o botão abre o seu WhatsApp já com a mensagem e o link. Se preferir, copie o link.</p>
     <code id="prontaLink"></code>
-    <button class="b b-ouro b-cheio" type="button" data-acao="copiar">Copiar link</button>
+    <a class="b b-ouro b-cheio" id="prontaWhats" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+    <button class="b b-cheio" type="button" data-acao="copiar">Copiar link</button>
     <a class="b b-cheio" id="prontaVer" href="#" target="_blank" rel="noopener">Ver proposta</a>
     <div class="pe centro"><button class="texto-link" type="button" id="prontaVoltar">Voltar para as propostas</button></div>
   </div>
@@ -708,6 +741,37 @@
   </div>
 </div>
 
+<!-- CONTATO (fase 5) -->
+<div class="folha-fundo" id="folhaContato" hidden>
+  <div class="folha" role="dialog" aria-modal="true" aria-labelledby="ctTit" tabindex="-1">
+    <div class="parte">
+      <h3 id="ctTit">Novo contato</h3>
+      <label class="campo"><span>Nome</span><input type="text" id="ctNome" maxlength="120" placeholder="Ana &amp; João" autocapitalize="words" enterkeyhint="next"></label>
+      <label class="campo"><span>WhatsApp <small>(com DDD)</small></span><input type="tel" id="ctWhats" inputmode="tel" maxlength="20" placeholder="(42) 99999-0000" enterkeyhint="next"></label>
+      <div class="campo"><span id="ctRotOrigem">De onde veio</span><div class="escolhas" id="ctOrigens" role="group" aria-labelledby="ctRotOrigem"></div></div>
+      <label class="campo"><span>Data do casamento <small>(se já souber)</small></span><input type="date" id="ctData"></label>
+      <div class="campo"><span id="ctRotLemb">Lembrar de chamar</span>
+        <div class="motivos" id="ctAtalhos" role="group" aria-labelledby="ctRotLemb"></div>
+        <div class="duas quebra-p">
+          <label class="campo"><span>Dia</span><input type="date" id="ctLembEm"></label>
+          <label class="campo"><span>O que lembrar</span><input type="text" id="ctLembTxt" maxlength="140" placeholder="Mandar a proposta" enterkeyhint="done"></label>
+        </div>
+      </div>
+      <label class="campo"><span>Anotações <small>(opcional)</small></span><textarea id="ctObs" maxlength="500" rows="3" placeholder="Ex.: cerimônia na igreja, quer violino na entrada"></textarea></label>
+      <div class="aviso" id="ctErro" role="alert" hidden></div>
+      <button class="b b-ouro b-cheio" type="button" id="ctSalvar">Salvar contato</button>
+      <div class="ct-acoes" id="ctAcoes" hidden>
+        <a class="b" id="ctWhatsBt" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        <button class="b" type="button" id="ctProposta">Fazer proposta</button>
+      </div>
+      <div class="pe">
+        <button class="texto-link perigo" type="button" id="ctExcluir" hidden>Excluir contato</button>
+        <button class="texto-link" type="button" data-cancelar>Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -727,6 +791,7 @@
   var MOTIVOS = ['Fechou com outro fornecedor', 'Achou o valor alto', 'Mudou os planos', 'Não respondeu mais'];
   var $ = function (id) { return document.getElementById(id); };
 
+  var contatos = [], vincularContato = null, contatoEd = null, ctOrigem = '', ctPropostaId = null;   // contatos (fase 5)
   var propostas = [], filtro = 'abertas', pedido = 0, ultimaCarga = 0, carregada = false;   // lista
   var aba = 'hoje', mesVisto = null, diaSel = '', dmMes = null;                                       // abas e agenda
   var DIAS_SEM_RESPOSTA = 3;   // abriu a proposta há tantos dias e não respondeu: hora de chamar
@@ -743,7 +808,8 @@
   function sair(msg) {
     sessao = null; try { localStorage.removeItem(CHAVE); } catch (e) {}
     sujo = false; propostas = []; carregada = false; modelo = null; editando = null; aba = 'hoje'; mesVisto = null; diaSel = ''; dmMes = null; cli = { base: 'evento', periodo: 'tudo', de: '', ate: '' };
-    ['rFechadas', 'rMedio', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando', 'fReceber', 'fAtrasado', 'fRecebidoMes', 'hjEventos', 'hjReceber', 'hjChamar'].forEach(function (id) { $(id).textContent = '–'; });
+    contatos = [];
+    ['rFechadas', 'rMedio', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando', 'fReceber', 'fAtrasado', 'fRecebidoMes', 'hjEventos', 'hjReceber', 'hjChamar', 'ctChamar', 'ctSemProposta', 'ctFecharam'].forEach(function (id) { $(id).textContent = '–'; });
     fecharFolhas(); semToast(); toastDepois = '';
     mostrar('vLogin');
     $('loginErro').textContent = msg || ''; $('loginErro').hidden = !msg;
@@ -878,11 +944,14 @@
   $('btSair').addEventListener('click', function () { sair(); });
 
   // ---------- abas: agenda · propostas · clientes ----------
-  var ABAS = ['hoje', 'agenda', 'propostas', 'clientes', 'financeiro'];
+  var ABAS = ['hoje', 'agenda', 'contatos', 'propostas', 'clientes', 'financeiro'];
   function definirAba(a, semRolar) {
     aba = ABAS.indexOf(a) >= 0 ? a : 'hoje';
     document.querySelectorAll('#abas [data-aba]').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-aba') === aba)); });
-    $('abaHoje').hidden = aba !== 'hoje'; $('abaAgenda').hidden = aba !== 'agenda'; $('abaPropostas').hidden = aba !== 'propostas'; $('abaClientes').hidden = aba !== 'clientes'; $('abaFinanceiro').hidden = aba !== 'financeiro';
+    $('abaHoje').hidden = aba !== 'hoje'; $('abaAgenda').hidden = aba !== 'agenda'; $('abaContatos').hidden = aba !== 'contatos'; $('abaPropostas').hidden = aba !== 'propostas';
+    var nav = $('abas'), ativa = nav.querySelector('[aria-selected="true"]');   // no celular as abas deslizam: deixa a ativa à vista sem rolar a página
+    if (ativa && nav.scrollWidth > nav.clientWidth) nav.scrollLeft += ativa.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - ativa.offsetWidth) / 2;
+    $('abaClientes').hidden = aba !== 'clientes'; $('abaFinanceiro').hidden = aba !== 'financeiro';
     if (!semRolar) window.scrollTo(0, 0);
     ajustarTotal();
   }
@@ -905,8 +974,10 @@
   }
   function carregarLista() {
     var meu = ++pedido;
-    return api('GET', '/admin/propostas').then(function (r) {
+    var cts = api('GET', '/admin/contatos').catch(function (e) { if (e && e.message === '401') throw e; return null; });   // sem contatos, o resto funciona
+    return Promise.all([api('GET', '/admin/propostas'), cts]).then(function (rs) {
       if (meu !== pedido) return;
+      var r = rs[0]; if (Array.isArray(rs[1])) contatos = rs[1];
       propostas = Array.isArray(r) ? r : []; ultimaCarga = Date.now(); carregada = true;
       desenharTudo();
     }).catch(function (e) {
@@ -917,7 +988,7 @@
       limparNo($('lista')); $('lista').appendChild(v);
     });
   }
-  function desenharTudo() { desenharResumo(); desenharLista(); desenharClientes(); desenharAgenda(); desenharFinanceiro(); desenharHoje(); }
+  function desenharTudo() { desenharResumo(); desenharLista(); desenharClientes(); desenharAgenda(); desenharFinanceiro(); desenharContatos(); desenharHoje(); }
 
   // ---------- datas ----------
   var DIAS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
@@ -1208,7 +1279,7 @@
   // ---------- hoje (fase 4): o dia e o mês de relance ----------
   function diaLocal(isoHora) { var d = new Date(isoHora || ''); return isNaN(d.getTime()) ? '' : isoLocal(d); }
   function diasDesde(iso) { var d = dataDe(iso); return d ? Math.round((dataDe(hojeISO()) - d) / 864e5) : 0; }
-  function linhaLembrete(p, texto) {
+  function linhaLembrete(p, texto, msg) {
     var d = p.dados || {}, r = el('article', 'lembrete');
     var q = botao('q'); q.title = 'Abrir a proposta'; q.onclick = function () { abrirEditor(p); };
     q.appendChild(el('b', null, d.cliente || 'Sem nome'));
@@ -1216,7 +1287,7 @@
     var sub = [d.data && dataCurta(d.data), faixa(d)].filter(Boolean).join(' · '); if (sub) q.appendChild(el('span', null, sub));
     r.appendChild(q);
     var lado = el('div', 'lado');
-    var bCp = botao('b b-pq b-ouro', 'Copiar link'); bCp.onclick = function () { copiarLink(p); }; lado.appendChild(bCp);
+    var w = el('a', 'b b-pq b-ouro', 'WhatsApp'); w.href = linkWhats((contatoDe(p) || {}).whatsapp, msg); w.target = '_blank'; w.rel = 'noopener'; lado.appendChild(w);
     var bF = botao('b b-pq b-verde', 'Fechou?'); bF.onclick = function () { abrirFechou(p); }; lado.appendChild(bF);
     r.appendChild(lado);
     return r;
@@ -1237,7 +1308,8 @@
     var naoAbriram = abertas.filter(function (p) { return !p.views; }).sort(function (a, b) { return String(a.criado_em).localeCompare(String(b.criado_em)); });
     $('hjEventos').textContent = semana.length; $('hjEventosRot').textContent = semana.length === 1 ? 'Casamento em 7 dias' : 'Casamentos em 7 dias';
     $('hjReceber').textContent = dinheiro(pags.reduce(function (a, x) { return somaDinheiro(a, x.pg.valor); }, 0));
-    $('hjChamar').textContent = chamar.length + naoAbriram.length;
+    var lembretes = contatos.filter(function (c) { return c.lembrete_em && c.lembrete_em <= hoje; }).sort(function (a, b) { return a.lembrete_em.localeCompare(b.lembrete_em); });
+    $('hjChamar').textContent = chamar.length + naoAbriram.length + lembretes.length;
     ajustarTotal();
     box.appendChild(secao('Próximos 7 dias', semana.length ? semana.length + (semana.length === 1 ? ' casamento' : ' casamentos') : ''));
     if (semana.length) { var g = el('div', 'mes-lista'); semana.forEach(function (p) { g.appendChild(linhaEvento(p)); }); box.appendChild(g); }
@@ -1245,16 +1317,19 @@
     box.appendChild(secao('Pagamentos da semana', pags.length ? pags.length + (pags.length === 1 ? ' pagamento' : ' pagamentos') : ''));
     if (pags.length) { var gp = el('div', 'pagtos'); pags.forEach(function (x) { gp.appendChild(linhaPagto(x, hoje)); }); box.appendChild(gp); }
     else box.appendChild(el('p', 'nada', 'Nenhum pagamento vence nesta semana.'));
+    box.appendChild(secao('Lembretes', lembretes.length ? lembretes.length + (lembretes.length === 1 ? ' contato' : ' contatos') : ''));
+    if (lembretes.length) { var gl = el('div', 'pagtos'); lembretes.forEach(function (c) { gl.appendChild(linhaContato(c, opcoesLembrete(c, hoje))); }); box.appendChild(gl); }
+    else box.appendChild(el('p', 'nada', 'Nenhum lembrete para hoje.'));
     box.appendChild(secao('Hora de chamar', 'abriram há ' + DIAS_SEM_RESPOSTA + ' dias ou mais e não responderam'));
     if (chamar.length) {
       var gc = el('div', 'pagtos');
-      chamar.forEach(function (p) { var n = diasDesde(diaLocal(p.primeira_vista)); gc.appendChild(linhaLembrete(p, 'Abriu há ' + n + ' dias · ' + p.views + (p.views === 1 ? ' abertura' : ' aberturas') + (p.ultima_vista ? ' · última ' + quando(p.ultima_vista) : ''))); });
+      chamar.forEach(function (p) { var n = diasDesde(diaLocal(p.primeira_vista)); gc.appendChild(linhaLembrete(p, 'Abriu há ' + n + ' dias · ' + p.views + (p.views === 1 ? ' abertura' : ' aberturas') + (p.ultima_vista ? ' · última ' + quando(p.ultima_vista) : ''), mensagemRetorno(p))); });
       box.appendChild(gc);
     } else box.appendChild(el('p', 'nada', 'Ninguém esperando resposta há ' + DIAS_SEM_RESPOSTA + ' dias ou mais.'));
     box.appendChild(secao('Ainda não abriram', naoAbriram.length ? naoAbriram.length + (naoAbriram.length === 1 ? ' proposta' : ' propostas') : ''));
     if (naoAbriram.length) {
       var gn = el('div', 'pagtos');
-      naoAbriram.forEach(function (p) { var n = diasDesde(diaLocal(p.criado_em)); gn.appendChild(linhaLembrete(p, n <= 0 ? 'Criada hoje' : 'Criada há ' + n + (n === 1 ? ' dia' : ' dias'))); });
+      naoAbriram.forEach(function (p) { var n = diasDesde(diaLocal(p.criado_em)); gn.appendChild(linhaLembrete(p, n <= 0 ? 'Criada hoje' : 'Criada há ' + n + (n === 1 ? ' dia' : ' dias'), mensagemProposta(p))); });
       box.appendChild(gn);
     } else box.appendChild(el('p', 'nada', 'Todas as propostas publicadas já foram abertas pelo casal.'));
     desenharMes();
@@ -1327,6 +1402,181 @@
   $('dmAnt').addEventListener('click', function () { var d = new Date(dmMes.y, dmMes.m - 1, 1); dmMes = { y: d.getFullYear(), m: d.getMonth() }; desenharMes(); });
   $('dmProx').addEventListener('click', function () { var d = new Date(dmMes.y, dmMes.m + 1, 1); dmMes = { y: d.getFullYear(), m: d.getMonth() }; desenharMes(); });
   $('dmHoje').addEventListener('click', function () { dmMes = mesAtual(); desenharMes(); });
+
+  // ---------- contatos (fase 5): quem pediu preço, de onde veio e quando chamar ----------
+  var ORIGENS = [['instagram', 'Instagram'], ['casamentos', 'casamentos.com.br'], ['indicacao', 'Indicação'], ['google', 'Google'], ['whatsapp', 'WhatsApp'], ['outro', 'Outro']];
+  function nomeOrigem(k) { var o = ORIGENS.filter(function (x) { return x[0] === k; })[0]; return o ? o[1] : ''; }
+  function atualizarContato(c) { var i = contatos.findIndex(function (x) { return x.id === c.id; }); if (i >= 0) contatos[i] = c; else contatos.unshift(c); }
+  function propostaDoContato(c) { return c && c.proposta_id ? propostas.filter(function (p) { return p.id === c.proposta_id; })[0] || null : null; }
+  function contatoDe(p) { return p && p.id ? contatos.filter(function (c) { return c.proposta_id === p.id; })[0] || null : null; }
+  function nomeCasal(n) { return String(n || '').replace(/\s*&\s*/g, ' e ').trim(); }
+  function mascaraWhats(d) {
+    d = String(d || '');
+    if (d.length === 11) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    if (d.length === 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+    return d;
+  }
+  // abre o WhatsApp DELA com a mensagem escrita (com o número: direto na conversa; sem: ela escolhe o contato). Não dispara nada.
+  function linkWhats(num, msg) { return 'https://wa.me/' + (num ? '55' + num : '') + '?text=' + encodeURIComponent(msg); }
+  function oi(nome) { var n = nomeCasal(nome); return 'Oi' + (n ? ', ' + n : '') + '!'; }
+  function mensagemProposta(p) { return oi(p.dados && p.dados.cliente) + ' Aqui está a proposta que preparei para vocês: ' + linkDe(p); }
+  function mensagemRetorno(p) { return oi(p.dados && p.dados.cliente) + ' Tudo bem? Conseguiram ver a proposta? Qualquer dúvida, estou por aqui.'; }
+  function mensagemContato(c) { var p = propostaDoContato(c); return p ? mensagemRetorno(p) : oi(c.nome) + ' Tudo bem? Aqui é a Jamilli.'; }
+  function statusContato(c) {
+    var p = propostaDoContato(c); if (!p) return 'Sem proposta';
+    var et = etapaDe(p);
+    if (et === 'fechada') return 'Fechou · ' + dinheiro(valorFechado(p));
+    if (et === 'perdida') return 'Não fechou' + (p.fechamento && p.fechamento.motivo ? ' · ' + p.fechamento.motivo : '');
+    return p.views ? 'Proposta aberta ' + p.views + (p.views === 1 ? ' vez' : ' vezes') : 'Proposta ainda não aberta';
+  }
+  function opcoesLembrete(c, hoje) {
+    var atras = c.lembrete_em < hoje;
+    return { texto: (c.lembrete_txt || 'Chamar de volta') + (atras ? ' · era para ' + dataCurta(c.lembrete_em) : ''), cls: atras ? 'atraso' : '', acoes: (c.whatsapp ? ['whats'] : []).concat(['feito']) };
+  }
+  function linhaContato(c, o) {
+    var r = el('article', 'lembrete contato');
+    var q = botao('q'); q.title = 'Abrir o contato'; q.onclick = function () { abrirContato(c); };
+    q.appendChild(el('b', null, c.nome || 'Sem nome'));
+    if (o.texto) q.appendChild(el('span', o.cls || null, o.texto));
+    var sub = [c.whatsapp && mascaraWhats(c.whatsapp), nomeOrigem(c.origem), c.data_evento && 'casamento ' + dataCurta(c.data_evento)].filter(Boolean).join(' · ');
+    if (sub) q.appendChild(el('span', null, sub));
+    r.appendChild(q);
+    var lado = el('div', 'lado');
+    (o.acoes || []).forEach(function (a) {
+      if (a === 'whats') { var w = el('a', 'b b-pq b-ouro', 'WhatsApp'); w.href = linkWhats(c.whatsapp, mensagemContato(c)); w.target = '_blank'; w.rel = 'noopener'; lado.appendChild(w); }
+      if (a === 'feito') { var f = botao('b b-pq', 'Feito'); f.onclick = function () { lembreteFeito(c, f); }; lado.appendChild(f); }
+      if (a === 'proposta') { var pb = botao('b b-pq b-verde', 'Fazer proposta'); pb.onclick = function () { novaPropostaDeContato(c); }; lado.appendChild(pb); }
+    });
+    r.appendChild(lado);
+    return r;
+  }
+  function desenharContatos() {
+    var box = $('contatos'), hoje = hojeISO(); limparNo(box);
+    var chamar = contatos.filter(function (c) { return c.lembrete_em && c.lembrete_em <= hoje; }).sort(function (a, b) { return a.lembrete_em.localeCompare(b.lembrete_em); });
+    var semProp = contatos.filter(function (c) { return !propostaDoContato(c); });
+    var futuros = contatos.filter(function (c) { return c.lembrete_em && c.lembrete_em > hoje; }).sort(function (a, b) { return a.lembrete_em.localeCompare(b.lembrete_em); });
+    var fecharam = contatos.filter(function (c) { var p = propostaDoContato(c); return p && etapaDe(p) === 'fechada'; });
+    $('ctChamar').textContent = chamar.length; $('ctSemProposta').textContent = semProp.length; $('ctFecharam').textContent = fecharam.length;
+    if (!contatos.length) {
+      var v = el('div', 'vazio'); v.appendChild(el('b', null, 'Nenhum contato ainda'));
+      v.appendChild(el('span', null, 'Anote aqui quem pediu preço: nome, WhatsApp e de onde veio. Daí sai a proposta e o lembrete de chamar de volta.'));
+      box.appendChild(v); return;
+    }
+    function lista(l, f) { var g = el('div', 'pagtos'); l.forEach(function (c) { g.appendChild(f(c)); }); return g; }
+    if (chamar.length) { box.appendChild(secao('Chamar hoje', chamar.length)); box.appendChild(lista(chamar, function (c) { return linhaContato(c, opcoesLembrete(c, hoje)); })); }
+    if (semProp.length) { box.appendChild(secao('Sem proposta ainda', semProp.length)); box.appendChild(lista(semProp, function (c) { return linhaContato(c, { texto: 'Pediu preço em ' + dataCurta(diaLocal(c.criado_em)), acoes: ['proposta'] }); })); }
+    if (futuros.length) { box.appendChild(secao('Próximos lembretes', futuros.length)); box.appendChild(lista(futuros, function (c) { return linhaContato(c, { texto: (c.lembrete_txt || 'Chamar de volta') + ' · ' + dataCurta(c.lembrete_em), acoes: [] }); })); }
+    var det = el('details', 'passados'), sum = el('summary');
+    sum.appendChild(el('span', null, 'Todos os contatos')); sum.appendChild(el('small', null, contatos.length + (contatos.length === 1 ? ' contato' : ' contatos')));
+    det.appendChild(sum); det.appendChild(lista(contatos, function (c) { return linhaContato(c, { texto: statusContato(c), acoes: [] }); })); box.appendChild(det);
+    // de onde vêm os pedidos e quantos viraram casamento
+    var por = {};
+    contatos.forEach(function (c) { var o = por[c.origem || ''] = por[c.origem || ''] || { n: 0, f: 0 }; o.n++; var p = propostaDoContato(c); if (p && etapaDe(p) === 'fechada') o.f++; });
+    var ks = Object.keys(por).sort(function (a, b) { return por[b].n - por[a].n || por[b].f - por[a].f; });
+    var max = Math.max.apply(null, ks.map(function (k) { return por[k].n; })) || 1;
+    box.appendChild(secao('De onde vêm', 'quantos pediram preço e quantos fecharam'));
+    var g = el('div', 'mes-a-mes');
+    ks.forEach(function (k) {
+      var x = por[k], row = el('div', 'linha-mes fixa larga');
+      row.appendChild(el('span', 'm', nomeOrigem(k) || 'Não anotado'));
+      var tr = el('span', 'trilho'), b = el('i'); b.style.width = Math.max(3, Math.round(x.n / max * 100)) + '%'; tr.appendChild(b); row.appendChild(tr);
+      var vv = el('span', 'v', x.n + (x.n === 1 ? ' contato' : ' contatos')); vv.appendChild(el('small', null, x.f + (x.f === 1 ? ' fechou' : ' fecharam') + ' (' + Math.round(x.f / x.n * 100) + '%)')); row.appendChild(vv);
+      g.appendChild(row);
+    });
+    box.appendChild(g);
+  }
+  // relatório "Por que não fechou" (no filtro "Não fechou" de Propostas)
+  function desenharMotivos(box) {
+    var perd = propostas.filter(function (p) { return etapaDe(p) === 'perdida'; });
+    if (!perd.length) return;
+    var por = {};
+    perd.forEach(function (p) { var m = ((p.fechamento && p.fechamento.motivo) || '').trim() || 'Sem motivo anotado'; por[m] = (por[m] || 0) + 1; });
+    var ks = Object.keys(por).sort(function (a, b) { return por[b] - por[a] || a.localeCompare(b); }), max = por[ks[0]];
+    var rel = el('div', 'motivos-rel'), g = el('div', 'mes-a-mes');
+    rel.appendChild(secao('Por que não fechou', perd.length + (perd.length === 1 ? ' proposta' : ' propostas')));
+    ks.forEach(function (k) {
+      var row = el('div', 'linha-mes fixa larga');
+      row.appendChild(el('span', 'm', k));
+      var tr = el('span', 'trilho'), b = el('i'); b.style.width = Math.max(3, Math.round(por[k] / max * 100)) + '%'; tr.appendChild(b); row.appendChild(tr);
+      row.appendChild(el('span', 'v', por[k] + ' (' + Math.round(por[k] / perd.length * 100) + '%)'));
+      g.appendChild(row);
+    });
+    rel.appendChild(g); box.appendChild(rel);
+  }
+  // folha do contato
+  ORIGENS.forEach(function (o) {
+    var b = botao(null, o[1]); b.setAttribute('data-v', o[0]); b.setAttribute('aria-pressed', 'false');
+    b.onclick = function () { ctOrigem = ctOrigem === o[0] ? '' : o[0]; pintarOrigem(); };
+    $('ctOrigens').appendChild(b);
+  });
+  function pintarOrigem() { $('ctOrigens').querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === ctOrigem)); }); }
+  [['Hoje', 0], ['Amanhã', 1], ['Em 3 dias', 3], ['Em 1 semana', 7], ['Sem lembrete', null]].forEach(function (a) {
+    var b = botao(null, a[0]);
+    b.onclick = function () {
+      $('ctLembEm').value = a[1] == null ? '' : hojeMais(a[1]);
+      if (a[1] == null) $('ctLembTxt').value = '';
+      else if (!$('ctLembTxt').value.trim()) $('ctLembTxt').value = ctPropostaId ? 'Ver se receberam a proposta' : 'Mandar a proposta';
+    };
+    $('ctAtalhos').appendChild(b);
+  });
+  function abrirContato(c, novo) {
+    contatoEd = c || null; var x = c || novo || {};
+    $('ctTit').textContent = c ? 'Contato' : 'Novo contato';
+    $('ctNome').value = x.nome || ''; $('ctWhats').value = mascaraWhats(x.whatsapp || '');
+    ctOrigem = x.origem || ''; pintarOrigem(); ctPropostaId = x.proposta_id || null;
+    $('ctData').value = x.data_evento || ''; $('ctLembEm').value = x.lembrete_em || ''; $('ctLembTxt').value = x.lembrete_txt || ''; $('ctObs').value = x.obs || '';
+    $('ctErro').hidden = true; $('ctNome').classList.remove('falta'); $('ctWhats').classList.remove('falta');
+    $('ctExcluir').hidden = !c; $('ctAcoes').hidden = !c;
+    if (c) { $('ctWhatsBt').href = linkWhats(c.whatsapp, mensagemContato(c)); $('ctProposta').textContent = propostaDoContato(c) ? 'Abrir a proposta' : 'Fazer proposta'; }
+    abrirFolha('folhaContato');
+  }
+  $('btNovoContato').addEventListener('click', function () { abrirContato(null); });
+  $('ctSalvar').addEventListener('click', function () {
+    var corpo = { nome: $('ctNome').value.trim(), whatsapp: $('ctWhats').value, origem: ctOrigem, data_evento: $('ctData').value, lembrete_em: $('ctLembEm').value,
+      lembrete_txt: $('ctLembTxt').value.trim(), obs: $('ctObs').value.trim(), proposta_id: ctPropostaId };
+    if (!corpo.nome) { $('ctNome').classList.add('falta'); $('ctNome').focus(); return erroNaFolha('ctErro', 'Coloque o nome.'); }
+    var dig = corpo.whatsapp.replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '');
+    if (dig && dig.length !== 10 && dig.length !== 11) { $('ctWhats').classList.add('falta'); $('ctWhats').focus(); return erroNaFolha('ctErro', 'Coloque o WhatsApp com DDD, por exemplo (42) 99999-0000.'); }
+    var bt = this, solta = ocupado(bt, 'Salvando…'), novo = !contatoEd;
+    api(novo ? 'POST' : 'PUT', '/admin/contatos' + (novo ? '' : '/' + contatoEd.id), corpo).then(function (c) {
+      solta(); atualizarContato(c); fecharFolhas(); desenharTudo();
+      if (!$('vEditor').hidden) pintarSituacao();
+      toast(novo ? 'Contato salvo' : 'Contato atualizado');
+    }, function (e) { solta(); if (e && e.message === '401') return; erroNaFolha('ctErro', e.message || 'Algo deu errado.'); });
+  });
+  $('ctNome').addEventListener('input', function () { this.classList.remove('falta'); $('ctErro').hidden = true; });
+  $('ctWhats').addEventListener('input', function () { this.classList.remove('falta'); $('ctErro').hidden = true; });
+  $('ctExcluir').addEventListener('click', function () {
+    if (!contatoEd || !confirm('Excluir este contato?\n\nO nome, o WhatsApp e as anotações somem. A proposta (se tiver) continua.')) return;
+    var c = contatoEd, solta = ocupado(this, 'Excluindo…');
+    api('DELETE', '/admin/contatos/' + c.id).then(function () {
+      solta(); contatos = contatos.filter(function (x) { return x.id !== c.id; }); fecharFolhas(); desenharTudo();
+      if (!$('vEditor').hidden) pintarSituacao();
+      toast('Contato excluído');
+    }, function (e) { solta(); falhou(e); });
+  });
+  $('ctProposta').addEventListener('click', function () {
+    if (!contatoEd) return;
+    var p = propostaDoContato(contatoEd);
+    if (p) { fecharFolhas(); abrirEditor(p); } else novaPropostaDeContato(contatoEd);
+  });
+  function lembreteFeito(c, bt) {
+    var solta = ocupado(bt);
+    api('PUT', '/admin/contatos/' + c.id, Object.assign({}, c, { lembrete_em: '', lembrete_txt: '' })).then(function (nc) {
+      atualizarContato(nc); desenharTudo(); toast('Lembrete feito');
+    }, function (e) { solta(); falhou(e); });
+  }
+  // "Fazer proposta" a partir do contato: a proposta nasce com o nome e a data dele e fica ligada ao contato
+  function novaPropostaDeContato(c) {
+    fecharFolhas();
+    carregarModelo().then(function (m) {
+      editando = { novo: true }; sujo = false; vincularContato = c.id;
+      var d = JSON.parse(JSON.stringify(m)); d.cliente = c.nome || ''; d.data = c.data_evento || ''; d.local = ''; d.mensagem = '';
+      d.validade = hojeMais(Number(m.validade_dias) || 30);
+      preencher(d);
+      entrarEditor('Nova proposta', 'Salvar e gerar link', 'proposta', false);
+    }).catch(falhou);
+  }
 
   // ---------- agenda: o mês dela ----------
   function mesAtual() { var h = new Date(); return { y: h.getFullYear(), m: h.getMonth() }; }
@@ -1490,6 +1740,7 @@
   function desenharLista() {
     var box = $('lista'), visiveis = propostas.filter(noFiltro);
     limparNo(box);
+    if (filtro === 'perdidas') desenharMotivos(box);
     if (!visiveis.length) {
       var tv = VAZIO[propostas.length ? filtro : 'nada'] || VAZIO.nada, v = el('div', 'vazio');
       v.appendChild(el('b', null, tv[0])); v.appendChild(el('span', null, tv[1]));
@@ -1786,6 +2037,9 @@
     $('btEditarFech').hidden = et !== 'fechada';
     if (!existe) return;
     $('edVer').href = linkDe(p);
+    var ce = contatoDe(p);
+    $('edWhats').href = linkWhats(ce && ce.whatsapp, mensagemProposta(p));
+    $('edContato').textContent = ce ? 'Contato: ' + ce.nome + (ce.whatsapp ? ' · ' + mascaraWhats(ce.whatsapp) : '') + ' · editar' : '+ Guardar o WhatsApp do casal';
     if (et === 'fechada') {
       $('edSituacao').className = 'situacao fechada';
       $('sitTitulo').textContent = 'Fechada · ' + dinheiro(valorFechado(p));
@@ -1826,7 +2080,7 @@
   function novaProposta() {
     var solta = ocupado($('btNova'));
     carregarModelo().then(function (m) {
-      editando = { novo: true }; sujo = false;
+      editando = { novo: true }; sujo = false; vincularContato = null;
       var d = JSON.parse(JSON.stringify(m)); d.cliente = ''; d.data = ''; d.local = ''; d.mensagem = '';
       d.validade = hojeMais(Number(m.validade_dias) || 30);
       preencher(d);
@@ -1837,7 +2091,7 @@
   $('btNovaAgenda').addEventListener('click', novaProposta);
 
   function abrirEditor(p) {
-    editando = p; sujo = false;
+    editando = p; sujo = false; vincularContato = null;
     preencher(p.dados);
     entrarEditor((p.dados && p.dados.cliente) || 'Proposta', 'Salvar alterações', 'proposta', false);
   }
@@ -1884,6 +2138,13 @@
       editando = np; sujo = false; if (eraNova) np._nova = true; atualizarNaLista(np);
       $('edTitulo').textContent = (np.dados && np.dados.cliente) || 'Proposta'; bt.textContent = 'Salvar alterações';
       modo('proposta');
+      if (eraNova && vincularContato) {   // a proposta feita a partir de um contato fica ligada a ele
+        var cv = contatos.filter(function (x) { return x.id === vincularContato; })[0]; vincularContato = null;
+        if (cv) {
+          cv.proposta_id = np.id; pintarSituacao();
+          api('PUT', '/admin/contatos/' + cv.id, cv).then(function (nc) { atualizarContato(nc); desenharTudo(); }).catch(falhou);
+        }
+      }
       if (eraNova) abrirPronta(np); else toast('Alterações salvas — o link continua o mesmo');
     }, function (e) { solta(); falhou(e); });
   }
@@ -1933,17 +2194,18 @@
     var f = $(id).querySelector('.folha'); f.scrollTop = 0; f.focus();
   }
   function fecharFolhas() {
-    if ($('folhaPronta').hidden && $('folhaFechou').hidden && $('folhaRecebi').hidden) return;
+    if ($('folhaPronta').hidden && $('folhaFechou').hidden && $('folhaRecebi').hidden && $('folhaContato').hidden) return;
     semToast();
-    $('folhaPronta').hidden = true; $('folhaFechou').hidden = true; $('folhaRecebi').hidden = true; document.body.classList.remove('travado');
+    $('folhaPronta').hidden = true; $('folhaFechou').hidden = true; $('folhaRecebi').hidden = true; $('folhaContato').hidden = true; document.body.classList.remove('travado');
     if (focoAntes && document.body.contains(focoAntes)) { try { focoAntes.focus(); } catch (e) {} }
     focoAntes = null;
   }
-  ['folhaPronta', 'folhaFechou', 'folhaRecebi'].forEach(function (id) { $(id).addEventListener('click', function (e) { if (e.target === $(id)) fecharFolhas(); }); });
+  ['folhaPronta', 'folhaFechou', 'folhaRecebi', 'folhaContato'].forEach(function (id) { $(id).addEventListener('click', function (e) { if (e.target === $(id)) fecharFolhas(); }); });
   document.querySelectorAll('[data-cancelar]').forEach(function (b) { b.addEventListener('click', fecharFolhas); });
 
   function abrirPronta(p) {
     $('prontaLink').textContent = linkDe(p); $('prontaVer').href = linkDe(p);
+    $('prontaWhats').href = linkWhats((contatoDe(p) || {}).whatsapp, mensagemProposta(p));
     abrirFolha('folhaPronta');
   }
   $('prontaVoltar').addEventListener('click', function () { fecharFolhas(); sairDoEditor(); });
@@ -2094,6 +2356,11 @@
   $('fxValor').addEventListener('blur', function () { var x = parseValor(this.value); this.value = x != null ? numero(x) : ''; });
   $('fxValor').addEventListener('input', function () { $('fxValorCaixa').classList.remove('falta'); $('fxErro').hidden = true; });
   $('edFechou').addEventListener('click', function () { if (editando && editando.id) abrirFechou(editando); });
+  $('edContato').addEventListener('click', function () {
+    if (!editando || !editando.id) return;
+    var ce = contatoDe(editando), d = editando.dados || {};
+    abrirContato(ce, ce ? null : { nome: d.cliente || '', data_evento: d.data || '', proposta_id: editando.id });
+  });
   $('btEditarFech').addEventListener('click', function () { if (editando && editando.id) abrirFechou(editando); });
   MOTIVOS.forEach(function (m) { var b = botao(null, m); b.onclick = function () { $('nfMotivo').value = m; }; $('nfMotivos').appendChild(b); });
   $('fxNao').addEventListener('click', function () { $('fxParteFechou').hidden = true; $('fxParteNao').hidden = false; });
