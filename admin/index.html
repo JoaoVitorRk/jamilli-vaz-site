@@ -83,8 +83,8 @@
 
   /* ---------- lista: resumo, filtros e cards ---------- */
   /* ---------- abas ---------- */
-  .abas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; margin: 4px 0 18px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
-  .abas button { min-height: 46px; padding: 0 2px; border: 0; border-radius: 12px; background: none; font-size: 0.9rem; font-weight: 500; color: var(--suave); cursor: pointer; }
+  .abas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; margin: 4px 0 18px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
+  .abas button { min-height: 46px; padding: 0 1px; border: 0; border-radius: 12px; background: none; font-size: 0.84rem; font-weight: 500; color: var(--suave); cursor: pointer; }
   .abas button[aria-selected="true"] { background: var(--dourado); color: var(--noite); font-weight: 600; }
 
   /* ---------- números (agenda e clientes) ---------- */
@@ -95,7 +95,8 @@
   .numeros .total { background: linear-gradient(180deg, #3A5A4A 0%, #2F4A3E 46%, #27402F 100%); border-color: rgba(228, 206, 158, 0.42); }
   .numeros .total b { color: var(--dourado-claro); }
   .numeros .livre b { color: var(--verde-claro); }
-  @media (max-width: 380px) { .abas button { font-size: 0.8rem; } }
+  @media (max-width: 400px) { .abas button { font-size: 0.74rem; letter-spacing: -0.01em; } }
+  @media (max-width: 345px) { .abas button { font-size: 0.66rem; } }
   .numeros .atraso b { color: var(--erro); }
   .numeros .atraso.zero b { color: var(--suave); }
 
@@ -130,6 +131,24 @@
   .fx-pag .restante-v { font-weight: 600; font-size: 1.05rem; color: var(--dourado-claro); }
   .fx-pag .restante-v.erro { color: var(--erro); font-size: 0.92rem; }
   .fx-pag .liga-linha { min-height: 44px; }
+
+  /* ---------- hoje (fase 4): o dia e o mês de relance ---------- */
+  .numeros.dois { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lembrete { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; align-items: center; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); }
+  .lembrete .q { min-width: 0; display: grid; gap: 2px; text-align: left; background: none; border: 0; padding: 0; color: inherit; cursor: pointer; }
+  .lembrete .q b { font-weight: 600; font-size: 1rem; overflow-wrap: anywhere; }
+  .lembrete .q span { font-size: 0.85rem; line-height: 1.35; color: var(--suave); }
+  .lembrete .lado { display: grid; gap: 6px; }
+  .lembrete .lado .b { min-height: 44px; padding: 6px 14px; font-size: 0.88rem; }
+  .comparar { display: grid; padding: 4px 14px; border-radius: 16px; border: 1px solid var(--linha); background: var(--card); box-shadow: var(--sombra); }
+  .comp-linha { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid rgba(228, 206, 158, 0.14); }
+  .comp-linha:last-child { border-bottom: 0; }
+  .comp-linha .rot { font-size: 0.95rem; }
+  .comp-linha b { font-weight: 600; color: var(--dourado-claro); white-space: nowrap; }
+  .comp-linha .det { grid-column: 1 / -1; font-size: 0.8rem; line-height: 1.45; color: var(--suave); }
+  .comp-linha .dl.sobe { color: var(--verde-claro); }
+  .comp-linha .dl.desce { color: var(--erro); }
+  .secao.mes-tit { margin-top: 30px; }
   .filtros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-top: 10px; border-radius: 16px; background: var(--campo); border: 1px solid var(--linha); }
   .filtros button { min-height: 44px; padding: 0 2px; border: 0; border-radius: 12px; background: none; font-size: 0.86rem; font-weight: 500; color: var(--suave); cursor: pointer; white-space: nowrap; }
   .filtros button[aria-pressed="true"] { background: var(--ivory); color: var(--noite); font-weight: 600; }
@@ -412,14 +431,35 @@
   </div>
 
   <nav class="abas" id="abas" role="tablist" aria-label="Partes do painel">
-    <button type="button" role="tab" data-aba="agenda" aria-selected="true">Agenda</button>
+    <button type="button" role="tab" data-aba="hoje" aria-selected="true">Hoje</button>
+    <button type="button" role="tab" data-aba="agenda" aria-selected="false">Agenda</button>
     <button type="button" role="tab" data-aba="propostas" aria-selected="false">Propostas</button>
     <button type="button" role="tab" data-aba="clientes" aria-selected="false">Clientes</button>
     <button type="button" role="tab" data-aba="financeiro" aria-selected="false">Financeiro</button>
   </nav>
 
+  <!-- HOJE: o dia e o mês de relance (fase 4) -->
+  <div id="abaHoje" role="tabpanel">
+    <h2 class="titulo" id="hjSaudacao">Olá, Jamilli</h2>
+    <p class="sub-titulo" id="hjData"></p>
+    <div class="numeros" role="group" aria-label="O dia de relance">
+      <div><b id="hjEventos">–</b><span id="hjEventosRot">Casamentos em 7 dias</span></div>
+      <div class="total"><b id="hjReceber">–</b><span>A receber na semana</span></div>
+      <div><b id="hjChamar">–</b><span>Para chamar</span></div>
+    </div>
+    <div id="hoje"></div>
+    <div class="secao mes-tit">Seu mês</div>
+    <div class="mes-nav">
+      <button class="b b-pq seta" type="button" id="dmAnt" aria-label="Mês anterior">‹</button>
+      <b id="dmTitulo" aria-live="polite"></b>
+      <button class="b b-pq seta" type="button" id="dmProx" aria-label="Próximo mês">›</button>
+    </div>
+    <div class="mes-hoje"><button class="texto-link" type="button" id="dmHoje" hidden>Voltar para este mês</button></div>
+    <div id="doMes"></div>
+  </div>
+
   <!-- AGENDA: o mês dela -->
-  <div id="abaAgenda" role="tabpanel">
+  <div id="abaAgenda" role="tabpanel" hidden>
     <h2 class="titulo">Sua agenda</h2>
     <button class="b b-ouro b-cheio" type="button" id="btNovaAgenda">+ Nova proposta</button>
     <div class="mes-nav">
@@ -688,7 +728,8 @@
   var $ = function (id) { return document.getElementById(id); };
 
   var propostas = [], filtro = 'abertas', pedido = 0, ultimaCarga = 0, carregada = false;   // lista
-  var aba = 'agenda', mesVisto = null, diaSel = '';                                       // abas e agenda
+  var aba = 'hoje', mesVisto = null, diaSel = '', dmMes = null;                                       // abas e agenda
+  var DIAS_SEM_RESPOSTA = 3;   // abriu a proposta há tantos dias e não respondeu: hora de chamar
   var SINAL_PCT = 10, RESTANTE_DIAS_ANTES = 5;   // condições dela: 10% na assinatura, restante até 5 dias antes
   var POR_DIA = 2;                                                                        // ela consegue fazer até 2 casamentos no mesmo dia
   var cli = { base: 'evento', periodo: 'tudo', de: '', ate: '' };                          // filtros da aba Clientes
@@ -701,8 +742,8 @@
   function logado() { return !!(sessao && sessao.token && sessao.exp > Date.now() / 1000); }
   function sair(msg) {
     sessao = null; try { localStorage.removeItem(CHAVE); } catch (e) {}
-    sujo = false; propostas = []; carregada = false; modelo = null; editando = null; aba = 'agenda'; mesVisto = null; diaSel = ''; cli = { base: 'evento', periodo: 'tudo', de: '', ate: '' };
-    ['rFechadas', 'rMedio', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando', 'fReceber', 'fAtrasado', 'fRecebidoMes'].forEach(function (id) { $(id).textContent = '–'; });
+    sujo = false; propostas = []; carregada = false; modelo = null; editando = null; aba = 'hoje'; mesVisto = null; diaSel = ''; dmMes = null; cli = { base: 'evento', periodo: 'tudo', de: '', ate: '' };
+    ['rFechadas', 'rMedio', 'rTotal', 'mCasamentos', 'mLivres', 'mAguardando', 'fReceber', 'fAtrasado', 'fRecebidoMes', 'hjEventos', 'hjReceber', 'hjChamar'].forEach(function (id) { $(id).textContent = '–'; });
     fecharFolhas(); semToast(); toastDepois = '';
     mostrar('vLogin');
     $('loginErro').textContent = msg || ''; $('loginErro').hidden = !msg;
@@ -826,7 +867,7 @@
     api('POST', '/login', { senha: $('senha').value }).then(function (j) {
       sessao = j; try { localStorage.setItem(CHAVE, JSON.stringify(j)); } catch (e) {}
       $('senha').value = ''; $('senha').type = 'password'; $('btOlho').textContent = 'Mostrar'; $('btOlho').setAttribute('aria-pressed', 'false');
-      filtro = 'abertas'; aba = 'agenda'; mesVisto = null; diaSel = ''; abrirLista();
+      filtro = 'abertas'; aba = 'hoje'; mesVisto = null; diaSel = ''; dmMes = null; abrirLista();
     }).catch(function (e) { $('loginErro').textContent = e.message; $('loginErro').hidden = false; }).then(solta);
   });
   $('btOlho').addEventListener('click', function () {
@@ -837,11 +878,11 @@
   $('btSair').addEventListener('click', function () { sair(); });
 
   // ---------- abas: agenda · propostas · clientes ----------
-  var ABAS = ['agenda', 'propostas', 'clientes', 'financeiro'];
+  var ABAS = ['hoje', 'agenda', 'propostas', 'clientes', 'financeiro'];
   function definirAba(a, semRolar) {
-    aba = ABAS.indexOf(a) >= 0 ? a : 'agenda';
+    aba = ABAS.indexOf(a) >= 0 ? a : 'hoje';
     document.querySelectorAll('#abas [data-aba]').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-aba') === aba)); });
-    $('abaAgenda').hidden = aba !== 'agenda'; $('abaPropostas').hidden = aba !== 'propostas'; $('abaClientes').hidden = aba !== 'clientes'; $('abaFinanceiro').hidden = aba !== 'financeiro';
+    $('abaHoje').hidden = aba !== 'hoje'; $('abaAgenda').hidden = aba !== 'agenda'; $('abaPropostas').hidden = aba !== 'propostas'; $('abaClientes').hidden = aba !== 'clientes'; $('abaFinanceiro').hidden = aba !== 'financeiro';
     if (!semRolar) window.scrollTo(0, 0);
     ajustarTotal();
   }
@@ -876,7 +917,7 @@
       limparNo($('lista')); $('lista').appendChild(v);
     });
   }
-  function desenharTudo() { desenharResumo(); desenharLista(); desenharClientes(); desenharAgenda(); desenharFinanceiro(); }
+  function desenharTudo() { desenharResumo(); desenharLista(); desenharClientes(); desenharAgenda(); desenharFinanceiro(); desenharHoje(); }
 
   // ---------- datas ----------
   var DIAS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
@@ -990,7 +1031,7 @@
     }
   }
   function ajustarTotal() {   // um total grande encolhe até caber no quadro
-    ['rTotal', 'rMedio', 'fReceber', 'fAtrasado', 'fRecebidoMes'].forEach(function (id) {
+    ['rTotal', 'rMedio', 'fReceber', 'fAtrasado', 'fRecebidoMes', 'hjReceber'].forEach(function (id) {
       var b = $(id), t = 1.8;
       b.style.fontSize = '';
       while (t > 1.05 && b.scrollWidth > b.clientWidth) { t -= 0.1; b.style.fontSize = t.toFixed(2) + 'rem'; }
@@ -1163,6 +1204,129 @@
     }
     proximo().catch(function (e) { solta(); desenharTudo(); if (e && e.message === '401') return; falhou(e); });
   }
+
+  // ---------- hoje (fase 4): o dia e o mês de relance ----------
+  function diaLocal(isoHora) { var d = new Date(isoHora || ''); return isNaN(d.getTime()) ? '' : isoLocal(d); }
+  function diasDesde(iso) { var d = dataDe(iso); return d ? Math.round((dataDe(hojeISO()) - d) / 864e5) : 0; }
+  function linhaLembrete(p, texto) {
+    var d = p.dados || {}, r = el('article', 'lembrete');
+    var q = botao('q'); q.title = 'Abrir a proposta'; q.onclick = function () { abrirEditor(p); };
+    q.appendChild(el('b', null, d.cliente || 'Sem nome'));
+    q.appendChild(el('span', null, texto));
+    var sub = [d.data && dataCurta(d.data), faixa(d)].filter(Boolean).join(' · '); if (sub) q.appendChild(el('span', null, sub));
+    r.appendChild(q);
+    var lado = el('div', 'lado');
+    var bCp = botao('b b-pq b-ouro', 'Copiar link'); bCp.onclick = function () { copiarLink(p); }; lado.appendChild(bCp);
+    var bF = botao('b b-pq b-verde', 'Fechou?'); bF.onclick = function () { abrirFechou(p); }; lado.appendChild(bF);
+    r.appendChild(lado);
+    return r;
+  }
+  function desenharHoje() {
+    var hoje = hojeISO(), fim = hojeMais(6), box = $('hoje'), agora = new Date(); limparNo(box);
+    $('hjSaudacao').textContent = (agora.getHours() < 12 ? 'Bom dia' : agora.getHours() < 18 ? 'Boa tarde' : 'Boa noite') + ', Jamilli';
+    var dt = agora.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    $('hjData').textContent = dt.charAt(0).toUpperCase() + dt.slice(1);
+    var fechadas = propostas.filter(function (p) { return etapaDe(p) === 'fechada'; });
+    var semana = fechadas.filter(function (p) { var d = p.dados && p.dados.data; return d && d >= hoje && d <= fim; }).sort(ordemData);
+    var pags = [];   // pagamentos em aberto que vencem até o fim da semana (os atrasados entram primeiro)
+    fechadas.forEach(function (p) { pagamentosDe(p).forEach(function (pg, i) { if (temValor(pg.valor) && !pg.pago_em && pg.vence_em && pg.vence_em <= fim) pags.push({ p: p, i: i, pg: pg }); }); });
+    pags.sort(porVence);
+    var abertas = propostas.filter(function (p) { return etapaDe(p) === 'aberta' && p.status === 'publicada'; });
+    var chamar = abertas.filter(function (p) { return p.views > 0 && p.primeira_vista && diasDesde(diaLocal(p.primeira_vista)) >= DIAS_SEM_RESPOSTA; })
+      .sort(function (a, b) { return String(a.primeira_vista).localeCompare(String(b.primeira_vista)); });
+    var naoAbriram = abertas.filter(function (p) { return !p.views; }).sort(function (a, b) { return String(a.criado_em).localeCompare(String(b.criado_em)); });
+    $('hjEventos').textContent = semana.length; $('hjEventosRot').textContent = semana.length === 1 ? 'Casamento em 7 dias' : 'Casamentos em 7 dias';
+    $('hjReceber').textContent = dinheiro(pags.reduce(function (a, x) { return somaDinheiro(a, x.pg.valor); }, 0));
+    $('hjChamar').textContent = chamar.length + naoAbriram.length;
+    ajustarTotal();
+    box.appendChild(secao('Próximos 7 dias', semana.length ? semana.length + (semana.length === 1 ? ' casamento' : ' casamentos') : ''));
+    if (semana.length) { var g = el('div', 'mes-lista'); semana.forEach(function (p) { g.appendChild(linhaEvento(p)); }); box.appendChild(g); }
+    else box.appendChild(el('p', 'nada', 'Nenhum casamento nos próximos 7 dias.'));
+    box.appendChild(secao('Pagamentos da semana', pags.length ? pags.length + (pags.length === 1 ? ' pagamento' : ' pagamentos') : ''));
+    if (pags.length) { var gp = el('div', 'pagtos'); pags.forEach(function (x) { gp.appendChild(linhaPagto(x, hoje)); }); box.appendChild(gp); }
+    else box.appendChild(el('p', 'nada', 'Nenhum pagamento vence nesta semana.'));
+    box.appendChild(secao('Hora de chamar', 'abriram há ' + DIAS_SEM_RESPOSTA + ' dias ou mais e não responderam'));
+    if (chamar.length) {
+      var gc = el('div', 'pagtos');
+      chamar.forEach(function (p) { var n = diasDesde(diaLocal(p.primeira_vista)); gc.appendChild(linhaLembrete(p, 'Abriu há ' + n + ' dias · ' + p.views + (p.views === 1 ? ' abertura' : ' aberturas') + (p.ultima_vista ? ' · última ' + quando(p.ultima_vista) : ''))); });
+      box.appendChild(gc);
+    } else box.appendChild(el('p', 'nada', 'Ninguém esperando resposta há ' + DIAS_SEM_RESPOSTA + ' dias ou mais.'));
+    box.appendChild(secao('Ainda não abriram', naoAbriram.length ? naoAbriram.length + (naoAbriram.length === 1 ? ' proposta' : ' propostas') : ''));
+    if (naoAbriram.length) {
+      var gn = el('div', 'pagtos');
+      naoAbriram.forEach(function (p) { var n = diasDesde(diaLocal(p.criado_em)); gn.appendChild(linhaLembrete(p, n <= 0 ? 'Criada hoje' : 'Criada há ' + n + (n === 1 ? ' dia' : ' dias'))); });
+      box.appendChild(gn);
+    } else box.appendChild(el('p', 'nada', 'Todas as propostas publicadas já foram abertas pelo casal.'));
+    desenharMes();
+  }
+
+  // números de um mês (k = AAAA-MM): funil das propostas criadas no mês, vendas (pelo dia em que fechou),
+  // casamentos do mês (pela data do evento) e o que entrou (pagamentos recebidos no mês)
+  function numerosDoMes(k) {
+    var r = { enviadas: 0, abertas: 0, fecharam: 0, vendas: 0, vendido: 0, entregas: 0, entregue: 0, recebido: 0, opcoes: {} };
+    propostas.forEach(function (p) {
+      var et = etapaDe(p), d = p.dados || {};
+      if (p.publicada_alguma_vez && diaLocal(p.criado_em).slice(0, 7) === k) { r.enviadas++; if (p.views > 0) r.abertas++; if (et === 'fechada') r.fecharam++; }
+      if (et !== 'fechada') return;
+      if (String(p.fechado_em || '').slice(0, 7) === k) {
+        r.vendas++; r.vendido = somaDinheiro(r.vendido, valorFechado(p));
+        var rot = rotulosFechamento(p).slice(0, 2).join(' · ') || 'Outro'; r.opcoes[rot] = (r.opcoes[rot] || 0) + 1;
+      }
+      if (String(d.data || '').slice(0, 7) === k) { r.entregas++; r.entregue = somaDinheiro(r.entregue, valorFechado(p)); }
+      pagamentosDe(p).forEach(function (pg) { if (pg.pago_em && pg.pago_em.slice(0, 7) === k && temValor(pg.valor)) r.recebido = somaDinheiro(r.recebido, pg.valor); });
+    });
+    r.taxa = r.enviadas ? Math.round(r.fecharam / r.enviadas * 100) : null;
+    r.ticket = r.vendas ? Math.round(r.vendido / r.vendas) : null;
+    return r;
+  }
+  function fmtMetrica(v, tipo) { if (v == null) return '–'; return tipo === 'r' ? dinheiro(v) : tipo === '%' ? v + '%' : String(v); }
+  function comparacao(atual, antes, tipo, rot) {
+    var s = el('span', 'dl'), txt = rot + ': ' + fmtMetrica(antes, tipo);
+    if (atual != null && antes != null) {
+      if (tipo === '%') { var dp = atual - antes; if (dp) { s.classList.add(dp > 0 ? 'sobe' : 'desce'); txt += ' (' + (dp > 0 ? '+' : '') + dp + ' pontos)'; } }
+      else if (antes > 0) { var pc = Math.round((atual - antes) / antes * 100); if (pc) { s.classList.add(pc > 0 ? 'sobe' : 'desce'); txt += ' (' + (pc > 0 ? '+' : '') + pc + '%)'; } }
+      else if (atual > 0) s.classList.add('sobe');
+    }
+    s.textContent = txt; return s;
+  }
+  function desenharMes() {
+    if (!dmMes) dmMes = mesAtual();
+    var y = dmMes.y, m = dmMes.m, k = chaveMes(y, m), box = $('doMes'), at = mesAtual(); limparNo(box);
+    $('dmTitulo').textContent = nomeMes(y, m);
+    $('dmHoje').hidden = y === at.y && m === at.m;
+    var pa = new Date(y, m - 1, 1), py = pa.getFullYear(), pm = pa.getMonth();
+    var r = numerosDoMes(k), ant = numerosDoMes(chaveMes(py, pm)), ano = numerosDoMes(chaveMes(y - 1, m));
+    var rotAnt = nomeMes(py, pm, true) + ' ' + String(py).slice(2), rotAno = nomeMes(y - 1, m, true) + ' ' + String(y - 1).slice(2);
+    box.appendChild(secao('Propostas do mês', 'as enviadas neste mês e o que aconteceu com elas'));
+    var fun = el('div', 'numeros');
+    [['Enviadas', r.enviadas], ['Abertas pelo casal', r.abertas], ['Fecharam', r.fecharam]].forEach(function (x) { var c = el('div'); c.appendChild(el('b', null, String(x[1]))); c.appendChild(el('span', null, x[0])); fun.appendChild(c); });
+    box.appendChild(fun);
+    box.appendChild(el('p', 'periodo-txt', r.enviadas ? 'Taxa de fechamento: ' + r.taxa + '% (' + r.fecharam + ' de ' + r.enviadas + ' propostas).' : 'Nenhuma proposta enviada neste mês.'));
+    box.appendChild(secao('Faturamento', 'o que você vendeu × os casamentos que acontecem no mês'));
+    var fat = el('div', 'numeros dois');
+    var c1 = el('div', 'total'); c1.appendChild(el('b', null, dinheiro(r.vendido))); c1.appendChild(el('span', null, 'Vendido · ' + r.vendas + (r.vendas === 1 ? ' contrato' : ' contratos'))); fat.appendChild(c1);
+    var c2 = el('div'); c2.appendChild(el('b', null, dinheiro(r.entregue))); c2.appendChild(el('span', null, 'Casamentos do mês · ' + r.entregas)); fat.appendChild(c2);
+    box.appendChild(fat);
+    var top = Object.keys(r.opcoes).sort(function (a, b) { return r.opcoes[b] - r.opcoes[a] || a.localeCompare(b); })[0];
+    var info = el('p', 'vendas');
+    info.appendChild(document.createTextNode('Ticket médio: ')); info.appendChild(el('b', null, r.ticket != null ? dinheiro(r.ticket) : '–'));
+    info.appendChild(document.createTextNode(' · Mais vendida: ')); info.appendChild(el('b', null, top ? top + ' (' + r.opcoes[top] + ')' : '–'));
+    box.appendChild(info);
+    box.appendChild(secao('Comparando', 'com ' + rotAnt.toLowerCase() + ' e com ' + rotAno.toLowerCase()));
+    var g = el('div', 'comparar');
+    [['Propostas enviadas', 'enviadas', 'n'], ['Taxa de fechamento', 'taxa', '%'], ['Contratos fechados', 'vendas', 'n'], ['Vendido', 'vendido', 'r'],
+      ['Casamentos do mês', 'entregue', 'r'], ['Ticket médio', 'ticket', 'r'], ['Recebido', 'recebido', 'r']].forEach(function (x) {
+      var row = el('div', 'comp-linha');
+      row.appendChild(el('span', 'rot', x[0])); row.appendChild(el('b', null, fmtMetrica(r[x[1]], x[2])));
+      var det = el('span', 'det');
+      det.appendChild(comparacao(r[x[1]], ant[x[1]], x[2], rotAnt)); det.appendChild(document.createTextNode(' · ')); det.appendChild(comparacao(r[x[1]], ano[x[1]], x[2], rotAno));
+      row.appendChild(det); g.appendChild(row);
+    });
+    box.appendChild(g);
+  }
+  $('dmAnt').addEventListener('click', function () { var d = new Date(dmMes.y, dmMes.m - 1, 1); dmMes = { y: d.getFullYear(), m: d.getMonth() }; desenharMes(); });
+  $('dmProx').addEventListener('click', function () { var d = new Date(dmMes.y, dmMes.m + 1, 1); dmMes = { y: d.getFullYear(), m: d.getMonth() }; desenharMes(); });
+  $('dmHoje').addEventListener('click', function () { dmMes = mesAtual(); desenharMes(); });
 
   // ---------- agenda: o mês dela ----------
   function mesAtual() { var h = new Date(); return { y: h.getFullYear(), m: h.getMonth() }; }
