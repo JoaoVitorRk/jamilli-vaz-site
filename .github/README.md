@@ -14,7 +14,7 @@ Site da Jamilli Vaz, cantora de cerimônias de casamento em Guarapuava (PR) e re
 - **Como funciona o dia**, **repertório** e **depoimentos** de casais.
 - **Consultar data** direto no WhatsApp, com a mensagem já escrita.
 - **Propostas por casal:** cada casal recebe um link próprio com três opções (da mais simples à completa) e os valores.
-- **Painel com senha** para a cantora: agenda, propostas, contatos, financeiro (sinal e restante) e um resumo do dia.
+- **Painel com senha** para a cantora: agenda, propostas, clientes e financeiro (sinal e restante).
 - **Pensado para o Google:** título e descrição por página, dados estruturados (schema.org), sitemap e domínio próprio.
 
 ## Como foi feito
