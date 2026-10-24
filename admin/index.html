@@ -1467,9 +1467,10 @@
     c.nome = el('input'); c.nome.type = 'text'; c.nome.maxLength = 60; c.nome.setAttribute('enterkeyhint', 'done');
     c.clima = el('input'); c.clima.type = 'text'; c.clima.maxLength = 120; c.clima.setAttribute('enterkeyhint', 'done');
     c.itens = el('textarea'); c.itens.maxLength = 600; c.itens.rows = 4;
-    g.appendChild(gt); g.appendChild(campo('Nome', c.nome)); g.appendChild(campo('Clima (frase curta)', c.clima)); g.appendChild(campo('O que tem', c.itens, 'Um por linha.'));
+    g.appendChild(gt); g.appendChild(campo('Nome', c.nome)); g.appendChild(campo('Clima (frase curta)', c.clima)); g.appendChild(campo('O que tem', c.itens, 'Um por linha. Uma linha em branco separa os grupos.'));
     $('fTextos').appendChild(g);
     c.nome.addEventListener('input', atualizarTitulos);
+    c.itens.addEventListener('input', function () { crescer(c.itens); });
   });
   function atualizarTitulos() { OPCOES.forEach(function (o) { var n = C[o.k].nome.value.trim(); C[o.k].titulo.textContent = n ? ' · ' + n : ''; }); }
   function definirSugestao(k) {   // só uma por vez
@@ -1531,7 +1532,8 @@
   }
   // o campo do nome cresce para mostrar o texto inteiro (só mede quando "Mais opções" está aberto)
   function crescer(ta) { ta.style.height = 'auto'; ta.style.height = Math.max(52, ta.scrollHeight + 2) + 'px'; }
-  function crescerTodos() { Array.prototype.forEach.call(document.querySelectorAll('#fAdicionais .x-nome'), crescer); }
+  // o "O que tem" também cresce: o Prestige tem 8 linhas e, com 4 fixas, a linha em branco ficava escondida
+  function crescerTodos() { Array.prototype.forEach.call(document.querySelectorAll('#fAdicionais .x-nome, #fTextos textarea'), crescer); }
   $('maisOpcoes').addEventListener('toggle', crescerTodos);
   window.addEventListener('resize', crescerTodos);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(crescerTodos);

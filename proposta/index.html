@@ -248,18 +248,30 @@
   .quem-copy .nota { padding-top: 20px; border-top: 1px solid var(--fio); color: var(--ink-soft); }
   @media (min-width: 900px) { .quem-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } .quem-copy > p:not(.eyebrow):not(.lead) { font-size: 1.12rem; max-width: 58ch; } }
 
-  /* ---------- a importância da música ao vivo ---------- */
+  /* ---------- quem nos procura não quer / então, vocês buscam ---------- */
   .imp { background: var(--noite); overflow: hidden; padding-bottom: clamp(70px, 9vw, 120px); }
   .imp-foto { position: absolute; inset: 0 0 auto 0; height: min(82vh, 760px); }
   .imp-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 30%; }
   .imp-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--noite) 0%, rgba(20, 18, 16, 0.62) 7%, rgba(20, 18, 16, 0.28) 20%, rgba(20, 18, 16, 0.42) 52%, rgba(20, 18, 16, 0.88) 82%, var(--noite) 100%); }
-  .imp-inner { position: relative; padding-top: min(48vh, 440px); }
-  .frases { list-style: none; margin-top: 26px; border-bottom: 1px solid rgba(198, 165, 103, 0.34); }
-  .frases li { font-family: var(--serif); font-weight: 300; font-size: clamp(2.05rem, 5.5vw, 4.5rem); line-height: 1.06; letter-spacing: -0.012em; padding: 0.4em 0 0.44em; border-top: 1px solid rgba(198, 165, 103, 0.34); text-wrap: balance; }
-  .frases li:nth-child(even) { padding-left: 13%; }
-  .frases em { font-style: italic; font-weight: 400; color: var(--dourado-claro); }
+  .imp-inner { position: relative; padding-top: min(48vh, 440px); display: grid; gap: clamp(72px, 10vw, 140px); }
+  .nq { display: grid; gap: clamp(26px, 3.4vw, 44px); align-items: start; }
+  .nq h2, .nq h3 { text-shadow: 0 1px 18px rgba(20, 18, 16, 0.5); }
+  .nq-pre { display: block; font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.3rem); line-height: 1.15; }
+  /* a ênfase da seção: o "não quer" no itálico dourado do site, no maior tamanho da página */
+  .nq-nao { display: block; margin-top: 0.06em; font-style: italic; font-weight: 400; font-size: clamp(4.1rem, 19vw, 8.4rem); line-height: 0.92; letter-spacing: -0.02em; color: var(--dourado-claro); }
+  .nq h3 { font-size: clamp(2.3rem, 5vw, 3.7rem); line-height: 1.06; }
+  .nq h3 em { font-style: italic; font-weight: 400; color: var(--dourado-claro); }
+  .nq h3 .nq-pre { font-size: inherit; }
+  .nq-lista { list-style: none; border-bottom: 1px solid rgba(198, 165, 103, 0.3); }
+  .nq-lista li { --fs: clamp(1.2rem, 1.06rem + 0.6vw, 1.55rem); position: relative; padding: 0.95em 0 0.95em 34px; border-top: 1px solid rgba(198, 165, 103, 0.3); font-family: var(--serif); font-weight: 300; font-size: var(--fs); line-height: 1.42; }
+  .nq-lista li::before { position: absolute; left: 2px; top: calc(var(--fs) * 1.66); }   /* no meio da 1ª linha */
+  .nq-lista-nao li { color: rgba(246, 241, 233, 0.74); }
+  .nq-lista-nao li::before { content: ""; width: 16px; height: 1px; background: rgba(198, 165, 103, 0.7); }
+  .nq-lista-sim li::before { content: "✦"; font-size: 0.6rem; line-height: 1; color: var(--dourado); transform: translateY(-50%); }
   @media (min-width: 900px) {
-    .frases li:nth-child(even) { padding-left: 0; text-align: right; }
+    .imp-inner { padding-top: min(58vh, 540px); }   /* a lista é texto corrido: começa abaixo do rosto e das mãos dela na foto */
+    .nq { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 5vw, 90px); }
+    .nq-nao { font-size: clamp(5rem, 8.2vw, 8.4rem); }
     .imp-foto img { width: 128%; max-width: none; object-position: 0 32%; }
     .imp-foto::after { background: linear-gradient(90deg, rgba(20, 18, 16, 0) 60%, rgba(20, 18, 16, 0.6) 100%), linear-gradient(to bottom, var(--noite) 0%, rgba(20, 18, 16, 0.62) 7%, rgba(20, 18, 16, 0.28) 20%, rgba(20, 18, 16, 0.42) 52%, rgba(20, 18, 16, 0.88) 82%, var(--noite) 100%); }
   }
@@ -353,6 +365,7 @@
   .op-clima { margin-top: 10px; max-width: 22ch; font-family: var(--serif); font-style: italic; font-size: 1.14rem; line-height: 1.35; color: var(--esmeralda); text-wrap: balance; }
   .op-fio { width: 56px; height: 1px; margin: 22px 0 20px; background: var(--dourado); flex: none; }
   .op-itens { list-style: none; display: grid; gap: 5px; font-size: 1rem; line-height: 1.45; overflow-wrap: anywhere; }
+  .op-itens + .op-itens { margin-top: 1.15em; }
   .op-precos { width: 100%; margin-top: auto; padding-top: 26px; }
   .preco { display: grid; gap: 2px; justify-items: center; padding: 16px 0 14px; border-top: 1px solid var(--fio); }
   .preco .rot { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; line-height: 1.6; color: var(--ouro-tinta); }
@@ -546,17 +559,30 @@
 
   <div class="faixa champagne-noite" aria-hidden="true"></div>
 
-  <!-- ======================= A IMPORTÂNCIA DA MÚSICA AO VIVO ======================= -->
+  <!-- ======================= QUEM NOS PROCURA NÃO QUER / ENTÃO, VOCÊS BUSCAM ======================= -->
+  <!-- texto dela (24/10/2026), no lugar de "A importância da música ao vivo"; a ênfase é o "não quer" -->
   <section class="imp" aria-labelledby="impTitulo">
     <div class="imp-foto"><img src="../media/fotos/igreja-teclado.jpg" alt="Jamilli cantando em uma cerimônia na igreja, entre o violinista e o tecladista" width="2730" height="1820" loading="lazy" decoding="async"></div>
     <div class="wrap imp-inner">
-      <h2 class="eyebrow reveal" id="impTitulo">A importância da música ao vivo</h2>
-      <ul class="frases">
-        <li class="reveal">Cria a <em>atmosfera</em> do momento</li>
-        <li class="reveal">Conecta todos à <em>história</em> do casal</li>
-        <li class="reveal">Transmite a <em>emoção real</em> do momento</li>
-        <li class="reveal">Transforma instantes em <em>lembranças eternas</em></li>
-      </ul>
+      <div class="nq">
+        <h2 class="reveal" id="impTitulo"><span class="nq-pre">Quem nos procura</span> <span class="nq-nao">não quer:</span></h2>
+        <ul class="nq-lista nq-lista-nao">
+          <li class="reveal">Uma cantora que só realiza um repertório próprio, engessado e que não conta a história do casal.</li>
+          <li class="reveal">Uma cantora que não entrega um repertório internacional com segurança, naturalidade e emoção.</li>
+          <li class="reveal">Uma artista que não respeita o protocolo de um casamento, seja estético ou sonoro.</li>
+          <li class="reveal">Uma equipe que não conhece o protocolo de um evento e não entende horários e formalidades.</li>
+          <li class="reveal">Uma cantora que não honra contratos e que não organiza sua agenda com exclusividade.</li>
+        </ul>
+      </div>
+      <div class="nq">
+        <h3 class="reveal"><span class="nq-pre">Então,</span> vocês <em>buscam:</em></h3>
+        <ul class="nq-lista nq-lista-sim">
+          <li class="reveal">Uma cantora disposta a contar a sua história, que dê liberdade de escolha musical.</li>
+          <li class="reveal">Uma voz delicada, com interpretação suave.</li>
+          <li class="reveal">Uma equipe pontual e familiarizada com os horários e formalidades de um casamento.</li>
+          <li class="reveal">Profissionalismo para assumir cada compromisso com responsabilidade, planejamento e exclusividade de agenda.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -742,6 +768,8 @@
   function txt(v) { return typeof v === 'string' ? v.trim() : ''; }
   function meio(s) { return s.replace(/\s+·\s+/g, '\u00a0· '); }   // a quebra de linha cai depois do "·", nunca antes
   function linhas(v) { return txt(v).split('\n').map(function (x) { return x.replace(/^[-–•✦\s]+/, '').trim(); }).filter(Boolean); }
+  // a linha em branco que ela deixa no "O que tem" separa grupos (cerimônia · recepção · sonorização)
+  function blocos(v) { return txt(v).split(/\n\s*\n/).map(linhas).filter(function (g) { return g.length; }); }
   function el(tag, cls, texto) { var e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; }
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
   function seta() { return $('tSeta').content.firstElementChild.cloneNode(true); }
@@ -900,12 +928,14 @@
       if (n > 1) card.appendChild(el('p', 'op-ord', 'Opção ' + (i + 1)));
       card.appendChild(el('h4', 'op-nome' + (nome.length > 20 ? ' longo' : nome.length > 14 ? ' medio' : ''), nome));
       if (txt(o.clima)) card.appendChild(el('p', 'op-clima', txt(o.clima)));
-      var itens = linhas(o.itens);
-      if (itens.length) {
+      var grupos = blocos(o.itens);
+      if (grupos.length) {
         card.appendChild(el('span', 'op-fio'));
-        var ul = el('ul', 'op-itens');
-        itens.forEach(function (x) { ul.appendChild(el('li', null, x)); });
-        card.appendChild(ul);
+        grupos.forEach(function (g) {
+          var ul = el('ul', 'op-itens');
+          g.forEach(function (x) { ul.appendChild(el('li', null, x)); });
+          card.appendChild(ul);
+        });
       }
       var precos = el('div', 'op-precos');
       if (verCer(o) && valorOk(o.cerimonia)) precos.appendChild(preco('Cerimônia', o.cerimonia));
