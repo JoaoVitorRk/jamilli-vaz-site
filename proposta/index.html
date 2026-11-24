@@ -358,8 +358,7 @@
     background: linear-gradient(180deg, #FDFBF6 0%, rgba(253, 251, 246, 0) 72%);
   }
   .opcao::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(198, 165, 103, 0.34); border-radius: 999px 999px 0 0; pointer-events: none; }
-  .op-ord { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; line-height: 1.6; color: var(--ouro-tinta); }
-  .op-nome { margin-top: 6px; font-size: clamp(2.4rem, 3.4vw, 2.9rem); line-height: 1.04; overflow-wrap: anywhere; max-width: 100%; }
+  .op-nome {font-size: clamp(2.4rem, 3.4vw, 2.9rem); line-height: 1.04; overflow-wrap: anywhere; max-width: 100%; }
   .op-nome.medio { font-size: clamp(1.9rem, 2.4vw, 2.2rem); line-height: 1.08; }
   .op-nome.longo { font-size: 1.75rem; line-height: 1.12; }
   .op-clima { margin-top: 10px; max-width: 22ch; font-family: var(--serif); font-style: italic; font-size: 1.14rem; line-height: 1.35; color: var(--esmeralda); text-wrap: balance; }
@@ -377,7 +376,7 @@
   .op-cta span { white-space: nowrap; }
   .opcao.sugestao { background: linear-gradient(180deg, #3A5A4A 0%, var(--esmeralda) 46%, #27402F 100%); color: var(--ivory); border-color: var(--esmeralda); box-shadow: 0 34px 70px -22px rgba(26, 41, 33, 0.7); }
   .opcao.sugestao::before { border-color: rgba(228, 206, 158, 0.55); }
-  .opcao.sugestao .op-ord, .opcao.sugestao .preco .rot, .opcao.sugestao .op-clima { color: var(--dourado-claro); }
+  .opcao.sugestao .preco .rot, .opcao.sugestao .op-clima { color: var(--dourado-claro); }
   .opcao.sugestao .preco { border-top-color: rgba(228, 206, 158, 0.38); }
   .opcao.sugestao .preco .nota { color: rgba(246, 241, 233, 0.76); }
   .opcao.sugestao .op-cta { background: var(--dourado); border-color: var(--dourado); color: var(--noite); }
@@ -389,20 +388,21 @@
   .opcoes.sem-sugestao .opcao[data-k="media"] { background: linear-gradient(180deg, #FBF6EC 0%, rgba(251, 246, 236, 0) 72%); }
   .opcoes.sem-sugestao .opcao[data-k="completa"] { background: linear-gradient(180deg, var(--champagne) 0%, rgba(233, 218, 193, 0) 72%); border-color: var(--dourado); }
   .opcoes.sem-sugestao .opcao[data-k="completa"] .op-fio { width: 72px; }
-  /* uma embaixo da outra em todas as telas: na reunião ela apresenta uma opção por vez (pedido dela, 06/10/2026) */
+  /* uma opção por vez (pedido dela, 24/11/2026: a técnica da mentoria é apresentar a principal e só mostrar
+     outra se o casal não gostar). As outras ficam atrás de um botão discreto, sem número e sem contar quantas são. */
   .opcoes { gap: 0; }
   .opcao { scroll-margin-block: 24px; }
-  .op-prox { display: grid; justify-items: center; gap: 12px; padding: 18px 0 34px; background: none; border: 0; color: var(--ouro-tinta); font: inherit; font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; line-height: 1.6; cursor: pointer; }
-  .op-prox::before { content: ""; width: 1px; height: 46px; background: linear-gradient(transparent, var(--dourado)); }
-  .op-prox i { font-style: normal; font-size: 1.1rem; letter-spacing: 0; line-height: 1; color: var(--dourado); transition: transform 300ms var(--ease); }
-  .op-prox:hover i { transform: translateY(4px); }
-  .op-prox:focus-visible { outline-offset: 6px; }
-  @media (min-width: 1000px) {
-    .opcao { max-width: 480px; }
-    /* respiro que deixa uma opção por tela num notebook ou monitor */
-    .op-prox { padding: clamp(28px, 7vh, 70px) 0 clamp(36px, 9vh, 90px); }
-    .op-prox::before { height: clamp(60px, 16vh, 170px); }
-  }
+  .opcao.entra-dir { animation: entrar-dir 520ms var(--ease) both; }
+  .opcao.entra-esq { animation: entrar-esq 520ms var(--ease) both; }
+  @keyframes entrar-dir { from { opacity: 0; transform: translateX(42px); } to { opacity: 1; transform: none; } }
+  @keyframes entrar-esq { from { opacity: 0; transform: translateX(-42px); } to { opacity: 1; transform: none; } }
+  .op-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 34px; margin-top: 18px; }
+  .op-troca { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 4px; background: none; border: 0; color: var(--ink-soft); font: inherit; font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; line-height: 1.6; cursor: pointer; }
+  .op-troca span { padding-bottom: 2px; background: linear-gradient(var(--dourado), var(--dourado)) left bottom / 0 1px no-repeat; transition: background-size 300ms var(--ease), color 300ms; }
+  .op-troca:hover span { background-size: 100% 1px; color: var(--grafite); }
+  .op-troca i { font-style: normal; font-size: 0.95rem; letter-spacing: 0; color: var(--dourado); }
+  .op-troca:focus-visible { outline-offset: 2px; }
+  @media (min-width: 1000px) { .opcao { max-width: 480px; } }
 
   .detalhes { display: grid; gap: clamp(36px, 4vw, 54px) clamp(40px, 6vw, 84px); margin-top: clamp(54px, 6.4vw, 84px); align-items: start; }
   .detalhes .col { display: grid; gap: clamp(36px, 4vw, 54px); }
@@ -695,10 +695,14 @@
 
         <h3 class="divisor" id="pOpcoesTitulo"></h3>
         <div class="opcoes" id="pOpcoes"></div>
+        <div class="op-nav" id="pOpNav" hidden>
+          <button class="op-troca" id="pOpVoltar" type="button" hidden><i aria-hidden="true">←</i><span>Voltar</span></button>
+          <button class="op-troca" id="pOpOutra" type="button"><span>Ver outra opção</span><i aria-hidden="true">→</i></button>
+        </div>
 
         <div class="detalhes" id="pDetalhes">
           <div class="col">
-            <div class="bloco" id="blocoInclui"><h3 id="pIncluiTitulo">Em todas as opções</h3><ul class="lista" id="pInclui"></ul></div>
+            <div class="bloco" id="blocoInclui"><h3>O que está incluso</h3><ul class="lista" id="pInclui"></ul></div>
             <div class="bloco" id="blocoAdic"><h3>Adicionais</h3><div id="pAdic"></div></div>
           </div>
           <div class="col">
@@ -898,14 +902,15 @@
     var alvo = $('pOpcoes');
     alvo.setAttribute('data-n', n);
     if (!sugestao) alvo.classList.add('sem-sugestao');
-    $('pOpcoesTitulo').appendChild(el('span', null, n === 1 ? 'A proposta para vocês' : (n === 2 ? 'Duas' : 'Três') + ' opções para vocês'));
+    // título e texto não contam quantas opções existem: ela apresenta a principal primeiro (24/11/2026)
+    $('pOpcoesTitulo').appendChild(el('span', null, 'A proposta para vocês'));
     // texto do site dela (FAQ "Como funcionam o investimento e a reserva?"); "casamento" só quando o evento é um
     var evento = !tipo || /casamento/i.test(tipo) ? 'casamento' : 'celebração';
-    $('pIntro').textContent = 'Cada ' + evento + ' pede uma experiência diferente. ' + (n > 1
-      ? 'Por isso, gosto de apresentar diferentes possibilidades para que vocês escolham o que melhor se encaixa no que imaginaram para o grande dia.'
-      : 'O investimento é definido de acordo com a formação musical escolhida e os detalhes do serviço contratado.');
+    $('pIntro').textContent = 'Cada ' + evento + ' pede uma experiência diferente. O investimento é definido de acordo com a formação musical escolhida e os detalhes do serviço contratado.';
     if (!n) { $('pOpcoesTitulo').hidden = true; alvo.hidden = true; }
 
+    // nota embaixo do valor "cerimônia + recepção": cada opção tem a sua no painel (vazia = sem nota);
+    // proposta antiga, sem esse campo, continua com o texto de antes
     var NOTA_RECEPCAO = '+2h de música ao vivo para a recepção ou jantar';
     function preco(rotulo, v, nota) {
       var box = el('div', 'preco');
@@ -925,7 +930,6 @@
       var card = el('article', 'opcao' + (k === sugestao ? ' sugestao' : ''));
       card.setAttribute('data-k', k);
       if (k === sugestao) card.appendChild(el('span', 'selo', 'Minha sugestão para vocês'));
-      if (n > 1) card.appendChild(el('p', 'op-ord', 'Opção ' + (i + 1)));
       card.appendChild(el('h4', 'op-nome' + (nome.length > 20 ? ' longo' : nome.length > 14 ? ' medio' : ''), nome));
       if (txt(o.clima)) card.appendChild(el('p', 'op-clima', txt(o.clima)));
       var grupos = blocos(o.itens);
@@ -939,7 +943,7 @@
       }
       var precos = el('div', 'op-precos');
       if (verCer(o) && valorOk(o.cerimonia)) precos.appendChild(preco('Cerimônia', o.cerimonia));
-      if (verRec(o) && valorOk(o.cerimonia_recepcao)) precos.appendChild(preco('Cerimônia + recepção', o.cerimonia_recepcao, NOTA_RECEPCAO));
+      if (verRec(o) && valorOk(o.cerimonia_recepcao)) precos.appendChild(preco('Cerimônia + recepção', o.cerimonia_recepcao, typeof o.nota_recepcao === 'string' ? txt(o.nota_recepcao) : NOTA_RECEPCAO));
       if (!precos.children.length) { var sem = el('div', 'preco'); sem.appendChild(el('p', 'sem', 'Valor sob consulta')); precos.appendChild(sem); }
       card.appendChild(precos);
       var cta = el('a', 'btn btn-mini op-cta');
@@ -948,23 +952,15 @@
       cta.appendChild(el('span', null, 'Quero esta opção'));
       cta.appendChild(seta());
       card.appendChild(cta);
+      if (i > 0) card.hidden = true;   // abre só a primeira da ordem do painel
       alvo.appendChild(card);
-      if (i < n - 1) {
-        var prox = el('button', 'op-prox'); prox.type = 'button';
-        prox.appendChild(el('span', null, 'Ver a próxima opção')); prox.appendChild(el('i', null, '↓'));
-        prox.addEventListener('click', function () {
-          var alvoCard = alvo.querySelectorAll('.opcao')[i + 1];
-          if (alvoCard) alvoCard.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: alvoCard.offsetHeight < innerHeight - 40 ? 'center' : 'start' });
-        });
-        alvo.appendChild(prox);
-      }
     });
+    if (n > 1) iniciarTroca(alvo);
 
-    // em todas as opções
+    // o que vale para qualquer opção (o título não diz "em todas as opções": não conta que há outras)
     var inclui = linhas(d.inclui);
     inclui.forEach(function (x) { $('pInclui').appendChild(el('li', null, x)); });
     if (!inclui.length) $('blocoInclui').hidden = true;
-    if (n === 1) $('pIncluiTitulo').textContent = 'O que está incluso';
 
     // adicionais: lista corrida quando são só nomes; linhas quando há descrição ou valor
     var adic = (Array.isArray(d.adicionais) ? d.adicionais : []).filter(function (a) { return a && txt(a.nome); });
@@ -1024,6 +1020,37 @@
     iniciarCards();
     iniciarReveal();
     iniciarFlutuante();
+  }
+
+  // ---------- opções: uma por vez, as outras atrás do "Ver outra opção" (ou deslizando para o lado) ----------
+  function iniciarTroca(alvo) {
+    var cards = alvo.querySelectorAll('.opcao'), atual = 0;
+    var voltar = $('pOpVoltar'), outra = $('pOpOutra');
+    function mostrar(j) {
+      if (j < 0 || j >= cards.length || j === atual) return;
+      var dir = j > atual ? 'entra-dir' : 'entra-esq', c = cards[j];
+      cards[atual].hidden = true;
+      cards[atual].classList.remove('entra-dir', 'entra-esq');
+      c.hidden = false;
+      if (!reduce) { c.classList.remove('entra-dir', 'entra-esq'); void c.offsetWidth; c.classList.add(dir); }
+      atual = j;
+      voltar.hidden = atual === 0;
+      outra.hidden = atual === cards.length - 1;
+      // se ela tinha rolado até o botão, o topo da opção nova volta para a tela
+      if (c.getBoundingClientRect().top < 0) c.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    }
+    $('pOpNav').hidden = false;
+    outra.addEventListener('click', function () { mostrar(atual + 1); });
+    voltar.addEventListener('click', function () { mostrar(atual - 1); });
+    // no celular, passar o dedo para o lado também troca (só gesto claramente horizontal)
+    var x0 = null, y0 = 0;
+    alvo.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    alvo.addEventListener('touchend', function (e) {
+      if (x0 == null) return;
+      var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) mostrar(atual + (dx < 0 ? 1 : -1));
+    }, { passive: true });
   }
 
   // ---------- capa: o nome do casal nunca passa de duas linhas ----------

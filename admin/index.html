@@ -677,6 +677,8 @@
   var BASE_LINK = location.origin + location.pathname.replace(/admin\/?(index\.html)?$/, '') + 'proposta/?p=';
   var CHAVE = 'jv_painel_sessao';
   var OPCOES = [{ k: 'simples', rot: 'Simples' }, { k: 'media', rot: 'Média' }, { k: 'completa', rot: 'Completa' }];
+  // o texto que a proposta mostrava fixo embaixo do valor com recepção; vira o ponto de partida da nota de cada opção
+  var NOTA_RECEPCAO = '+2h de música ao vivo para a recepção ou jantar';
   var PACOTES = { cerimonia: 'cerimônia', cerimonia_recepcao: 'cerimônia + recepção' };
   // como cada opção mostra o valor na proposta
   var MODOS = [
@@ -1467,7 +1469,9 @@
     c.nome = el('input'); c.nome.type = 'text'; c.nome.maxLength = 60; c.nome.setAttribute('enterkeyhint', 'done');
     c.clima = el('input'); c.clima.type = 'text'; c.clima.maxLength = 120; c.clima.setAttribute('enterkeyhint', 'done');
     c.itens = el('textarea'); c.itens.maxLength = 600; c.itens.rows = 4;
+    c.nota = el('input'); c.nota.type = 'text'; c.nota.maxLength = 120; c.nota.setAttribute('enterkeyhint', 'done');
     g.appendChild(gt); g.appendChild(campo('Nome', c.nome)); g.appendChild(campo('Clima (frase curta)', c.clima)); g.appendChild(campo('O que tem', c.itens, 'Um por linha. Uma linha em branco separa os grupos.'));
+    g.appendChild(campo('Nota embaixo do valor com recepção', c.nota, 'Ex.: +1h de música ao vivo para a recepção. Vazio: sem nota.'));
     $('fTextos').appendChild(g);
     c.nome.addEventListener('input', atualizarTitulos);
     c.itens.addEventListener('input', function () { crescer(c.itens); });
@@ -1559,6 +1563,7 @@
       c.cer.input.value = x.cerimonia != null ? numero(x.cerimonia) : ''; c.cer.caixa.classList.remove('falta');
       c.rec.input.value = x.cerimonia_recepcao != null ? numero(x.cerimonia_recepcao) : ''; c.rec.caixa.classList.remove('falta');
       c.nome.value = x.nome || ''; c.clima.value = x.clima || ''; c.itens.value = x.itens || '';
+      c.nota.value = typeof x.nota_recepcao === 'string' ? x.nota_recepcao : NOTA_RECEPCAO;   // sem o campo (antes de 24/11/2026): o texto de antes
       definirModo(o.k, modoDe(d, x));
     });
     ordemOps = ordemDe(d); pintarOrdem();
@@ -1578,7 +1583,7 @@
     var opcoes = {};
     OPCOES.forEach(function (o) {
       var c = C[o.k];
-      opcoes[o.k] = { on: c.on.checked, nome: c.nome.value.trim(), clima: c.clima.value.trim(), itens: c.itens.value.trim(),
+      opcoes[o.k] = { on: c.on.checked, nome: c.nome.value.trim(), clima: c.clima.value.trim(), itens: c.itens.value.trim(), nota_recepcao: c.nota.value.trim(),
         cerimonia: parseValor(c.cer.input.value), cerimonia_recepcao: parseValor(c.rec.input.value),
         ver_cerimonia: c.modo !== 'junto', ver_recepcao: c.modo !== 'cerimonia' };
     });
